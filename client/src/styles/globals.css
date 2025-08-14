@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+@theme inline {
+  /*  */
+}
+
+:root {forced-color-adjust: none;}
+
+@theme {
+  /* CONTAINER */
+  --container-* : initial;
+  --container : 81rem;               /* 1296px */
+  --container-lg : 75rem;            /* 1200px */
+  --container-md : 62rem;            /* 992px */
+  --container-sm : 48rem;            /* 768px */ 
+  --container-xs : 36rem;            /* 576px */
+  /* MEDIA QUERIES */
+  --breakpoint-* : initial;
+  /* IF NEEDED THEN I WILL DEFINE THE MEDIA QUERY LESS THAN 480PX */
+  --breakpoint-xs : 30rem;            /* 480px */
+  --breakpoint-sm : 36rem;            /* 576px */
+  --breakpoint-md : 48rem;            /* 768px */
+  --breakpoint-lg : 62rem;            /* 992px */
+  --breakpoint-xl : 75rem;            /* 1200px */
+  --breakpoint-2xl : 87.5rem;         /* 1400px */
+  /* COLOR */
+  --color-* : initial;
+}
+
+@layer theme {
+ 
+}
+
+
+@layer utilities {
+  .container {
+    max-width: var(--container-xs);
+    padding-inline: 0.75rem;
+    margin-inline: auto;
+  }
+   @media (min-width: 48rem) {
+    .container {
+    /* as the query above than 768 - 992 then the container size will be 992px */
+      max-width: var(--container-sm);
+      padding-inline: 1.5rem;
+    }
+  }
+  @media (min-width: 62rem) {
+    .container {
+    /* as the query above than 992 - 1200 then the container size will be 992px */
+      max-width: var(--container-md);
+    }
+  }
+  @media (min-width: 75rem) {
+    .container {
+    /* as the query above than 1200 - 1400 then the container size will be 1200px */
+      max-width: var(--container-lg);
+    }
+  }
+  @media (min-width: 87.5rem) {
+    /* as the query above than 1400 then the container size will be 1296px */
+    .container {
+      max-width: var(--container);
+    }
+  }
+}
+
+/* WHAT IS ANTIALIASED in CLASSNAME WHERE WE DEFINE THE VARIABLE  */
+/* DIFFERENCE BETWEEN UTILITIES AND BASE */
+/* REVISE THE CONCEPT THEME AND THEME INLINE */
+/* CAN FRONTEND WE HAVE ASSETS IN BACKEND OR WE CAN DEFINE THE ASSETS LIKE IN FRONTEND */
