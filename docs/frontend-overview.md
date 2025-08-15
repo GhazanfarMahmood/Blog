@@ -39,3 +39,30 @@ and for pages no need to create extra folder just only create folder with the na
     |-  portfolio -- only if you are showcasing your personal work
     |-  Services -- only if you offer paid content, writing, consulting
     |-  Testimonials/Reviews -- only if people comment on work
+
+### some of descriptive short codes
+symbol              meaning
+LT                  Lite / Lower Tier
+RG                  Regular
+PR                  Pro
+MX                  max / maximum
+--- Good for product features, user roles, etc.
+
+### Other Creative Abbreviations
+Symbol              meaning
+MN                  Mini
+ST                  standard
+Gt                  grand / greater
+UL                  ultra
+MG                  mega
+
+
+
+
+### Things we did first after installing next js
+-- set up folder structure to keep the project organized.
+-- Configured global font in app/layout.tsx so it applies to the entire site.
+----- If a page needs a different font, we create a new layout.tsx inside that page’s folder and apply the font there.
+-- Customized global styles by updating globals.css with our own theme variables, breakpoints, and utility styles.
+
+

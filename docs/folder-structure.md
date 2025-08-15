@@ -47,6 +47,9 @@
 |     ├── (styles)/                     -- for adding custom styling by using custom css.
 |     |     └── globals.css             -- for adding custom breakpoint, color and much more.
 |     ├── (types)/                      -- for typescript types -- (blog.types.ts, user.types.ts,)etc.
+|     ├── (assets)/                     -- for all type of assets like images, fonts etc.
+|     |     └── (images)/               -- all type of images will come in it
+|     |             └── (icons)/        -- all type of icons come in it.             
 |     └── (utils)/                      -- for validation or helpers -- (helpers.ts, validators.ts)  
 ├── .gitignore/                         -- only used to ignore the files that are using in front-end.
 ├── eslint.config.mjs/                  -- still need to know but not essential to understand.

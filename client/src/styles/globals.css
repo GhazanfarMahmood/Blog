@@ -9,11 +9,11 @@
 @theme {
   /* CONTAINER */
   --container-* : initial;
-  --container : 81rem;               /* 1296px */
-  --container-lg : 75rem;            /* 1200px */
-  --container-md : 62rem;            /* 992px */
-  --container-sm : 48rem;            /* 768px */ 
   --container-xs : 36rem;            /* 576px */
+  --container-sm : 48rem;            /* 768px */ 
+  --container-md : 62rem;            /* 992px */
+  --container-lg : 75rem;            /* 1200px */
+  --container : 81rem;               /* 1296px */
   /* MEDIA QUERIES */
   --breakpoint-* : initial;
   /* IF NEEDED THEN I WILL DEFINE THE MEDIA QUERY LESS THAN 480PX */
@@ -25,10 +25,49 @@
   --breakpoint-2xl : 87.5rem;         /* 1400px */
   /* COLOR */
   --color-* : initial;
+  --color-light : #fff;
+  --color-dark : #000;
+  --color-primary : #29294b;
+  --color-secondary : #5955d1;
+  --color-heading : #222222;
+  --color-phara : #696981;
+  --color-bg : #fdfdff;
+  --color-br : #e1e1e8;
+  /* FONT SIZE */
+  --text-* : initial;
+  --text-st : 1rem;                                                   /* 16px for general purposes like phara or other */
+  --text-xs : 0.875rem;                                               /* 14px */
+  --text-base : clamp(0.875rem, 0.7578rem + 0.3906vw, 1rem);          /* 14px -- 480px/992px  -- 16px */
+  --text-sm : clamp(1rem, 0.7656rem + 0.7813vw, 1.25rem);             /* 16px -- 480px/992px  -- 18px */
+  --text-md : clamp(1.125rem, 1.0078rem + 0.3906vw, 1.25rem);         /* 18px -- 480px/992px  -- 20px */
+  --text-lg : clamp(1.25rem, 1.0156rem + 0.7813vw, 1.5rem);           /* 20px -- 480px/992px  -- 24px */
+  --text-xl : clamp(1.75rem, 1.5413rem + 0.6956vw, 2.063rem);         /* 28px -- 480px/1200px -- 33px */
+  --text-2xl : clamp(2.5rem, 2.1087rem + 1.3043vw, 3.25rem);          /* 40px -- 480px/1400px -- 52px */
+  /* LINE HEIGHT */
+  --leading-* : initial;
+  --leading-2xs : 0.875rem;                                           /* 14px */    
+  --leading-base : 1rem;                                              /* 16px */  
+  --leading-xs : 1.125rem;                                            /* 18px */
+  --leading-sm : 1.25rem;                                             /* 20px */
+  --leading-md : 1.5rem;                                              /* 24px */
+  --leading-lg : 1.75rem;                                             /* 28px */
+  --leading-xl : 1.938rem;                                            /* 31px */
+  --leading-2xl : 2.313rem;                                           /* 37px */
+  --leading-3xl : 3.875rem;                                           /* 62px */
 }
 
 @layer theme {
- 
+  body {
+    font-size: var(--text-st);
+    line-height: var(--leading-base);
+  }
+  @media (width <= 75rem) {
+    :root{
+      --leading-3xl : calc(var(--leading-2xl) + 2px);
+      --leading-2xl : var(--leading-lg);
+      --leading-lg : var(--leading-sm);
+    }
+  }
 }
 
 
@@ -68,4 +107,4 @@
 /* WHAT IS ANTIALIASED in CLASSNAME WHERE WE DEFINE THE VARIABLE  */
 /* DIFFERENCE BETWEEN UTILITIES AND BASE */
 /* REVISE THE CONCEPT THEME AND THEME INLINE */
-/* CAN FRONTEND WE HAVE ASSETS IN BACKEND OR WE CAN DEFINE THE ASSETS LIKE IN FRONTEND */
+/* LIKE FRONTEND WE HAVE ASSETS IN BACKEND OR WE CAN DEFINE THE ASSETS LIKE IN FRONTEND */
