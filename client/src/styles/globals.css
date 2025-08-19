@@ -54,6 +54,11 @@
   --leading-xl : 1.938rem;                                            /* 31px */
   --leading-2xl : 2.313rem;                                           /* 37px */
   --leading-3xl : 3.875rem;                                           /* 62px */
+  /* PRIVATE VARIABLES */
+  --color--link-bg : #f2f2f6;
+  /* SHADOW */
+  --shadow-* : initial;
+  --shadow-links : 0px 5px 20px 0px rgba(114,114,255,.15);
 }
 
 @layer theme {
@@ -105,6 +110,11 @@
 }
 
 /* WHAT IS ANTIALIASED in CLASSNAME WHERE WE DEFINE THE VARIABLE  */
-/* DIFFERENCE BETWEEN UTILITIES AND BASE */
 /* REVISE THE CONCEPT THEME AND THEME INLINE */
 /* LIKE FRONTEND WE HAVE ASSETS IN BACKEND OR WE CAN DEFINE THE ASSETS LIKE IN FRONTEND */
+/* @layer base is used for styling of html base elements like: body, p, h1 etc. */
+/* @layer components is used for styling of resuable components (cards, buttons) etc. custom class like .btn, .card.  */
+/* @layer utilities used for one-off utility classes means that will use for single purpose like .text-shadow and .container */
+/* Make sure your custom CSS is after the @tailwind directives. */
+/* HERE'S I WILL CREATED MORE CLASSES LIKE .BTN WITH THE HELP OF @layer components {} and in @layer utilities we can't use @apply and utilities used only for the single purposes like container width scrollbar and text shadow etc */
+/* if we have a key in object is with kebab case or with space in between name of key then we have to wrap the key in double quotation like this "link-name" */
