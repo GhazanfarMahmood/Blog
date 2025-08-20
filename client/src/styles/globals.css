@@ -59,12 +59,23 @@
   /* SHADOW */
   --shadow-* : initial;
   --shadow-links : 0px 5px 20px 0px rgba(114,114,255,.15);
+  --shadow-search : 0px 5px 25px 0px rgba(114,114,255,.15);
+  --shadow-search-field : 0px 5px 25px 0px rgba(114,114,255,.12);
+  --shadow-hover : 0px 5px 25px 0px rgba(114,114,255,0.2);
+  --shadow-btn-hover : 0px 5px 20px 0px rgba(114,114,255,0.4);
+  --shadow-link-hover : 0px 5px 25px 0px rgba(114,114,255,0.4);
+  /* BG LINEAR GRADIENT */
+  --linear-bg : 180deg, #9895ff 0%, #514dcc 100%;
+  --linear-body : 180deg, #fdfdff 0%, #f8f7ff 100%;
 }
 
 @layer theme {
   body {
     font-size: var(--text-st);
     line-height: var(--leading-base);
+    font-family: var(--font-dm-sans);
+    background: linear-gradient(var(--linear-body));
+    background-repeat: no-repeat;
   }
   @media (width <= 75rem) {
     :root{

@@ -13,4 +13,16 @@ export const links = [
     ]},
     {id : 2, name : "about"},
     {id : 3, name : "contacts"},
+];
+
+// SEARCH LINKS
+export const searchLinks = [
+    {id : 0, name : "sport"},
+    {id : 1, name : "business"},
+    {id : 2, name : "travel"},
+    {id : 3, name : "trends"},
+    {id : 4, name : "startups"},
+    {id : 5, name : "news"},
+    {id : 6, name : "technology"},
+    {id : 7, name : "management"},
 ]
