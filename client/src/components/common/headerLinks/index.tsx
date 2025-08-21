@@ -8,10 +8,10 @@ import { FaChevronDown } from "react-icons/fa6";
 import {links} from "@/constants/headerData";
 
 export function HeaderLink(){
-    return <ul className="flex items-center justify-center gap-2.5 z-[2]">
+    return <ul className="hidden lg:flex items-center justify-center gap-2.5 z-[2]">
                 {links.map((item) => {
                     return <li key={item.id} className={`${item.category ? "relative" : ""} group`}>
-                        <Link href={"/"} className={`p-[9px_14px] font-semibold flex justify-center items-center gap-1.5 capitalize text-primary rounded-lg transition-all duration-[.25s] ease-in group-hover:bg--link-bg`} >
+                        <Link href={"/"} className={`p-[6px_14px] font-semibold flex justify-center items-center gap-1.5 capitalize text-primary rounded-lg transition-all duration-[.25s] ease-in group-hover:bg--link-bg`} >
                             {item.name}
                             {item.category && 
                                 <FaChevronDown className="w-3 h-3 transition-all duration-[.25s] ease-in group-hover:-rotate-180" />

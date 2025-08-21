@@ -43,19 +43,11 @@
   --text-lg : clamp(1.25rem, 1.0156rem + 0.7813vw, 1.5rem);           /* 20px -- 480px/992px  -- 24px */
   --text-xl : clamp(1.75rem, 1.5413rem + 0.6956vw, 2.063rem);         /* 28px -- 480px/1200px -- 33px */
   --text-2xl : clamp(2.5rem, 2.1087rem + 1.3043vw, 3.25rem);          /* 40px -- 480px/1400px -- 52px */
-  /* LINE HEIGHT */
-  --leading-* : initial;
-  --leading-2xs : 0.875rem;                                           /* 14px */    
-  --leading-base : 1rem;                                              /* 16px */  
-  --leading-xs : 1.125rem;                                            /* 18px */
-  --leading-sm : 1.25rem;                                             /* 20px */
-  --leading-md : 1.5rem;                                              /* 24px */
-  --leading-lg : 1.75rem;                                             /* 28px */
-  --leading-xl : 1.938rem;                                            /* 31px */
-  --leading-2xl : 2.313rem;                                           /* 37px */
-  --leading-3xl : 3.875rem;                                           /* 62px */
   /* PRIVATE VARIABLES */
   --color--link-bg : #f2f2f6;
+  --filter-primary : brightness(0) saturate(100%) invert(12%) sepia(56%) saturate(787%) hue-rotate(203deg) brightness(96%) contrast(88%);
+  --filter-secondary : brightness(0) saturate(100%) invert(35%) sepia(19%) saturate(6180%) hue-rotate(227deg) brightness(86%) contrast(88%);
+  --filter-phara : brightness(0) saturate(100%) invert(42%) sepia(18%) saturate(464%) hue-rotate(202deg) brightness(92%) contrast(88%);
   /* SHADOW */
   --shadow-* : initial;
   --shadow-links : 0px 5px 20px 0px rgba(114,114,255,.15);
@@ -72,17 +64,10 @@
 @layer theme {
   body {
     font-size: var(--text-st);
-    line-height: var(--leading-base);
+    line-height: 1.55;
     font-family: var(--font-dm-sans);
     background: linear-gradient(var(--linear-body));
     background-repeat: no-repeat;
-  }
-  @media (width <= 75rem) {
-    :root{
-      --leading-3xl : calc(var(--leading-2xl) + 2px);
-      --leading-2xl : var(--leading-lg);
-      --leading-lg : var(--leading-sm);
-    }
   }
 }
 
@@ -118,7 +103,27 @@
       max-width: var(--container);
     }
   }
+  
 }
+@media (max-width: 767px) {
+  .strong-after::after {
+    width: 18px;
+    height: 18px;
+    background: no-repeat center / contain url("../assets/images/icons/chevron-down.svg");
+    position: absolute;
+    inset: 0;
+    margin-block: auto;
+    margin-left: auto;
+    margin-right: 14px;
+    content: "";
+    filter: var(--filter-phara);
+  }
+}
+
+
+/* @layer components { 
+  
+} */
 
 /* WHAT IS ANTIALIASED in CLASSNAME WHERE WE DEFINE THE VARIABLE  */
 /* REVISE THE CONCEPT THEME AND THEME INLINE */

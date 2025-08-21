@@ -9,7 +9,7 @@ import Footer from "@/components/common/Footer";
 const dmSans = DM_Sans({
   variable : "--font-dm-sans",
   display : "swap",
-  weight : ["300", "800"],
+  weight : ["400", "800"],
   subsets : ["latin"],
 })
 
