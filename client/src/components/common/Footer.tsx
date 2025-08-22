@@ -19,18 +19,18 @@ export default function Footer(){
     const [footerLinks, setFooterLinks] = useState("");
     return (<>
         <div className="container">
-            <div className="max-w-[480px] flex flex-col items-center justify-center mx-auto mb-16">
+            <div className="max-w-[480px] flex flex-col items-center justify-center mx-auto mb-9 md:mb-12 lg:mb-16">
                 <h2 className="text-primary font-bold leading-[1.2] text-[33px] -tracking-[0.04em] text-center">Subscribe to our Newsletter</h2>
                 <p className="text-phara text-center my-[10px_22px]">Subscribe to our email newsletter to get the latest posts delivered right to your email.</p>
-                <form className="w-full max-w-[400px] mx-auto flex items-center justify-center gap-2 p-[5px] border border-solid border-br rounded-lg bg-light shadow-search-field transition-all duration-[0.25s] ease-in hover:shadow-hover">
-                    <input type="email" placeholder="Enter Your Email" className="w-full focus:outline-none text-xs leading-[1.55] text-primary rounded-lg py-2 px-4 font-medium" />
-                    <button type="button" className="p-[10px_18px] bg-linear-(--linear-bg) min-h-10 flex leading-[1.2] text-light font-bold -tracking-[0.03em] rounded-lg cursor-pointer transition-all duration-[0.25s] ease-in hover:shadow-btn-hover">Subscribe</button>
+                <form className="w-full max-w-[400px] mx-auto flex items-center justify-center flex-col sm:flex-row gap-4 sm:gap-2 p-0 sm:p-[5px] border-0 sm:border sm:border-solid sm:border-br rounded-lg bg-transparent sm:bg-light shadow-none sm:shadow-search-field transition-all duration-[0.25s] ease-in hover:shadow-hover">
+                    <input type="email" placeholder="Enter Your Email" className="w-full focus:outline-none text-xs leading-[1.55] text-primary rounded-lg py-2 px-4 font-medium border border-solid  border-br sm:border-0 bg-transparent sm:bg-light p-0 sm:p-[5px] shadow-search-field sm:shadow-none" />
+                    <button type="button" className=" w-full sm:w-fit text-center p-[10px_18px] bg-linear-(--linear-bg) min-h-10 flex items-center justify-center leading-[1.2] text-light font-bold -tracking-[0.03em] rounded-lg cursor-pointer transition-all duration-[0.25s] ease-in hover:shadow-btn-hover">Subscribe</button>
                 </form>
                 <span className="block text-center text-primary text-[13px] -tracking-[0.03em] mt-3 font-extrabold"> Pure inspiration, zero spam  ✨</span>
             </div>
         </div>
         <footer className="container">
-            <div className="py-12 border-t border-t-br">
+            <div className="py-8 md:py-12 border-t border-t-br">
                 <div className="grid grid-cols-1 lg:grid-cols-2">
                     <div>
                         <Link href={"/"}>
@@ -62,7 +62,7 @@ export default function Footer(){
                     </div>
                     <div className="flex items-start justify-start lg:justify-end gap-x-12 xl:gap-x-20 gap-y-5 md:gap-y-8 md:flex-wrap flex-col md:flex-row ">
                         <div className="w-full md:w-fit">
-                            <strong className="block uppercase text-[12px] font-extrabold tracking-widest leading-[1.2] mb-[1.2px] text-phara relative strong-after w-full md:w-fit" onClick={() => {setFooterLinks(footerLinks === "" || footerLinks !== "active-one" ? "active-one" : "")}}>Home Pages</strong>
+                            <strong className={`block uppercase text-[12px] font-extrabold tracking-widest leading-[1.2] mb-[1.2px] text-phara relative strong-after w-full md:w-fit ${footerLinks === "active-one" && "rotation-active"}`} onClick={() => {setFooterLinks(footerLinks !== "active-one" ? "active-one" : "")}}>Home Pages</strong>
                             <ul className={`h-0 md:h-fit opacity-0 md:opacity-100 invisible md:visible transition duration-[0.25s] ease-in mt-0 md:mt-[18px] *:mt-[12px] *:first:mt-[0] ${footerLinks === "active-one" && "h-fit visible opacity-100 mt-[18px]"}`}>
                                 {homeLink.map((link) =>{
                                     return <li key={link.id}>
@@ -72,7 +72,7 @@ export default function Footer(){
                             </ul>
                         </div>
                         <div className="w-full md:w-fit">
-                            <strong className="block uppercase text-[12px] font-extrabold tracking-widest leading-[1.2] mb-[1.2px] text-phara relative strong-after w-full md:w-fit" onClick={() => setFooterLinks(footerLinks === "" || footerLinks !== "active-two" ? "active-two" : "")}>Categories</strong>
+                            <strong className={`block uppercase text-[12px] font-extrabold tracking-widest leading-[1.2] mb-[1.2px] text-phara relative strong-after w-full md:w-fit ${footerLinks === "active-two" && "rotation-active"}`} onClick={() => setFooterLinks(footerLinks !== "active-two" ? "active-two" : "")}>Categories</strong>
                             <ul className={`h-0 md:h-fit opacity-0 md:opacity-100 invisible md:visible transition duration-[0.25s] ease-in md:block mt-0 md:mt-[18px] *:mt-[12px] *:first:mt-[0] ${footerLinks === "active-two" && "visible opacity-100 mt-[18px] h-fit"}`}>
                                 {footerCategory.map((link) =>{
                                     return <li key={link.id}>
@@ -82,7 +82,7 @@ export default function Footer(){
                             </ul>
                         </div>
                         <div className="w-full md:w-fit">
-                            <strong className="block uppercase text-[12px] font-extrabold tracking-widest leading-[1.2] mb-[1.2px] text-phara relative strong-after w-full md:w-fit" onClick={() => setFooterLinks(footerLinks === "" || footerLinks !== "active-three" ? "active-three" : "")}>Pages</strong>
+                            <strong className={`block uppercase text-[12px] font-extrabold tracking-widest leading-[1.2] mb-[1.2px] text-phara relative strong-after w-full md:w-fit ${footerLinks === "active-three" && "rotation-active"}`} onClick={() => setFooterLinks(footerLinks !== "active-three" ? "active-three" : "")}>Pages</strong>
                             <ul className={`h-0 md:h-fit opacity-0 md:opacity-100 invisible md:visible transition duration-[0.25s] ease-in md:block mt-0 md:mt-[18px] *:mt-[12px] *:first:mt-[0] ${footerLinks === "active-three" && "visible opacity-100 mt-[18px] h-fit"}`}>
                                 {pagesLink.map((link) =>{
                                     return <li key={link.id}>
