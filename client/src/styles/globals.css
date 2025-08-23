@@ -33,6 +33,7 @@
   --color-phara : #696981;
   --color-bg : #fdfdff;
   --color-br : #e1e1e8;
+  --color-header-bg : #0000007d;
   /* FONT SIZE */
   --text-* : initial;
   --text-st : 1rem;                                                   /* 16px for general purposes like phara or other */
