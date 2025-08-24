@@ -49,7 +49,7 @@ export default function Header(){
                 </div>
                 <HeaderSearch searchActive={searchActive} setSearchActive={setSearchActive} />
             </div>
-            <div className={`hidden w-full h-[100dvh] fixed top-0 left-0 z-[2] bg-header-bg ${activeHeader && "block!"}`} onClick={() => setActiveHeader(false)}></div>
+            <div className={`hidden w-full h-[100dvh] fixed top-0 left-0 z-[2] lg:hidden! bg-header-bg ${activeHeader && "block!"}`} onClick={() => setActiveHeader(false)}></div>
         </header>
     </>)
 }
