@@ -19,26 +19,43 @@ import { HeaderSearch } from "../modals/headerSearch";
 import { useState } from "react";
 
 export default function Header(){
-    const [searchActive, setSearchActive] = useState(false);
-    const [activeHeader, setActiveHeader] = useState(false);
+    const [searchActive, setSearchActive] = useState<boolean>(false);
+    const [activeHeader, setActiveHeader] = useState<boolean>(false);
     
     return (<>
         <header className="bg-bg">
-            <div className="container flex items-center justify-center gap-5 py-[25px] relative">
-                <button className="mr-auto lg:hidden" aria-label="menu-open" onClick={() => setActiveHeader(!activeHeader)}>
+            <div 
+                className="container flex items-center justify-center gap-5 py-[25px] relative"
+            >
+                <button 
+                    className="mr-auto lg:hidden" aria-label="menu-open" 
+                    onClick={() => setActiveHeader(!activeHeader)}
+                >
                     <FiMenu className="w-6 h-6" />
                 </button>
-                <Link href={"/"} className="flex-none lg:mr-auto">
+                <Link href={"/"} 
+                    className="flex-none lg:mr-auto" aria-label="site logo"
+                >
                     <Image src={Logo} alt="revision" width={131} height={38} />
                 </Link>
                 <HeaderLink activeHeader={activeHeader} setActiveHeader={setActiveHeader} />
-                <div className="flex items-center justify-center ml-auto">
-                    <div className="relative lg:pr-3.5 after:w-[1.5px] after:h-[18px] after:absolute after:inset-0 after:my-auto after:ml-auto after:bg-br after:content-none lg:after:content-['']">
-                        <button className={`w-9 h-9 flex items-center justify-center rounded-full cursor-pointer transition-all duration-[0.25s] ease-in hover:bg--link-bg ${searchActive && "bg--link-bg"}`} aria-label="search btn" onClick={() => setSearchActive(!searchActive)}>
+                <div 
+                    className="flex items-center justify-center ml-auto"
+                >
+                    <div 
+                        className="lg:pr-3.5 relative after:w-[1.5px] after:h-[18px] after:bg-br after:my-auto after:ml-auto after:absolute after:inset-0 after:content-none lg:after:content-['']"
+                    >
+                        <button 
+                            className={`w-9 h-9 flex justify-center items-center rounded-full cursor-pointer transition-all duration-[0.25s] ease-in hover:bg--link-bg ${searchActive && "bg--link-bg"}`} 
+                            aria-label="search button" onClick={() => setSearchActive(!searchActive)}
+                        >
                             <CiSearch className="w-6 h-6" />
                         </button>
                     </div>
-                    <button className="hidden lg:flex items-center justify-center gap-2 ml-3.5 p-1 rounded-[30px] cursor-pointer *:w-7 *:h-7 *:flex *:items-center *:justify-center bg--link-bg *:transition-opacity *:duration-75 *:ease-in *:hover:opacity-70" aria-label="theme toggle btn">
+                    <button 
+                        className="hidden lg:flex items-center justify-center gap-2 bg--link-bg p-1 ml-3.5 rounded-[30px] cursor-pointer *:w-7 *:h-7 *:flex *:items-center *:justify-center *:transition-opacity *:duration-75 *:ease-in" 
+                        aria-label="theme toggle button"
+                    >
                         <span>
                             <MdWbSunny />   
                         </span>
@@ -49,7 +66,10 @@ export default function Header(){
                 </div>
                 <HeaderSearch searchActive={searchActive} setSearchActive={setSearchActive} />
             </div>
-            <div className={`hidden w-full h-[100dvh] fixed top-0 left-0 z-[2] lg:hidden! bg-header-bg ${activeHeader && "block!"}`} onClick={() => setActiveHeader(false)}></div>
+            <div 
+                className={`hidden lg:hidden! w-full h-[100dvh] bg-header-bg fixed top-0 left-0 z-[2] ${activeHeader && "block!"}`} 
+                onClick={() => setActiveHeader(false)}
+            ></div>
         </header>
     </>)
 }

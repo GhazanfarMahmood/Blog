@@ -1,12 +1,13 @@
 @import "tailwindcss";
 
-@theme inline {
-  /*  */
-}
 
 :root {forced-color-adjust: none;}
 
-@theme {
+/* what is purpose of below code */
+/* @custom-variant dark (&:is(.dark *)); */
+
+
+@theme inline {
   /* CONTAINER */
   --container-* : initial;
   --container-xs : 36rem;            /* 576px */
@@ -49,6 +50,7 @@
   --filter-primary : brightness(0) saturate(100%) invert(12%) sepia(56%) saturate(787%) hue-rotate(203deg) brightness(96%) contrast(88%);
   --filter-secondary : brightness(0) saturate(100%) invert(35%) sepia(19%) saturate(6180%) hue-rotate(227deg) brightness(86%) contrast(88%);
   --filter-phara : brightness(0) saturate(100%) invert(42%) sepia(18%) saturate(464%) hue-rotate(202deg) brightness(92%) contrast(88%);
+  --filter-white : brightness(0) saturate(100%) invert(95%) sepia(62%) saturate(0%) hue-rotate(147deg) brightness(104%) contrast(105%);
   /* SHADOW */
   --shadow-* : initial;
   --shadow-links : 0px 5px 20px 0px rgba(114,114,255,.15);
@@ -106,29 +108,26 @@
   }
   
 }
-@media (max-width: 767px) {
-  .strong-after::after {
-    width: 18px;
-    height: 18px;
-    background: no-repeat center / contain url("../assets/images/icons/chevron-down.svg");
-    position: absolute;
-    inset: 0;
-    margin-block: auto;
-    margin-left: auto;
-    margin-right: 14px;
-    content: "";
-    filter: var(--filter-phara);
-    transition: all 0.25s ease-in;
-  }
-  .rotation-active::after {
-    transform: rotate(-180deg);
+@layer components {
+  @media (max-width: 767px) {
+    .strong-after::after {
+      width: 18px;
+      height: 18px;
+      background: no-repeat center / contain url("../assets/images/icons/chevron-down.svg");
+      position: absolute;
+      inset: 0;
+      margin-block: auto;
+      margin-left: auto;
+      margin-right: 14px;
+      content: "";
+      filter: var(--filter-phara);
+      transition: all 0.25s ease-in;
+    }
+    .rotation-active::after {
+      transform: rotate(-180deg);
+    }
   }
 }
-
-
-/* @layer components { 
-  
-} */
 
 /* WHAT IS ANTIALIASED in CLASSNAME WHERE WE DEFINE THE VARIABLE  */
 /* REVISE THE CONCEPT THEME AND THEME INLINE */
