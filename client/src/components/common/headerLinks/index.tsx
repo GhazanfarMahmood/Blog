@@ -16,7 +16,7 @@ import insta_icon from "@/assets/images/icons/insta.svg";
 import linkedin_icon from "@/assets/images/icons/linkedin.svg";
 
 // LINKS
-import { links } from "@/constants/headerData";
+import { links } from "@/constants/header-data";
 import { useEffect, useState } from "react";
 
 export function HeaderLink(
@@ -35,7 +35,7 @@ export function HeaderLink(
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []);
-    
+
     const toggleDropdown = (id: number): void => {
         if (isMobile) {
             setOpenDropdown((prev) => ({
@@ -49,7 +49,7 @@ export function HeaderLink(
 
     return (
         <div
-            className={`w-full max-w-[430px] lg:max-w-none h-[100vh] lg:h-fit flex flex-col justify-start bg-light lg:bg-transparent fixed lg:static top-0 -left-full z-[4] transition-all duration-[0.4s] ease-in ${activeHeader && "left-0"}`}
+            className={`w-full max-w-[430px] lg:max-w-none h-[100dvh] lg:h-fit flex flex-col justify-start bg-light lg:bg-transparent fixed lg:static top-0 -left-full z-[4] transition-all duration-[0.4s] ease-in ${activeHeader && "left-0"}`}
         >
             <div 
                 className="h-[88px] flex lg:hidden items-center justify-between pr-6 pl-4"
@@ -66,7 +66,7 @@ export function HeaderLink(
                 </button>
             </div>
             <ul 
-                className="h-[calc(100vh-169px)] lg:h-fit flex flex-col lg:flex-row items-start lg:items-center justify-start lg:justify-center gap-1 lg:gap-2.5 px-1.5 overflow-y-auto lg:overflow-y-visible"
+                className="h-[calc(100dvh-169px)] lg:h-fit flex flex-col lg:flex-row items-start lg:items-center justify-start lg:justify-center gap-1 lg:gap-2.5 px-1.5 overflow-y-auto lg:overflow-y-visible"
             >
                 {links.map((item) => {
                     const isOpen = openDropdown[item.id];

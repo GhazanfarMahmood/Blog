@@ -5,6 +5,7 @@ import "@/styles/globals.css";
 // HEADER AND FOOTER
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
+import { ThemeProvider } from "@/provider/theme-provider";
 
 const dmSans = DM_Sans({
   variable : "--font-dm-sans",
@@ -24,13 +25,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${dmSans.variable} antialiased`}
       >
-        <Header/>
-          {children}
-        <Footer />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Header/>
+            {children}
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -12,7 +12,7 @@ import insta_icon from "@/assets/images/icons/insta.svg";
 import linkedin_icon from "@/assets/images/icons/linkedin.svg";
 
 // FOOTER DATA
-import { footerCategory, homeLink, pagesLink } from "@/constants/footerData";
+import { footerCategory, homeLink, pagesLink } from "@/constants/footer-data";
 import { useState } from "react";
 
 export default function Footer(){
@@ -98,19 +98,19 @@ export default function Footer(){
                     <div 
                         className="flex items-start justify-start lg:justify-end gap-x-12 xl:gap-x-20 gap-y-5 md:gap-y-8 md:flex-wrap flex-col md:flex-row 
                         [&>*]:w-full [&>*]:md:w-fit 
-                        [&_strong]:w-full [&_strong]:md:w-fit [&_strong]:block [&_strong]:text-[12px] [&_strong]:uppercase [&_strong]:font-extrabold [&_strong]:tracking-widest [&_strong]:leading-[1.4] [&_strong]:text-phara [&_strong]:mb-[1.2px] [&_strong]:relative [&_strong]:strong-after 
+                        [&_strong]:w-full [&_strong]:md:w-fit [&_strong]:block [&_strong]:text-[12px] [&_strong]:uppercase [&_strong]:font-extrabold [&_strong]:tracking-widest [&_strong]:leading-[1.4] [&_strong]:text-phara [&_strong]:mb-[1.2px] [&_strong]:relative
                         [&_ul]:md:block [&_ul]:h-0 [&_ul]:md:h-fit [&_ul]:opacity-0 [&_ul]:md:opacity-100 [&_ul]:invisible [&_ul]:md:visible [&_ul]:transition [&_ul]:duration-[0.25s] [&_ul]:ease-in [&_ul]:mt-0 [&_ul]:md:mt-[18px] [&_ul]:*:mt-[12px] [&_ul]:*:first:mt-[0] 
                         [&_a]:font-semibold [&_a]:capitalize [&_a]:leading-[1.2] [&_a]:-tracking-[-0.03em] [&_a]:text-primary [&_a]:pb-[1.6px] [&_a]:transition [&_a]:duration-[0.25s] [&_a]:ease-in [&_a]:hover:opacity-70"
                     >
                         <div>
                             <strong 
-                                className={`${footerLinks === "active-one" && "rotation-active"}`} 
+                                className={`strong-after ${footerLinks === "active-one" && "rotation-active"}`} 
                                 onClick={() => {setFooterLinks(footerLinks !== "active-one" ? "active-one" : "")}}
                             >
                                 Home Pages
                             </strong>
                             <ul 
-                                className={`${footerLinks === "active-one" && "h-fit visible opacity-100 mt-[18px]"}`}
+                                className={`${footerLinks === "active-one" && "h-fit! visible! opacity-100! mt-[18px]!"}`}
                             >
                                 {homeLink.map((link) =>{
                                     return <li key={link.id}>
@@ -123,13 +123,13 @@ export default function Footer(){
                         </div>
                         <div>
                             <strong 
-                                className={`${footerLinks === "active-two" && "rotation-active"}`} 
+                                className={`strong-after ${footerLinks === "active-two" && "rotation-active"}`} 
                                 onClick={() => setFooterLinks(footerLinks !== "active-two" ? "active-two" : "")}
                             >
                                 Categories
                             </strong>
                             <ul 
-                                className={`${footerLinks === "active-two" && "visible opacity-100 mt-[18px] h-fit"}`}
+                                className={`${footerLinks === "active-two" && "h-fit! visible! opacity-100! mt-[18px]!"}`}
                             >
                                 {footerCategory.map((link) =>{
                                     return <li key={link.id}>
@@ -142,13 +142,13 @@ export default function Footer(){
                         </div>
                         <div>
                             <strong 
-                                className={`${footerLinks === "active-three" && "rotation-active"}`} 
+                                className={`strong-after ${footerLinks === "active-three" && "rotation-active"}`} 
                                 onClick={() => setFooterLinks(footerLinks !== "active-three" ? "active-three" : "")}
                             >
                                 Pages
                             </strong>
                             <ul 
-                                className={`${footerLinks === "active-three" && "visible opacity-100 mt-[18px] h-fit"}`}
+                                className={`${footerLinks === "active-three" && "h-fit! visible! opacity-100! mt-[18px]!"}`}
                             >
                                 {pagesLink.map((link) =>{
                                     return <li key={link.id}>

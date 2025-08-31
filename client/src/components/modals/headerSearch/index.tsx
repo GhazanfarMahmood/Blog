@@ -1,5 +1,5 @@
 // SEARCH DATA LINK
-import { searchLinks } from "@/constants/headerData";
+import { searchLinks } from "@/constants/header-data";
 
 // LINK FROM NEXT LINK 
 import Link from "next/link";

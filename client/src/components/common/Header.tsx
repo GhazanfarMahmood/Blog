@@ -8,19 +8,23 @@ import Link from "next/link";
 import Logo from "@/assets/images/revision.webp";
 
 // ICONS FROM REACT ICON 
-import { MdWbSunny } from "react-icons/md";
-import { FaMoon } from "react-icons/fa";
+import { MdOutlineWbSunny } from "react-icons/md";
+import { IoMoonOutline } from "react-icons/io5";
 import { CiSearch } from "react-icons/ci";
 import { FiMenu } from "react-icons/fi";
 
 // HEADER LINKS
 import { HeaderLink } from "./headerLinks";
 import { HeaderSearch } from "../modals/headerSearch";
+import ThemeToggle from "../modals/themeToggle";
+
+// ADDING USESTATE HOOK
 import { useState } from "react";
 
 export default function Header(){
     const [searchActive, setSearchActive] = useState<boolean>(false);
     const [activeHeader, setActiveHeader] = useState<boolean>(false);
+    const [themeDropdown, setThemeDropdown] = useState<boolean>(false);
     
     return (<>
         <header className="bg-bg">
@@ -40,7 +44,7 @@ export default function Header(){
                 </Link>
                 <HeaderLink activeHeader={activeHeader} setActiveHeader={setActiveHeader} />
                 <div 
-                    className="flex items-center justify-center ml-auto"
+                    className="flex items-center justify-center ml-auto relative"
                 >
                     <div 
                         className="lg:pr-3.5 relative after:w-[1.5px] after:h-[18px] after:bg-br after:my-auto after:ml-auto after:absolute after:inset-0 after:content-none lg:after:content-['']"
@@ -53,16 +57,14 @@ export default function Header(){
                         </button>
                     </div>
                     <button 
-                        className="hidden lg:flex items-center justify-center gap-2 bg--link-bg p-1 ml-3.5 rounded-[30px] cursor-pointer *:w-7 *:h-7 *:flex *:items-center *:justify-center *:transition-opacity *:duration-75 *:ease-in" 
+                        className="w-9 h-9 hidden lg:flex items-center justify-center gap-2 p-1 ml-3.5 border border-br rounded-lg cursor-pointer *:text-md" 
                         aria-label="theme toggle button"
+                        onClick={() => setThemeDropdown(!themeDropdown)}
                     >
-                        <span>
-                            <MdWbSunny />   
-                        </span>
-                        <span className="bg-light rounded-full">
-                            <FaMoon className="w-3.5 h-3.5"/>
-                        </span>
+                        <MdOutlineWbSunny /> 
+                        <IoMoonOutline className="hidden"/>
                     </button>
+                    <ThemeToggle themeDropdown={themeDropdown} setThemeDropdown={setThemeDropdown} />
                 </div>
                 <HeaderSearch searchActive={searchActive} setSearchActive={setSearchActive} />
             </div>
