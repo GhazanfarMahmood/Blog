@@ -6,11 +6,12 @@ import Link from "next/link";
 
 // ICONS AND IMAGES
 import Logo from "@/assets/images/revision.webp";
+import dark_logo from "@/assets/images/logo-dark.png"
 
 // ICONS FROM REACT ICON 
 import { MdOutlineWbSunny } from "react-icons/md";
-import { IoMoonOutline } from "react-icons/io5";
-import { CiSearch } from "react-icons/ci";
+import { FiMoon } from "react-icons/fi";
+import { IoSearch } from "react-icons/io5";
 import { FiMenu } from "react-icons/fi";
 
 // HEADER LINKS
@@ -25,7 +26,28 @@ export default function Header(){
     const [searchActive, setSearchActive] = useState<boolean>(false);
     const [activeHeader, setActiveHeader] = useState<boolean>(false);
     const [themeDropdown, setThemeDropdown] = useState<boolean>(false);
+
+    const handleSearch = () => {
+        setSearchActive(!searchActive);
+        if(themeDropdown === true){
+            setThemeDropdown(false);
+        };
+    };
+
+    const handleThemeDropdown = () => {
+        setThemeDropdown(!themeDropdown);
+        if(searchActive === true){
+            setSearchActive(false);
+        };
+    };
     
+    const menuToggle = () => {
+        setActiveHeader(!activeHeader);
+        if(searchActive === true){
+            setSearchActive(false);
+        };
+    }
+
     return (<>
         <header className="bg-bg">
             <div 
@@ -33,14 +55,15 @@ export default function Header(){
             >
                 <button 
                     className="mr-auto lg:hidden" aria-label="menu-open" 
-                    onClick={() => setActiveHeader(!activeHeader)}
+                    onClick={menuToggle}
                 >
                     <FiMenu className="w-6 h-6" />
                 </button>
                 <Link href={"/"} 
                     className="flex-none lg:mr-auto" aria-label="site logo"
                 >
-                    <Image src={Logo} alt="revision" width={131} height={38} />
+                    <Image src={Logo} alt="revision" width={131} height={38} className="dark:hidden" />
+                    <Image src={dark_logo} alt="revision" width={131} height={38} className="hidden dark:block" />
                 </Link>
                 <HeaderLink activeHeader={activeHeader} setActiveHeader={setActiveHeader} />
                 <div 
@@ -51,20 +74,22 @@ export default function Header(){
                     >
                         <button 
                             className={`w-9 h-9 flex justify-center items-center rounded-full cursor-pointer transition-all duration-[0.25s] ease-in hover:bg--link-bg ${searchActive && "bg--link-bg"}`} 
-                            aria-label="search button" onClick={() => setSearchActive(!searchActive)}
+                            aria-label="search button" onClick={handleSearch}
                         >
-                            <CiSearch className="w-6 h-6" />
+                            <IoSearch className="w-6 h-6" />
                         </button>
                     </div>
                     <button 
                         className="w-9 h-9 hidden lg:flex items-center justify-center gap-2 p-1 ml-3.5 border border-br rounded-lg cursor-pointer *:text-md" 
                         aria-label="theme toggle button"
-                        onClick={() => setThemeDropdown(!themeDropdown)}
+                        onClick={handleThemeDropdown}
                     >
-                        <MdOutlineWbSunny /> 
-                        <IoMoonOutline className="hidden"/>
+                        <MdOutlineWbSunny className="dark:hidden" /> 
+                        <FiMoon className="hidden dark:block"/>
                     </button>
-                    <ThemeToggle themeDropdown={themeDropdown} setThemeDropdown={setThemeDropdown} />
+                    <div className="hidden lg:block">
+                        <ThemeToggle themeDropdown={themeDropdown} setThemeDropdown={setThemeDropdown} />
+                    </div>
                 </div>
                 <HeaderSearch searchActive={searchActive} setSearchActive={setSearchActive} />
             </div>

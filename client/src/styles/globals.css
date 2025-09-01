@@ -4,7 +4,44 @@
 :root {forced-color-adjust: none;}
 
 /* what is purpose of below code */
-/* @custom-variant dark (&:is(.dark *)); */
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --light : #fff;
+  --dark : #000;
+  --primary : #29294b;
+  --secondary : #5955d1;
+  --heading : #222222;
+  --phara : #696981;
+  --bg : #fdfdff;
+  --br : #e1e1e8;
+  --header-bg : #0000007d;
+  --linear-bg : 180deg, #9895ff 0%, #514dcc 100%;
+  --linear-body : 180deg, #fdfdff 0%, #f8f7ff 100%;
+  --link-bg : #f2f2f6;
+  --shadow-search-field : 0px 5px 25px 0px rgba(114,114,255,.12);
+  --shadow-hover : 0px 5px 25px 0px rgba(114,114,255,0.2);
+  --shadow-btn-hover : 0px 5px 20px 0px rgba(114,114,255,0.4);
+}
+
+/* #222 */
+
+.dark {
+  --light : #000;
+  --dark : #fff;
+  --primary : #fff;
+  --bg : #1c1c1c;
+  --link-bg : #3d3d3d;
+  --phara : #cdcdcd;
+  --br : #2e2e2e;
+  --linear-bg : 180deg, #434343 0%, #0f0f0f 100%;
+  --linear-body : 180deg,#1c1c1c 0%,#1c1c1c 100%;
+
+
+  --shadow-search-field : 0 5px 20px 0 rgba(16,16,16,.5);
+  --shadow-hover : 0 5px 20px 0 rgba(16,16,16,.6);
+  --shadow-btn-hover : 0px 5px 20px 0px rgba(16,16,16,.4);
+}
 
 
 @theme inline {
@@ -26,15 +63,15 @@
   --breakpoint-2xl : 87.5rem;         /* 1400px */
   /* COLOR */
   --color-* : initial;
-  --color-light : #fff;
-  --color-dark : #000;
-  --color-primary : #29294b;
-  --color-secondary : #5955d1;
-  --color-heading : #222222;
-  --color-phara : #696981;
-  --color-bg : #fdfdff;
-  --color-br : #e1e1e8;
-  --color-header-bg : #0000007d;
+  --color-light : var(--light);
+  --color-dark : var(--dark);
+  --color-primary : var(--primary);
+  --color-secondary : var(--secondary);
+  --color-heading : var(--heading);
+  --color-phara : var(--phara);
+  --color-bg : var(--bg);
+  --color-br : var(--br);
+  --color-header-bg : var(--header-bg);
   /* FONT SIZE */
   --text-* : initial;
   --text-st : 1rem;                                                   /* 16px for general purposes like phara or other */
@@ -46,7 +83,7 @@
   --text-xl : clamp(1.75rem, 1.5413rem + 0.6956vw, 2.063rem);         /* 28px -- 480px/1200px -- 33px */
   --text-2xl : clamp(2.5rem, 2.1087rem + 1.3043vw, 3.25rem);          /* 40px -- 480px/1400px -- 52px */
   /* PRIVATE VARIABLES */
-  --color--link-bg : #f2f2f6;
+  --color--link-bg : var(--link-bg);
   --filter-primary : brightness(0) saturate(100%) invert(12%) sepia(56%) saturate(787%) hue-rotate(203deg) brightness(96%) contrast(88%);
   --filter-secondary : brightness(0) saturate(100%) invert(35%) sepia(19%) saturate(6180%) hue-rotate(227deg) brightness(86%) contrast(88%);
   --filter-phara : brightness(0) saturate(100%) invert(42%) sepia(18%) saturate(464%) hue-rotate(202deg) brightness(92%) contrast(88%);
@@ -55,13 +92,13 @@
   --shadow-* : initial;
   --shadow-links : 0px 5px 20px 0px rgba(114,114,255,.15);
   --shadow-search : 0px 5px 25px 0px rgba(114,114,255,.15);
-  --shadow-search-field : 0px 5px 25px 0px rgba(114,114,255,.12);
-  --shadow-hover : 0px 5px 25px 0px rgba(114,114,255,0.2);
-  --shadow-btn-hover : 0px 5px 20px 0px rgba(114,114,255,0.4);
+  --shadow-search-field : var(--shadow-search-field);
+  --shadow-hover : var(--shadow-hover);
+  --shadow-btn-hover : var(--shadow-btn-hover);
   --shadow-link-hover : 0px 5px 25px 0px rgba(114,114,255,0.4);
   /* BG LINEAR GRADIENT */
-  --linear-bg : 180deg, #9895ff 0%, #514dcc 100%;
-  --linear-body : 180deg, #fdfdff 0%, #f8f7ff 100%;
+  --linear-bg : var(--linear-bg);
+  --linear-body : var(--linear-body);
 }
 
 @layer theme {

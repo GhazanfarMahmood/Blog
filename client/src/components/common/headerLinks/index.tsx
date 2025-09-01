@@ -6,10 +6,11 @@ import Image from "next/image";
 // ICONS AND IMAGES
 import { FaChevronDown } from "react-icons/fa6";
 import { IoMdClose } from "react-icons/io";
-import { MdWbSunny } from "react-icons/md";
-import { FaMoon } from "react-icons/fa";
+import { MdOutlineWbSunny } from "react-icons/md";
+import { FiMoon } from "react-icons/fi";
 
-import revision from "@/assets/images/revision.webp"
+import Logo from "@/assets/images/revision.webp";
+import dark_logo from "@/assets/images/logo-dark.png";
 import fb_icon from "@/assets/images/icons/fb-icon.svg";
 import x_icon from "@/assets/images/icons/x.svg";
 import insta_icon from "@/assets/images/icons/insta.svg";
@@ -18,12 +19,14 @@ import linkedin_icon from "@/assets/images/icons/linkedin.svg";
 // LINKS
 import { links } from "@/constants/header-data";
 import { useEffect, useState } from "react";
+import ThemeToggle from "@/components/modals/themeToggle";
 
 export function HeaderLink(
     { activeHeader, setActiveHeader } : {activeHeader: boolean, setActiveHeader: (arg: boolean) => void}
 ) {
     const [openDropdown, setOpenDropdown] = useState<{ [key: string]: boolean }>({});
     const [isMobile, setIsMobile] = useState<boolean>(false);
+     const [themeDropdown, setThemeDropdown] = useState<boolean>(false);
 
     useEffect(() => {
         const handleResize = () :void => {
@@ -49,17 +52,18 @@ export function HeaderLink(
 
     return (
         <div
-            className={`w-full max-w-[430px] lg:max-w-none h-[100dvh] lg:h-fit flex flex-col justify-start bg-light lg:bg-transparent fixed lg:static top-0 -left-full z-[4] transition-all duration-[0.4s] ease-in ${activeHeader && "left-0"}`}
+            className={`w-full max-w-[430px] lg:max-w-none h-[100dvh] lg:h-fit flex flex-col justify-start bg-light lg:bg-transparent dark:bg-bg sm:dark:bg-none fixed lg:static top-0 -left-full z-[4] transition-all duration-[0.4s] ease-in ${activeHeader && "left-0"}`}
         >
             <div 
                 className="h-[88px] flex lg:hidden items-center justify-between pr-6 pl-4"
             >
                 <Link href={"/"} aria-label="site-log">
-                    <Image src={revision} alt="site-logo" width={131} height={38} />
+                    <Image src={Logo} alt="revision" width={131} height={38} className="dark:hidden" />
+                    <Image src={dark_logo} alt="revision" width={131} height={38} className="hidden dark:block" />
                 </Link>
                 <button
                     aria-label="close-search"
-                    className="w-10 h-10 flex items-center justify-center text-phara hover:text-primary transition-all duration-[0.25s] ease-in cursor-pointer"
+                    className="w-10 h-10 flex items-center justify-center text-phara dark:text-dark hover:text-primary transition-all duration-[0.25s] ease-in cursor-pointer"
                     onClick={() => setActiveHeader(false)}
                 >
                     <IoMdClose className="w-6 h-6" />
@@ -94,7 +98,7 @@ export function HeaderLink(
                             {item.category && (
                                 <ul
                                     className={`
-                                        w-full lg:w-[234px] bg-light py-1 lg:py-3.5 pl-3 pr-4 rounded-lg shadow-none lg:shadow-links static lg:absolute top-11 transition-all duration-[0.25s] ease-in 
+                                        w-full lg:w-[234px] bg-light dark:bg-transparent lg:dark:bg-[#222] py-1 lg:py-3.5 pl-3 pr-4 rounded-lg shadow-none dark:shadow-none lg:shadow-links static lg:absolute top-11 transition-all duration-[0.25s] ease-in 
                                         ${isMobile
                                             ? isOpen
                                                 ? "block"
@@ -123,10 +127,10 @@ export function HeaderLink(
             </ul>
 
             <div 
-                className="flex lg:hidden items-center justify-between py-2 px-6 border-t border-t-br"
+                className="flex lg:hidden items-center justify-between py-2 px-6 border-t border-t-br relative"
             >
                 <ul 
-                    className="flex items-center justify-start mt-2 mb-4 lg:mb-0 -ml-2 *:w-10 *:h-10 *:flex *:items-center *:justify-center [&_a]:filter-(--filter-primary)"
+                    className="flex items-center justify-start mt-2 mb-4 lg:mb-0 -ml-2 *:w-10 *:h-10 *:flex *:items-center *:justify-center [&_a]:filter-(--filter-primary) dark:[&_a]:filter-(--filter-white)"
                 >
                     <li>
                         <Link href={"/"}  aria-label="facebook-link">
@@ -149,17 +153,17 @@ export function HeaderLink(
                         </Link>
                     </li>
                 </ul>
-                <button
-                    className="flex lg:hidden items-center justify-center bg--link-bg gap-2 p-1 rounded-[30px] ml-3.5 cursor-pointer *:w-7 *:h-7 *:flex *:items-center *:justify-center *:transition-opacity *:duration-75 *:ease-in *:hover:opacity-70"
-                    aria-label="theme toggle btn"
+                <button 
+                    className="w-9 h-9 flex lg:hidden items-center justify-center gap-2 p-1 ml-3.5 border border-br rounded-lg ml-auto cursor-pointer *:text-md" 
+                    aria-label="theme toggle button"
+                    onClick={() => setThemeDropdown(!themeDropdown)}
                 >
-                    <span>
-                        <MdWbSunny />
-                    </span>
-                    <span className="bg-light rounded-full">
-                        <FaMoon className="w-3.5 h-3.5" />
-                    </span>
+                    <MdOutlineWbSunny className="dark:hidden" /> 
+                    <FiMoon className="hidden dark:block"/>
                 </button>
+                <div className="block lg:hidden">
+                    <ThemeToggle themeDropdown={themeDropdown} setThemeDropdown={setThemeDropdown} />
+                </div>
             </div>
         </div>
     );
