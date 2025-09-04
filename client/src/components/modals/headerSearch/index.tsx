@@ -19,7 +19,7 @@ export function HeaderSearch(
             What are You Looking For?
         </h2>
         <button
-            className="w-10 h-10 flex items-center justify-center text-phara dark:text-dark hover:text-primary cursor-pointer absolute top-[12px] right-[13px] transition-all duration-[0.25s] ease-in"
+            className="w-10 h-10 flex items-center justify-center text-para dark:text-dark hover:text-primary cursor-pointer absolute top-[12px] right-[13px] transition-all duration-[0.25s] ease-in"
             onClick={() => setSearchActive(false)} aria-label="close search tab" 
         >
             <IoMdClose className="w-6 h-6" />
@@ -42,7 +42,7 @@ export function HeaderSearch(
             {searchLinks.map((link) => {
                return <li key={link.id}>
                     <Link href={"/"} aria-label={`${link.name} link`}
-                        className="text-[11px] font-extrabold leading-[1.2] uppercase tracking-[0.1em] text-nowrap text-primary bg-light dark:bg-transparent p-[5px_10px] rounded-md dark:border dark:border-br shadow-links dark:shadow-none transition-all duration-[0.25s] ease-in hover:text-phara hover:shadow-link-hover hover:opacity-70 dark:hover:text-primary"
+                        className="text-[11px] font-extrabold leading-[1.2] uppercase tracking-[0.1em] text-nowrap text-primary bg-light dark:bg-transparent p-[5px_10px] rounded-md dark:border dark:border-br shadow-links dark:shadow-none transition-all duration-[0.25s] ease-in hover:text-para hover:shadow-link-hover hover:opacity-70 dark:hover:text-primary"
                     >
                         {link.name}
                     </Link>

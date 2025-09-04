@@ -12,7 +12,7 @@
   --primary : #29294b;
   --secondary : #5955d1;
   --heading : #222222;
-  --phara : #696981;
+  --para : #696981;
   --bg : #fdfdff;
   --br : #e1e1e8;
   --header-bg : #0000007d;
@@ -22,6 +22,7 @@
   --shadow-search-field : 0px 5px 25px 0px rgba(114,114,255,.12);
   --shadow-hover : 0px 5px 25px 0px rgba(114,114,255,0.2);
   --shadow-btn-hover : 0px 5px 20px 0px rgba(114,114,255,0.4);
+  --filter-dark : grayscale(100%) brightness(0%) invert(80%);
 }
 
 /* #222 */
@@ -32,7 +33,7 @@
   --primary : #fff;
   --bg : #1c1c1c;
   --link-bg : #3d3d3d;
-  --phara : #cdcdcd;
+  --para : #cdcdcd;
   --br : #2e2e2e;
   --linear-bg : 180deg, #434343 0%, #0f0f0f 100%;
   --linear-body : 180deg,#1c1c1c 0%,#1c1c1c 100%;
@@ -68,25 +69,15 @@
   --color-primary : var(--primary);
   --color-secondary : var(--secondary);
   --color-heading : var(--heading);
-  --color-phara : var(--phara);
+  --color-para : var(--para);
   --color-bg : var(--bg);
   --color-br : var(--br);
   --color-header-bg : var(--header-bg);
-  /* FONT SIZE */
-  --text-* : initial;
-  --text-st : 1rem;                                                   /* 16px for general purposes like phara or other */
-  --text-xs : 0.875rem;                                               /* 14px */
-  --text-base : clamp(0.875rem, 0.7578rem + 0.3906vw, 1rem);          /* 14px -- 480px/992px  -- 16px */
-  --text-sm : clamp(1rem, 0.7656rem + 0.7813vw, 1.25rem);             /* 16px -- 480px/992px  -- 18px */
-  --text-md : clamp(1.125rem, 1.0078rem + 0.3906vw, 1.25rem);         /* 18px -- 480px/992px  -- 20px */
-  --text-lg : clamp(1.25rem, 1.0156rem + 0.7813vw, 1.5rem);           /* 20px -- 480px/992px  -- 24px */
-  --text-xl : clamp(1.75rem, 1.5413rem + 0.6956vw, 2.063rem);         /* 28px -- 480px/1200px -- 33px */
-  --text-2xl : clamp(2.5rem, 2.1087rem + 1.3043vw, 3.25rem);          /* 40px -- 480px/1400px -- 52px */
   /* PRIVATE VARIABLES */
   --color--link-bg : var(--link-bg);
   --filter-primary : brightness(0) saturate(100%) invert(12%) sepia(56%) saturate(787%) hue-rotate(203deg) brightness(96%) contrast(88%);
   --filter-secondary : brightness(0) saturate(100%) invert(35%) sepia(19%) saturate(6180%) hue-rotate(227deg) brightness(86%) contrast(88%);
-  --filter-phara : brightness(0) saturate(100%) invert(42%) sepia(18%) saturate(464%) hue-rotate(202deg) brightness(92%) contrast(88%);
+  --filter-para : brightness(0) saturate(100%) invert(42%) sepia(18%) saturate(464%) hue-rotate(202deg) brightness(92%) contrast(88%);
   --filter-white : brightness(0) saturate(100%) invert(95%) sepia(62%) saturate(0%) hue-rotate(147deg) brightness(104%) contrast(105%);
   /* SHADOW */
   --shadow-* : initial;
@@ -157,11 +148,14 @@
       margin-left: auto;
       margin-right: 14px;
       content: "";
-      filter: var(--filter-phara);
+      filter: var(--filter-para);
       transition: all 0.25s ease-in;
     }
     .rotation-active::after {
       transform: rotate(-180deg);
+    }
+    .dark .strong-after::after {
+      filter: var(--filter-white);
     }
   }
 }

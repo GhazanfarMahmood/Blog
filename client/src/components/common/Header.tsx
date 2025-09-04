@@ -6,7 +6,7 @@ import Link from "next/link";
 
 // ICONS AND IMAGES
 import Logo from "@/assets/images/revision.webp";
-import dark_logo from "@/assets/images/logo-dark.png"
+import dark_logo from "@/assets/images/logo-dark.webp"
 
 // ICONS FROM REACT ICON 
 import { MdOutlineWbSunny } from "react-icons/md";

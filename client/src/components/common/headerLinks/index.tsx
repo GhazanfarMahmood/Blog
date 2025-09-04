@@ -10,7 +10,7 @@ import { MdOutlineWbSunny } from "react-icons/md";
 import { FiMoon } from "react-icons/fi";
 
 import Logo from "@/assets/images/revision.webp";
-import dark_logo from "@/assets/images/logo-dark.png";
+import dark_logo from "@/assets/images/logo-dark.webp";
 import fb_icon from "@/assets/images/icons/fb-icon.svg";
 import x_icon from "@/assets/images/icons/x.svg";
 import insta_icon from "@/assets/images/icons/insta.svg";
@@ -63,7 +63,7 @@ export function HeaderLink(
                 </Link>
                 <button
                     aria-label="close-search"
-                    className="w-10 h-10 flex items-center justify-center text-phara dark:text-dark hover:text-primary transition-all duration-[0.25s] ease-in cursor-pointer"
+                    className="w-10 h-10 flex items-center justify-center text-para dark:text-dark hover:text-primary transition-all duration-[0.25s] ease-in cursor-pointer"
                     onClick={() => setActiveHeader(false)}
                 >
                     <IoMdClose className="w-6 h-6" />
@@ -113,7 +113,7 @@ export function HeaderLink(
                                         <li key={items.id}>
                                             <Link
                                                 href={"/"} aria-label={`${item.name}-link`}
-                                                className="w-[97%] block text-phara lg:text-primary font-semibold capitalize leading-6 py-1 lg:py-2 px-4 rounded-lg transition-all duration-[0.25s] ease-in hover:bg--link-bg hover:ml-2"
+                                                className="w-[97%] block text-para lg:text-primary font-semibold capitalize leading-6 py-1 lg:py-2 px-4 rounded-lg transition-all duration-[0.25s] ease-in hover:bg--link-bg hover:ml-2"
                                             >
                                                 {items.name}
                                             </Link>
@@ -154,7 +154,7 @@ export function HeaderLink(
                     </li>
                 </ul>
                 <button 
-                    className="w-9 h-9 flex lg:hidden items-center justify-center gap-2 p-1 ml-3.5 border border-br rounded-lg ml-auto cursor-pointer *:text-md" 
+                    className="w-9 h-9 flex lg:hidden items-center justify-center gap-2 p-1  border border-br rounded-lg ml-auto cursor-pointer *:text-md" 
                     aria-label="theme toggle button"
                     onClick={() => setThemeDropdown(!themeDropdown)}
                 >
