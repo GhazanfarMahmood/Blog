@@ -19,6 +19,7 @@
   --linear-bg : 180deg, #9895ff 0%, #514dcc 100%;
   --linear-body : 180deg, #fdfdff 0%, #f8f7ff 100%;
   --link-bg : #f2f2f6;
+  --bg-clock : #29294b26;
   --shadow-search-field : 0px 5px 25px 0px rgba(114,114,255,.12);
   --shadow-hover : 0px 5px 25px 0px rgba(114,114,255,0.2);
   --shadow-btn-hover : 0px 5px 20px 0px rgba(114,114,255,0.4);
@@ -75,6 +76,7 @@
   --color-header-bg : var(--header-bg);
   /* PRIVATE VARIABLES */
   --color--link-bg : var(--link-bg);
+  --color--bg-clock : var(--bg-clock);
   --filter-primary : brightness(0) saturate(100%) invert(12%) sepia(56%) saturate(787%) hue-rotate(203deg) brightness(96%) contrast(88%);
   --filter-secondary : brightness(0) saturate(100%) invert(35%) sepia(19%) saturate(6180%) hue-rotate(227deg) brightness(86%) contrast(88%);
   --filter-para : brightness(0) saturate(100%) invert(42%) sepia(18%) saturate(464%) hue-rotate(202deg) brightness(92%) contrast(88%);
