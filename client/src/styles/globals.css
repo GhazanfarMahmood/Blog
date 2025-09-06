@@ -16,6 +16,9 @@
   --bg : #fdfdff;
   --br : #e1e1e8;
   --header-bg : #0000007d;
+  --feature-bg : #0000004d;
+  --feature-bg-dark : #00000059;
+  --feature-li-bg : #ffffff38;
   --linear-bg : 180deg, #9895ff 0%, #514dcc 100%;
   --linear-body : 180deg, #fdfdff 0%, #f8f7ff 100%;
   --link-bg : #f2f2f6;
@@ -77,6 +80,9 @@
   /* PRIVATE VARIABLES */
   --color--link-bg : var(--link-bg);
   --color--bg-clock : var(--bg-clock);
+  --color--feature-bg : var(--feature-bg);
+  --color--feature-li-bg : var(--feature-li-bg);
+  --color--feature-bg-dark : var(--feature-bg-dark);
   --filter-primary : brightness(0) saturate(100%) invert(12%) sepia(56%) saturate(787%) hue-rotate(203deg) brightness(96%) contrast(88%);
   --filter-secondary : brightness(0) saturate(100%) invert(35%) sepia(19%) saturate(6180%) hue-rotate(227deg) brightness(86%) contrast(88%);
   --filter-para : brightness(0) saturate(100%) invert(42%) sepia(18%) saturate(464%) hue-rotate(202deg) brightness(92%) contrast(88%);
@@ -159,6 +165,68 @@
     .dark .strong-after::after {
       filter: var(--filter-white);
     }
+  }
+  /* STYLING TO SWIPER SLIDER */
+  .swiper.swiper-horizontal{
+    padding-bottom: 35px !important;
+    position: static !important;
+  }
+  .swiper-pagination.swiper-pagination-clickable{
+    background-color: transparent !important;
+  }
+  .swiper-pagination-bullet {
+    width: 7px !important;
+    height: 7px !important;
+    background: var(--primary) !important;
+    border: 1px solid var(--primary) !important;
+    opacity: 1 !important;
+    border-radius: 50% !important;
+    transition: all 0.25s ease !important;
+  }
+  .swiper-pagination-bullet-active {
+    width: 24px !important;
+    border-radius: 100px !important;
+  }
+  :where(.swiper-button-next, .swiper-button-prev) {
+    width: 40px !important;
+    height: 40px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background-color: var(--light) !important;
+    border-radius: 8px !important;
+    box-shadow: var(--shadow-search-field) !important;
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.25s ease;
+  }
+  .swiper.swiper-horizontal:hover :where(.swiper-button-next, .swiper-button-prev){
+    visibility: visible;
+    opacity: 1;
+  }
+  :where(.swiper-button-next, .swiper-button-prev)::after {
+    width:  24px !important;
+    height: 24px !important;
+    font-size: 24px !important;
+    content: "" !important;
+  }
+  .swiper-button-next {
+    right: 0px !important;
+  }
+  .swiper.swiper-horizontal:hover .swiper-button-next {
+    right: -5px !important;
+  }
+  .swiper-button-next::after {
+    background: no-repeat center / contain url("../assets/images/icons/chevron-right.svg");
+  }
+  .swiper-button-prev {
+    left : 0px !important;
+  }
+  .swiper.swiper-horizontal:hover .swiper-button-prev{
+    left: -5px !important;
+  }
+  .swiper-button-prev::after {
+    background: no-repeat center / contain url("../assets/images/icons/chevron-left.svg");
   }
 }
 

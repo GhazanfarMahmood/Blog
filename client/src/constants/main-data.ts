@@ -161,4 +161,83 @@ export const MainData = [
         title : "How 5G Technology Will Impact the Travel Industry in 2024",
         description : "Discover how 5G technology is set to revolutionize connectivity and enhance travel experiences.",
     },
+];
+
+import slider_img1 from "@/assets/images/feature-img.webp";
+import slider_img2 from "@/assets/images/feature-img2.webp";
+import slider_img3 from "@/assets/images/feature-img3.webp";
+
+export const FeatureSlider = [
+    {
+        id : 0,
+        sliderImg : slider_img1,
+        category : 'management',
+        authorName : "ethan caldwell",
+        month : "july",
+        date : '7',
+        year : "2024",
+        title : "AI in Business Management: Improving Efficiency and Decision Making", 
+    },
+    {
+        id : 1,
+        sliderImg : slider_img2,
+        category : 'business',
+        authorName : "ethan caldwell",
+        month : "september",
+        date : '25',
+        year : "2024",
+        title : "Business Travel Tools for the Digital Age",
+    },
+    {
+        id : 2,
+        sliderImg : slider_img3,
+        category : 'management',
+        authorName : "ethan caldwell",
+        month : "august",
+        date : '5',
+        year : "2024",
+        title : "Business Travel Trends to Expect in 2024: Tech and Efficiency", 
+    },
+]
+
+export const Experience = [
+    {
+        id : 0,
+        work : "product designer",
+        company : "pioneer",
+        from : "2022",
+        now : "now",
+    },
+    {
+        id : 1,
+        work : "product designer",
+        company : "digital",
+        from : "2020",
+        now : "2022",
+    },
+    {   
+        id : 2,
+        work : "UX/UI designer",
+        company : "digital",
+        from : "2017",
+        now : "2020",
+    },
+];
+
+export const CreatingData = [
+    {
+        id: 0,
+        title : "Heartfelt Reflections",
+        description : "A deep dive into emotional experiences and personal growth, sharing valuable insights on life's most meaningful moments.",
+    },
+    {
+        id: 1,
+        title : "Latest Tech Gadgets",
+        description : "Explore the newest and most innovative technology products hitting the market, from smart devices to cutting-edge tools.",
+    },
+    {
+        id: 2,
+        title : "Trends For 2024",
+        description : "A look ahead at the emerging trends that will shape the world in 2024, from lifestyle shifts to groundbreaking innovations.",
+    },
 ]
