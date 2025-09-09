@@ -200,6 +200,10 @@
     opacity: 0;
     transition: all 0.25s ease;
   }
+  .dark :where(.swiper-button-next, .swiper-button-prev) {
+    background-color: var(--heading) !important;
+    outline: 1px solid var(--br);
+  }
   .swiper.swiper-horizontal:hover :where(.swiper-button-next, .swiper-button-prev){
     visibility: visible;
     opacity: 1;
@@ -227,6 +231,21 @@
   }
   .swiper-button-prev::after {
     background: no-repeat center / contain url("../assets/images/icons/chevron-left.svg");
+  }
+  .dark .swiper-button-next::after, .dark .swiper-button-prev::after {
+    filter: var(--filter-white) !important;
+  }
+  @media (max-width: 992px) {
+    :where(.swiper-button-next, .swiper-button-prev) {
+      visibility: visible;
+      opacity: 1;
+    }
+    .swiper.swiper-horizontal:hover .swiper-button-prev{
+      left: -5px !important;
+    }
+    .swiper.swiper-horizontal:hover .swiper-button-next {
+      right: -5px !important;
+    }
   }
 }
 

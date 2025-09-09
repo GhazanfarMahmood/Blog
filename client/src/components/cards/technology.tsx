@@ -9,7 +9,7 @@ import ai from "@/assets/images/ai.webp"
 
 export default function Technology(){
     return <div
-        className="bg-light p-8 rounded-2xl shadow-search-field dark:bg-[#222] mb-8 "
+        className="max-w-[450px] lg:max-w-none bg-light p-8 rounded-2xl shadow-search-field dark:bg-[#222] mx-auto lg:mx-0 mb-8 "
     >
         <span
             className="block text-xs font-extrabold uppercase leading-[1.2] tracking-widest text-para mb-5"

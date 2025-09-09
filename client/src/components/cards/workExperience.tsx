@@ -3,7 +3,7 @@ import { Experience } from "@/constants/main-data"
 
 export default function WorkExperience (){
     return <div
-        className="bg-light p-8 rounded-2xl shadow-search-field dark:bg-[#222] mb-8 mt-4"
+        className="max-w-[450px] lg:max-w-none bg-light p-8 rounded-2xl shadow-search-field dark:bg-[#222] mx-auto lg:mx-0 mb-8 mt-4"
     >
         <span
             className="block text-xs font-extrabold uppercase leading-[1.2] tracking-widest text-para mb-5"
