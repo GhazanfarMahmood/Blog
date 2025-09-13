@@ -247,6 +247,9 @@
       right: -5px !important;
     }
   }
+  /* CREATING A BREADCRUMB */
+  .breadcrumb a::after {width: 10px; height: 10px; background: no-repeat center / contain url("../assets/images/icons/chevron-right.svg"); position: absolute; inset: 0; margin-block: auto; margin-left: auto; content: "";}
+  .dark .breadcrumb a::after {filter: var(--filter-white);}
 }
 
 /* WHAT IS ANTIALIASED in CLASSNAME WHERE WE DEFINE THE VARIABLE  */
