@@ -1,7 +1,7 @@
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 
-export default function CategoryCard({mainImg, icon, name} : {mainImg:string, icon:string, name:string}){
+export default function CategoryCard({mainImg, icon, name} : {mainImg:string | StaticImageData, icon:string | StaticImageData, name:string}){
     return <>
         <Link href={"/"} aria-label={`${name}-link`}
             className="h-[348px] lg:h-[368px] rounded-2xl relative overflow-hidden"

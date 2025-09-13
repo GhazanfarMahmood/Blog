@@ -66,3 +66,8 @@ MG                  mega
 -- Customized global styles by updating globals.css with our own theme variables, breakpoints, and utility styles.
 
 
+### in next js to create a dynamic routing like for subcategory or some other purpose in next js we use the [slug] name folder in that folder in which we want to create dynamic routing like in category page we want to create sub category then we use slug like:
+--- [categories] 
+---      |- page.tsx
+---      |- [slugs]
+---      |-    page.tsx
