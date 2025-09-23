@@ -21,12 +21,14 @@
   --feature-li-bg : #ffffff38;
   --linear-bg : 180deg, #9895ff 0%, #514dcc 100%;
   --linear-body : 180deg, #fdfdff 0%, #f8f7ff 100%;
+
   --link-bg : #f2f2f6;
   --bg-clock : #29294b26;
   --shadow-search-field : 0px 5px 25px 0px rgba(114,114,255,.12);
   --shadow-hover : 0px 5px 25px 0px rgba(114,114,255,0.2);
   --shadow-btn-hover : 0px 5px 20px 0px rgba(114,114,255,0.4);
   --filter-dark : grayscale(100%) brightness(0%) invert(80%);
+
 }
 
 /* #222 */
@@ -41,7 +43,6 @@
   --br : #2e2e2e;
   --linear-bg : 180deg, #434343 0%, #0f0f0f 100%;
   --linear-body : 180deg,#1c1c1c 0%,#1c1c1c 100%;
-
 
   --shadow-search-field : 0 5px 20px 0 rgba(16,16,16,.5);
   --shadow-hover : 0 5px 20px 0 rgba(16,16,16,.6);
@@ -250,6 +251,11 @@
   /* CREATING A BREADCRUMB */
   .breadcrumb a::after {width: 10px; height: 10px; background: no-repeat center / contain url("../assets/images/icons/chevron-right.svg"); position: absolute; inset: 0; margin-block: auto; margin-left: auto; content: "";}
   .dark .breadcrumb a::after {filter: var(--filter-white);}
+  /* ANCHOR OR BUTTON UNDERLINE */
+  .btn-underline {background: linear-gradient(to right,var(--secondary) 0%,var(--secondary) 98%); background-size: 100% 1px; background-repeat: no-repeat; background-position: left 98%;}
+  .dark .btn-underline {background: linear-gradient(to right,var(--dark) 0%,var(--dark) 98%); background-size: 100% 1px; background-repeat: no-repeat; background-position: left 98%;}
+  .btn-underline:hover {background-size: 0px 1px;}
+  .blog-comment > :not(:last-child) { padding-bottom: 24px; border-bottom: 1px solid var(--br); margin-bottom: 24px;}
 }
 
 /* WHAT IS ANTIALIASED in CLASSNAME WHERE WE DEFINE THE VARIABLE  */
