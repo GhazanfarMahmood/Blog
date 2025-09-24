@@ -3,12 +3,12 @@ export default function HeroBanner(){
             className="container py-[32px_40px] md:py-16 mb-10 md:mb-16 border-b border-b-br"
         >
         <h1 
-            className="max-w-[920px] text-[42px] md:text-[44px] lg:text-[52px] text-center font-bold leading-[1.2] -tracking-[2.6px] text-primary mx-auto"
+            className="max-w-[920px] text-[42px] md:text-[44px] lg:text-[52px] text-center font-bold leading-[1.2] -tracking-[2.6px] text-primary mx-auto
+            [&_span]:block [&_span]:xs:inline [&_span]:bg-clip-text [&_span]:text-transparent [&_span]:bg-linear-(--linear-bg) [&_span]:ml-2.5 [&_span]:dark:text-dark
+            "
         >
             Heartfelt
-        <span 
-            className="block xs:inline bg-clip-text text-transparent bg-linear-(--linear-bg) ml-2.5 dark:text-dark"
-        >
+        <span>
              Reflections
         </span>
             : Stories of Love, Loss, and Growth

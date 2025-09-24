@@ -15,14 +15,14 @@ export default function AuthorBox(){
         className="container pb-12 border-b border-b-br mb-12"
     >
         <div
-            className="flex items-center justify-start gap-6"
+            className="flex flex-wrap items-center justify-start gap-6"
         >
             <Image src={author_profile} alt={"author-profile"} width={130} height={130}
                 className="flex-none rounded-full"
             />
             <div>
                 <h2
-                    className="text-[33px] font-bold leading-[1.2] -tracking-[0.04em] text-primary"
+                    className="text-2xl md:text-[33px] font-bold leading-[1.2] -tracking-[0.04em] text-primary"
                 >
                     Ethan Caldwell
                 </h2>
