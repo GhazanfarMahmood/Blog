@@ -150,7 +150,7 @@
     .strong-after::after {
       width: 18px;
       height: 18px;
-      background: no-repeat center / contain url("../assets/images/icons/chevron-down.svg");
+      background: no-repeat center / contain url("../assets/icons/chevron-down.svg");
       position: absolute;
       inset: 0;
       margin-block: auto;
@@ -222,7 +222,7 @@
     right: -5px !important;
   }
   .swiper-button-next::after {
-    background: no-repeat center / contain url("../assets/images/icons/chevron-right.svg");
+    background: no-repeat center / contain url("../assets/icons/chevron-right.svg");
   }
   .swiper-button-prev {
     left : 0px !important;
@@ -231,7 +231,7 @@
     left: -5px !important;
   }
   .swiper-button-prev::after {
-    background: no-repeat center / contain url("../assets/images/icons/chevron-left.svg");
+    background: no-repeat center / contain url("../assets/icons/chevron-left.svg");
   }
   .dark .swiper-button-next::after, .dark .swiper-button-prev::after {
     filter: var(--filter-white) !important;
@@ -249,7 +249,7 @@
     }
   }
   /* CREATING A BREADCRUMB */
-  .breadcrumb a::after {width: 10px; height: 10px; background: no-repeat center / contain url("../assets/images/icons/chevron-right.svg"); position: absolute; inset: 0; margin-block: auto; margin-left: auto; content: "";}
+  .breadcrumb a::after {width: 10px; height: 10px; background: no-repeat center / contain url("../assets/icons/chevron-right.svg"); position: absolute; inset: 0; margin-block: auto; margin-left: auto; content: "";}
   .dark .breadcrumb a::after {filter: var(--filter-white);}
   /* ANCHOR OR BUTTON UNDERLINE */
   .btn-underline {background: linear-gradient(to right,var(--secondary) 0%,var(--secondary) 98%); background-size: 100% 1px; background-repeat: no-repeat; background-position: left 98%;}

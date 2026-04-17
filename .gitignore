@@ -26,6 +26,7 @@
 # next.js
 /client/.next/
 /client/out/
+/client/dist
 
 # production
 /client/build
@@ -49,4 +50,5 @@
 # typescript
 /client/*.tsbuildinfo
 /client/next-env.d.ts
+/client/Thumbs.db
 

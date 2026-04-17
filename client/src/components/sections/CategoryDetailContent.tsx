@@ -1,12 +1,12 @@
 // COMPONENTS
-import BlogCard from "../cards/blogCard";
-import CategoryDetailInfo from "./categoryDetailInfo";
+import BlogCard from "../cards/BlogCard";
+import CategoryDetailInfo from "./CategoryDetailInfo";
 
 // IMAGES AND ICONS
 import detail_info_img from "@/assets/images/detailInfoImg.webp"
 
 // DETAIL CATEGORY DATA
-import { DetailCategory } from "@/constants/detail-category";
+import { DetailCategory } from "@/data/detail-category";
 
 export default function CategoryDetailContent(){
     return <>

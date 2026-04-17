@@ -1,3 +1,4 @@
+// NEXT JS IMAGE, IMAGE TYPE AND LINK
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 

@@ -1,3 +1,4 @@
+// NEXT LINK
 import Link from "next/link";
 
 export default function BreadCrumb({pageName, subPageName}: {pageName: string, subPageName?: string }){

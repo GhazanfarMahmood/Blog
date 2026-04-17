@@ -2,18 +2,18 @@
 import Link from "next/link";
 
 // COMPONENTS
-import { NextBlogData } from "@/constants/next-blog";
-import BlogCard from "../cards/blogCard";
-import ArticleNavigation from "./articaleNavigation";
-import { ArticleNavigationData } from "@/constants/article-navigation";
-import BlogComment from "./blogComment";
+import { NextBlogData } from "@/data/next-blog";
+import BlogCard from "../cards/BlogCard";
+import ArticleNavigation from "./ArticleNavigation";
+import { ArticleNavigationData } from "@/data/article-navigation";
+import BlogComment from "./BlogComment";
 import Image from "next/image";
-import SideLink from "./sideLink";
-import AuthorDetail from "../cards/authorDetail";
-import FeatureCard from "../cards/featureCard";
-import WorkExperience from "../cards/workExperience";
-import Technology from "../cards/technology";
-import Creating from "../cards/creating";
+import SideLink from "./SideLink";
+import AuthorDetail from "../cards/AuthorDetail";
+import FeatureCard from "../cards/FeatureCard";
+import WorkExperience from "../cards/WorkExperience";
+import Technology from "../cards/TechnologyCard";
+import Creating from "../cards/CreatingCard";
 
 // IMAGE FROM ASSETS
 import blog_detail_img1 from "@/assets/images/blog-detail-img1.webp";

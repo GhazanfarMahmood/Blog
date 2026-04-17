@@ -1,12 +1,12 @@
 // IMAGES
-import tech_icon from "@/assets/images/icons/tech.webp";  
-import travel_icon from "@/assets/images/icons/travel-1.webp";
-import business_icon from "@/assets/images/icons/business.webp";
-import sport_icon from "@/assets/images/icons/sport.webp";
-import manage_icon from "@/assets/images/icons/manage.webp"
-import trend_icon from "@/assets/images/icons/trend.webp"
-import start_icon from "@/assets/images/icons/start.webp"
-import news_icon from "@/assets/images/icons/news-1.webp"
+import tech_icon from "@/assets/icons/tech.webp";  
+import travel_icon from "@/assets/icons/travel-1.webp";
+import business_icon from "@/assets/icons/business.webp";
+import sport_icon from "@/assets/icons/sport.webp";
+import manage_icon from "@/assets/icons/manage.webp"
+import trend_icon from "@/assets/icons/trend.webp"
+import start_icon from "@/assets/icons/start.webp"
+import news_icon from "@/assets/icons/news-1.webp"
 
 // TRENDING LINKS
 export const trendingData = [

@@ -7,13 +7,13 @@ import Link from "next/link";
 // IMAGES AND ICONS
 import footer_logo from "@/assets/images/footer-logo.webp";
 import footer_dark from "@/assets/images/footer-dark-logo.webp";
-import fb_icon from "@/assets/images/icons/fb-icon.svg";
-import x_icon from "@/assets/images/icons/x.svg";
-import insta_icon from "@/assets/images/icons/insta.svg";
-import linkedin_icon from "@/assets/images/icons/linkedin.svg";
+import fb_icon from "@/assets/icons/fb-icon.svg";
+import x_icon from "@/assets/icons/x.svg";
+import insta_icon from "@/assets/icons/insta.svg";
+import linkedin_icon from "@/assets/icons/linkedin.svg";
 
 // FOOTER DATA
-import { footerCategory, homeLink, pagesLink } from "@/constants/footer-data";
+import { footerCategory, homeLink, pagesLink } from "@/data/footer-data";
 import { useState } from "react";
 
 export default function Footer(){

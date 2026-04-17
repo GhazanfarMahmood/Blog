@@ -1,7 +1,7 @@
 // COMPONENTS
-import AuthorBox from "@/components/layout/authorBox";
-import BreadCrumb from "@/components/layout/breadCrumb";
-import WriterBox from "@/components/layout/writerBox";
+import AuthorBox from "@/components/sections/AuthorBox";
+import BreadCrumb from "@/components/sections/BreadCrumb";
+import WriterBox from "@/components/sections/WriterBox";
 
 export default function Writer(){
     return <>

@@ -4,10 +4,10 @@ import Link from "next/link";
 
 // ICONS AND IMAGES
 import { FaLocationDot } from "react-icons/fa6";
-import fb_icon from "@/assets/images/icons/fb-icon.svg";
-import x_icon from "@/assets/images/icons/x.svg";
-import insta_icon from "@/assets/images/icons/insta.svg";
-import linkedin_icon from "@/assets/images/icons/linkedin.svg";
+import fb_icon from "@/assets/icons/fb-icon.svg";
+import x_icon from "@/assets/icons/x.svg";
+import insta_icon from "@/assets/icons/insta.svg";
+import linkedin_icon from "@/assets/icons/linkedin.svg";
 import author_profile from "@/assets/images/author-img.webp";
 
 export default function AuthorDetail(){

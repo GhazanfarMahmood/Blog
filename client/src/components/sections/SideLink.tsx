@@ -3,9 +3,9 @@ import Link from "next/link";
 import Image from "next/image";
 
 // ICONS
-import x_icon from "@/assets/images/icons/x.svg"
-import fb_icon from "@/assets/images/icons/fb-icon.svg";
-import linkedin_icon from "@/assets/images/icons/linkedin.svg";
+import x_icon from "@/assets/icons/x.svg"
+import fb_icon from "@/assets/icons/fb-icon.svg";
+import linkedin_icon from "@/assets/icons/linkedin.svg";
 
 // REACT ICONS
 import { BsLink45Deg } from "react-icons/bs";

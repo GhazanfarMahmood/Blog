@@ -1,6 +1,6 @@
 // COMPONENTS
-import BreadCrumb from "@/components/layout/breadCrumb";
-import TermsContent from "@/components/layout/termsContent";
+import BreadCrumb from "@/components/sections/BreadCrumb";
+import TermsContent from "@/components/sections/TermsContent";
 
 export default function TermsConditions(){
     return <>

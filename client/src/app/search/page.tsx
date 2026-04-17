@@ -1,10 +1,10 @@
 // COMPONENTS
-import BlogCard from "@/components/cards/blogCard";
-import BreadCrumb from "@/components/layout/breadCrumb";
-import SearchLayout from "@/components/layout/searchLayout";
+import BlogCard from "@/components/cards/BlogCard";
+import BreadCrumb from "@/components/sections/BreadCrumb";
+import SearchLayout from "@/components/sections/SearchLayout";
 
 // SEARCH DATA
-import { SearchData } from "@/constants/search-data";
+import { SearchData } from "@/data/search-data";
 
 export default function Search(){
     return <>

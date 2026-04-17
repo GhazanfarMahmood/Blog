@@ -1,5 +1,5 @@
 // SEARCH DATA LINK
-import { searchLinks } from "@/constants/header-data";
+import { searchLinks } from "@/data/header-data";
 
 // LINK FROM NEXT LINK 
 import Link from "next/link";
@@ -22,7 +22,9 @@ export function HeaderSearch(
             className="w-10 h-10 flex items-center justify-center text-para dark:text-dark hover:text-primary cursor-pointer absolute top-[12px] right-[13px] transition-all duration-[0.25s] ease-in"
             onClick={() => setSearchActive(false)} aria-label="close search tab" 
         >
-            <IoMdClose className="w-6 h-6" />
+            <IoMdClose 
+                className="w-6 h-6" 
+            />
         </button>
         <form 
             className="flex items-center justify-center flex-col sm:flex-row gap-2 bg-transparent sm:bg-light dark:bg-[#222] p-[5px] border-0 sm:border border-solid border-br rounded-lg shadow-none sm:shadow-search-field hover:shadow-none sm:hover:shadow-hover transition-all duration-[0.25s] ease-in"

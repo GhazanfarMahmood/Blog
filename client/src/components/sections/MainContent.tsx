@@ -1,12 +1,12 @@
 // COMPONENTS
-import { MainData } from "@/constants/main-data";
-import AuthorDetail from "../cards/authorDetail";
-import BlogCard from "../cards/blogCard";
-import Creating from "../cards/creating";
-import FeatureCard from "../cards/featureCard";
-import Technology from "../cards/technology";
-import WorkExperience from "../cards/workExperience";
-import Pagination from "./pagingation";
+import { MainData } from "@/data/main-data";
+import AuthorDetail from "../cards/AuthorDetail";
+import BlogCard from "../cards/BlogCard";
+import Creating from "../cards/CreatingCard";
+import FeatureCard from "../cards/FeatureCard";
+import Technology from "../cards/TechnologyCard";
+import WorkExperience from "../cards/WorkExperience";
+import Pagination from "./Pagingation";
 
 export default function MainContent() {
     return <>

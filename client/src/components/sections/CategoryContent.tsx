@@ -1,7 +1,8 @@
 // CATEGORY CARD COMPONENT
-import CategoryCard from "../cards/categoryCard";
+import CategoryCard from "../cards/CategoryCard";
 
-import { CategoryData } from "@/constants/category-data";
+// CATEGORY DATA
+import { CategoryData } from "@/data/category-data";
 
 export default function CategoryContent(){
     return <>

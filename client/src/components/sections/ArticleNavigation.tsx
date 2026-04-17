@@ -1,7 +1,8 @@
-// ICONS
+// NEXT LINK
 import Link from "next/link";
-import { GoChevronLeft, GoChevronRight  } from "react-icons/go";
 
+// REACT ICONS
+import { GoChevronLeft, GoChevronRight  } from "react-icons/go";
 
 export default function ArticleNavigation ({title, id} : {title : string, id: number}) {
     return <>

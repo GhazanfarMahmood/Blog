@@ -45,17 +45,25 @@ export default function BlogCard(
             >
                 <Link href={"/"} aria-label={`${authorName}-authorName`}
                     className="text-[15px] font-semibold leading-[1.2] -tracking-[0.02em] text-secondary capitalize transition-all duration-[0.25s] ease-in hover:text-primary dark:text-dark dark:hover:text-para"
-                >{authorName}</Link>
+                >
+                    {authorName}
+                </Link>
                 <span
                     className="text-[15px] font-semibold leading-[1.2] -tracking-[0.02em] text-para capitalize"
-                >on {`${month} ${day}, ${year}`}</span>
+                >
+                    on {`${month} ${day}, ${year}`}
+                </span>
             </div>
                 <Link href={"/"} aria-label={title}
                     className="block text-[21px] font-bold text-primary leading-[1.2] -tracking-[0.04em] mt-2.5 transition-all duration-[0.25s] ease-in hover:text-para"
-                >{title}</Link>
+                >
+                    {title}
+                </Link>
                 <p
                     className="text-para mt-1.5 line-clamp-3"
-                >{`${description}…`}</p>
+                >
+                    {`${description}…`}
+                </p>
         </div>
     </div>
     </> 

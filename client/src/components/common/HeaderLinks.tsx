@@ -1,5 +1,6 @@
 'use client';
 
+// NEXT.JS LINK AND IMAGE
 import Link from "next/link";
 import Image from "next/image";
 
@@ -11,22 +12,22 @@ import { FiMoon } from "react-icons/fi";
 
 import Logo from "@/assets/images/revision.webp";
 import dark_logo from "@/assets/images/logo-dark.webp";
-import fb_icon from "@/assets/images/icons/fb-icon.svg";
-import x_icon from "@/assets/images/icons/x.svg";
-import insta_icon from "@/assets/images/icons/insta.svg";
-import linkedin_icon from "@/assets/images/icons/linkedin.svg";
+import fb_icon from "@/assets/icons/fb-icon.svg";
+import x_icon from "@/assets/icons/x.svg";
+import insta_icon from "@/assets/icons/insta.svg";
+import linkedin_icon from "@/assets/icons/linkedin.svg";
 
 // LINKS
-import { links } from "@/constants/header-data";
+import { links } from "@/data/header-data";
 import { useEffect, useState } from "react";
-import ThemeToggle from "@/components/modals/themeToggle";
+import ThemeToggle from "@/components/modals/ThemeToggle";
 
 export function HeaderLink(
     { activeHeader, setActiveHeader } : {activeHeader: boolean, setActiveHeader: (arg: boolean) => void}
 ) {
     const [openDropdown, setOpenDropdown] = useState<{ [key: string]: boolean }>({});
     const [isMobile, setIsMobile] = useState<boolean>(false);
-     const [themeDropdown, setThemeDropdown] = useState<boolean>(false);
+    const [themeDropdown, setThemeDropdown] = useState<boolean>(false);
 
     useEffect(() => {
         const handleResize = () :void => {
@@ -76,29 +77,33 @@ export function HeaderLink(
                     const isOpen = openDropdown[item.id];
                     return (
                         <li key={item.id} 
-                            className={`w-full lg:w-fit group ${item.category ? "relative" : ""}`}
+                            className={`w-full lg:w-fit group ${item.category ? "relative flex lg:block items-center flex-wrap " : ""}`}
                         >
                             <Link
-                                href={"/"} aria-label={`${item.name}-link`}
-                                className={`w-full lg:w-fit flex justify-start lg:justify-center items-center gap-1.5  font-semibold text-primary capitalize p-[6px_14px] rounded-lg transition-all duration-[.25s] ease-in lg:group-hover:bg--link-bg`}
-                                onClick={() => toggleDropdown(item.id)}
+                                href={"/category"} aria-label={`${item.name}-link`}
+                                className={`flex justify-start lg:justify-center items-center gap-1.5  font-semibold text-primary capitalize p-[6px_14px] rounded-lg transition-all duration-[.25s] ease-in lg:group-hover:bg--link-bg ${item.category && "w-[75%] lg:w-fit order-1 lg:order-0"}`}
                             >
                                 {item.name}
                                 {item.category && (
-                                    <>
-                                        <FaChevronDown 
-                                            className={`w-3 h-3 hidden lg:block transition-all duration-[.25s] ease-in lg:group-hover:-rotate-180`} 
-                                        />
-                                        <FaChevronDown
-                                            className={`w-3 h-3 block lg:hidden transition-all duration-[.25s] ease-in ml-auto ${isOpen && "-rotate-180"}`}
-                                        />
-                                    </>
+                                    <FaChevronDown 
+                                        className={`w-3 h-3 hidden lg:block transition-all duration-[.25s] ease-in lg:group-hover:-rotate-180`} 
+                                    />
                                 )}
                             </Link>
                             {item.category && (
+                                <button 
+                                    className={`h-9 ml-auto pr-1 block lg:hidden cursor-pointer ${"order-2 lg:order-none w-[25%] lg:w-auto"}`}
+                                    onClick={() => toggleDropdown(item.id)} aria-label="dropdown-open"
+                                >
+                                    <FaChevronDown
+                                        className={`w-3 h-3 block lg:hidden transition-all duration-[.25s] ease-in ml-auto ${isOpen && "-rotate-180"}`}
+                                    />  
+                                </button>
+                            )}
+                            {item.category && (
                                 <ul
                                     className={`
-                                        w-full lg:w-[234px] bg-light dark:bg-transparent lg:dark:bg-[#222] py-1 lg:py-3.5 pl-3 pr-4 rounded-lg shadow-none dark:shadow-none lg:shadow-links static lg:absolute top-11 transition-all duration-[0.25s] ease-in 
+                                        w-full lg:w-[234px] bg-light dark:bg-transparent lg:dark:bg-[#222] py-1 lg:py-3.5 pl-3 pr-4 rounded-lg shadow-none dark:shadow-none lg:shadow-links static lg:absolute top-11 transition-all duration-[0.25s] ease-in order-3 lg:order-none 
                                         ${isMobile
                                             ? isOpen
                                                 ? "block"

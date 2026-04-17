@@ -1,5 +1,6 @@
-import BlogDetailPage from "@/components/layout/blogDetailPage";
-import BreadCrumb from "@/components/layout/breadCrumb";
+// COMPONENTS
+import BlogDetailPage from "@/components/sections/BlogDetail";
+import BreadCrumb from "@/components/sections/BreadCrumb";
 
 
 export default function BlogDetail() {

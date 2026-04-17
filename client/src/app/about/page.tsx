@@ -1,11 +1,11 @@
 // COMPONENTS
-import AboutCard from "@/components/cards/aboutCard";
-import AboutContent from "@/components/layout/aboutContent";
-import AboutLayout from "@/components/layout/aboutLayout";
-import BreadCrumb from "@/components/layout/breadCrumb";
+import AboutCard from "@/components/cards/AboutCard";
+import AboutContent from "@/components/sections/AboutContent";
+import AboutLayout from "@/components/sections/AboutLayout";
+import BreadCrumb from "@/components/sections/BreadCrumb";
 
 // ABOUT DATA
-import { AboutData } from "@/constants/about-data";
+import { AboutData } from "@/data/about-data";
 
 export default function AboutUs(){
     return <>

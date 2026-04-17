@@ -1,5 +1,5 @@
 // TRENDING DATA
-import { trendingData } from "@/constants/trending-data";
+import { trendingData } from "@/data/trending-data";
 
 // LINK AND IMAGE FROM NEXT LINK
 import Image from "next/image";

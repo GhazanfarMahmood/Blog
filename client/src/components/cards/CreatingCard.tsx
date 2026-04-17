@@ -2,7 +2,7 @@
 import Link from "next/link";
 
 // CREATING DATA
-import { CreatingData } from "@/constants/main-data";
+import { CreatingData } from "@/data/main-data";
 
 // REACT ICONS
 import { TbExternalLink } from "react-icons/tb";

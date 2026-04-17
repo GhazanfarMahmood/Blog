@@ -14,7 +14,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 // SLIDER DATA
-import { FeatureSlider } from "@/constants/main-data";
+import { FeatureSlider } from "@/data/main-data";
 
 export default function FeatureCard(){
     return <>

@@ -2,12 +2,12 @@
 import Image from "next/image";
 
 // IMAGES OF AUTHOR
-import comment_img1 from "@/assets/images/icons/comment-img1.jpeg";
+import comment_img1 from "@/assets/icons/comment-img1.jpeg";
 import author_profile from "@/assets/images/author-img.webp";
-import comment_img2 from "@/assets/images/icons/comment-img2.jpeg";
+import comment_img2 from "@/assets/icons/comment-img2.jpeg";
 
 // COMPONENT
-import CommentForm from "../forms/commentForm";
+import CommentForm from "../forms/CommentForm";
 
 export default function BlogComment(){
     return <>

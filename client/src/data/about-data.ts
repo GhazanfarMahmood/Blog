@@ -1,7 +1,7 @@
 // ICONS
-import rocket_icon from "@/assets/images/icons/rocket.webp";
-import light_icon from "@/assets/images/icons/light.webp";
-import graph_icon from "@/assets/images/icons/graph.webp";
+import rocket_icon from "@/assets/icons/rocket.webp";
+import light_icon from "@/assets/icons/light.webp";
+import graph_icon from "@/assets/icons/graph.webp";
 
 export const AboutData = [
     {

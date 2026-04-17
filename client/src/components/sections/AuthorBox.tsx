@@ -4,10 +4,10 @@ import Link from "next/link";
 
 // IMAGES AND ICONS
 import author_profile from "@/assets/images/author-img.webp";
-import fb_icon from "@/assets/images/icons/fb-icon.svg";
-import twitter_icon from "@/assets/images/icons/x.svg";
-import insta_icon from "@/assets/images/icons/insta.svg";
-import linkedin_icon from "@/assets/images/icons/linkedin.svg";
+import fb_icon from "@/assets/icons/fb-icon.svg";
+import twitter_icon from "@/assets/icons/x.svg";
+import insta_icon from "@/assets/icons/insta.svg";
+import linkedin_icon from "@/assets/icons/linkedin.svg";
 import { FaLocationDot } from "react-icons/fa6";
 
 export default function AuthorBox(){

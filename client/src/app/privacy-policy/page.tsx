@@ -1,6 +1,6 @@
 // COMPONENTS
-import BreadCrumb from "@/components/layout/breadCrumb";
-import PolicyContent from "@/components/layout/policyContent";
+import BreadCrumb from "@/components/sections/BreadCrumb";
+import PolicyContent from "@/components/sections/PolicyContent";
 
 export default function PrivacyPolicy(){
     return <>

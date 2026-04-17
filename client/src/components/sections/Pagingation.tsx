@@ -2,8 +2,8 @@
 import Image from "next/image";
 
 // ICONS
-import chevron_left from "@/assets/images/icons/chevron-left.svg"
-import chevron_right from "@/assets/images/icons/chevron-right.svg"
+import chevron_left from "@/assets/icons/chevron-left.svg"
+import chevron_right from "@/assets/icons/chevron-right.svg"
 
 export default function Pagination(){
     return <>

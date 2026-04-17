@@ -1,6 +1,6 @@
 // COMPONENTS
-import BreadCrumb from "@/components/layout/breadCrumb";
-import CategoryDetailContent from "@/components/layout/categoryDetailContent";
+import BreadCrumb from "@/components/sections/BreadCrumb";
+import CategoryDetailContent from "@/components/sections/CategoryDetailContent";
 
 export default function CategoryDetail(){
     return <>
