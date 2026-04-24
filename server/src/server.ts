@@ -1,7 +1,20 @@
-const http = require("http");
+import express from "express";
+import dotenv from "dotenv";
+import connectDB from "./config/db";
 
-const serverCreated = http.createServer((req, res) => {
-    res.end("Day two of learning node js");
+dotenv.config();
+
+connectDB();
+
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+app.use(express.json());
+
+app.get("/", (req, res) => {
+    res.send("Server running and MongoDB connected!");
 });
 
-serverCreated.listen(3000);
+app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`)
+})
