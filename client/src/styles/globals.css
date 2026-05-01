@@ -27,7 +27,8 @@
   --shadow-search-field : 0px 5px 25px 0px rgba(114,114,255,.12);
   --shadow-hover : 0px 5px 25px 0px rgba(114,114,255,0.2);
   --shadow-btn-hover : 0px 5px 20px 0px rgba(114,114,255,0.4);
-  --filter-dark : grayscale(100%) brightness(0%) invert(80%);
+  --filter-dark : graysca
+  le(100%) brightness(0%) invert(80%);
 
 }
 

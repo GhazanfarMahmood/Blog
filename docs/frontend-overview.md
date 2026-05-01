@@ -10,7 +10,7 @@
 - snakeCase for custom hooks or helper functions (useAuth.ts, formatDate.ts)
 
 - features folder is used for creating slice through redux toolkit
-- constants folder is used for constant data -- (about.tsx datax)
+- constants folder is used for constant data -- (about.tsx data)
 - components for components
     |- cards for all type of card -- (blog card, product card, user card)
     |- common include -- (header, footer, button)
@@ -21,20 +21,22 @@
 and for pages no need to create extra folder just only create folder with the names of page and put them in src folder -- (blog/[slug]/page.tsx, category/[category]/page.tsx, search/page.tsx)
 
 - pages will be created
-    |-  home 
-    |-  category
-    |-  search
-    |-  detail
-    |-  dashboard
-    |-  Login/Register 
-    |-  create / edit blog page -- if needed because i will use a rich text editor for editing, writing and updating blog
+    |-  home                            (done)
+    |-  category                        (done)
+    |-  category detail                 (done)
+    |-  search                          (done)
+    |-  detail                          (done)
+    |-  author / writer                 (done)
+    |-  dashboard                       (will work in admin panel)
+    |-  Login/Register                  (optional - if needed then i will go but i will make it for admin panel)
+    |-  create / edit blog page -- if needed because i will use a rich text editor for editing, writing and updating blog                               (will work in admin panel)
 - static pages
-    |-  About Us / About the author
-    |-  Contact us
-    |-  Privacy Policy
-    |-  Terms & Conditions
-    |-  Newsletter Subscribe
-    |-  Search Result
+    |-  About Us / About the author     (done)
+    |-  Contact us                      (done)
+    |-  Privacy Policy                  (done)
+    |-  Terms & Conditions              (done)
+    |-  Newsletter Subscribe            (optional - if needed then i will go)
+    |-  Search Result                   (done as per upper)
 - optional pages
     |-  portfolio -- only if you are showcasing your personal work
     |-  Services -- only if you offer paid content, writing, consulting
@@ -71,3 +73,7 @@ MG                  mega
 ---      |- page.tsx
 ---      |- [slugs]
 ---      |-    page.tsx
+
+
+### in tailwind css we use the use @layer theme, @layer base, @layer components, @layer utilities
+### @layer 

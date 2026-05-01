@@ -1,7 +1,13 @@
-const http = require("http");
+// import express, { Express, Request, Response } from 'express';
 
-const serverCreated = http.createServer((req, res) => {
-    res.end("Day two of learning node js");
-});
+//   const app: Express = express();
+//   const port = process.env.PORT || 3000;
 
-serverCreated.listen(3000);
+//   app.get('/', (req: Request, res: Response) => {
+//     res.send('Hello from Express with TypeScript!');
+//   });
+
+//   app.listen(port, () => {
+//     console.log(`Server is running on http://localhost:${port}`);
+//   });
+
