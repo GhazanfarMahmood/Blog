@@ -1,5 +1,5 @@
 // COMPONENTS
-import BlogCard from "@/components/cards/blogCard";
+import BlogCard from "@/components/cards/BlogCard";
 import BreadCrumb from "@/components/sections/BreadCrumb";
 import SearchLayout from "@/components/sections/SearchLayout";
 

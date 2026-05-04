@@ -1,5 +1,5 @@
 // COMPONENT
-import ContactForm from "@/components/forms/contactForm";
+import ContactForm from "@/components/forms/ContactForm";
 import BreadCrumb from "@/components/sections/BreadCrumb";
 import ContactLayout from "@/components/sections/ContactLayout";
 
