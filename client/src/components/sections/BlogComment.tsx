@@ -7,7 +7,7 @@ import author_profile from "@/assets/images/author-img.webp";
 import comment_img2 from "@/assets/icons/comment-img2.jpeg";
 
 // COMPONENT
-import CommentForm from "../forms/CommentForm";
+import CommentForm from "../forms/commentForm";
 
 export default function BlogComment(){
     return <>

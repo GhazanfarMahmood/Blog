@@ -1,5 +1,5 @@
 // CATEGORY CARD COMPONENT
-import CategoryCard from "../cards/CategoryCard";
+import CategoryCard from "../cards/categoryCard";
 
 // CATEGORY DATA
 import { CategoryData } from "@/data/category-data";

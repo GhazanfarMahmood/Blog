@@ -1,36 +1,64 @@
+"use client";
+
+// BELOW IS THE TYPE OF COMMENT FROM TYPE TYPE
+import { CommentFormType } from "@/@types/form-type";
 // REACT ICONS
+import { useState } from "react";
 import { BsCheck } from "react-icons/bs";
 
 export default function CommentForm(){
-    return <div
-        className="bg-light p-8 rounded-2xl shadow-search-field mt-6 dark:bg-heading"
+    const [commentForm, setCommentForm] = useState<CommentFormType>({
+        name : "",
+        email : "",
+        message : "",
+        saved: false
+    });
+
+    const handleChange = (e : React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const {name, type , value} = e.target;
+
+        const finalValue = type === "checkbox" && e.target instanceof HTMLInputElement ? e.target.checked : value;
+
+        setCommentForm((prev) => ({
+            ...prev, 
+            [name]: finalValue
+        }))
+    }
+
+    return <div 
+        className="block bg-light p-8 rounded-2xl shadow-search-field mt-6 dark:bg-heading"
     >
         <h3
             className=" text-lg text-primary font-bold leading-[1.2] -tracking-[0.04em] mb-1.5"
-        >Leave a Comment</h3>
+        >
+            Leave a Comment
+        </h3>
         <p
             className="text-sm text-para mb-6"
-        >Your email address will not be published. Required fields are marked *</p>
+        >
+            Your email address will not be published. Required fields are marked *
+        </p>
         <form
             className="grid grid-cols-1 sm:grid-cols-2 gap-x-3 *:mb-4
             [&_label]:block [&_label]:text-sm [&_label]:text-primary [&_label]:leading-[1.55] [&_label]:mb-1.5
             [&_input]:w-full [&_input]:text-primary [&_input]:leading-[1.55] [&_input]:py-[9px] [&_input]:px-4 [&_input]:border [&_input]:border-br [&_input]:rounded-lg
             [&_textarea]:w-full [&_textarea]:h-32! [&_textarea]:text-primary [&_textarea]:leading-[1.55] [&_textarea]:py-[9px] [&_textarea]:px-4 [&_textarea]:border [&_textarea]:border-br [&_textarea]:rounded-lg
             "
+            onSubmit={(e) => e.preventDefault()}
         >
             <div>
                 <label htmlFor="comment-name">Name *</label>
-                <input type="text" placeholder="Name *" id="comment-name" aria-label="comment-name" />
+                <input type="text" value={commentForm.name} name="name" placeholder="Name *" id="comment-name" aria-label="comment-name" onChange={handleChange} />
             </div>
             <div>
                 <label htmlFor="comment-email">Email *</label>
-                <input type="email" placeholder="Email *" id="comment-email" aria-label="comment-email" />
+                <input type="email" value={commentForm.email} name="email" placeholder="Email *" id="comment-email" aria-label="comment-email" onChange={handleChange} />
             </div>
             <div
                 className="col-span-full sm:col-span-2"
             >
                 <label htmlFor="comment-message">Your Comment *</label>
-                <textarea id="comment-message" placeholder="Your Comment *" aria-label="comment-message"></textarea>
+                <textarea id="comment-message" value={commentForm.message} name="message" placeholder="Your Comment *" aria-label="comment-message" onChange={handleChange}></textarea>
             </div>
             <div
                 className="w-full sm:w-[75%] flex items-start justify-start gap-2 col-span-full sm:col-span-2"
@@ -40,6 +68,9 @@ export default function CommentForm(){
                 >
                     <input type="checkbox" id="save-name"
                         className="w-full h-full opacity-0 absolute top-0 left-0 z-[1] cursor-pointer"
+                        onChange={handleChange}
+                        checked={commentForm.saved}
+                        name="saved"
                     />
                     <BsCheck 
                         className="w-[20px] h-[20px] absolute top-1/2 left-1/2 -translate-1/2 invisible transition-all duration-[0.25s] ease-in"
@@ -47,11 +78,17 @@ export default function CommentForm(){
                 </div>
                 <label htmlFor="save-name"
                     className="text-primary text-sm leading-[1.55] mb-0! cursor-pointer"
-                >Save my name and email in this browser for the next time I comment.</label>
+                >
+                    Save my name and email in this browser for the next time I comment.
+                </label>
             </div>
             <button  
                 className="w-full sm:w-fit min-h-10 flex items-center justify-center leading-[1.2] text-light dark:text-dark font-bold -tracking-[0.03em] bg-linear-(--linear-bg) p-[10px_18px] rounded-lg cursor-pointer transition-all duration-[0.25s] ease-in hover:shadow-btn-hover"
-            aria-label="submit-comment">Submit Comment</button>
+                aria-label="submit-comment"
+                type="submit"
+            >
+                    Submit Comment
+            </button>
         </form>
     </div>
 }

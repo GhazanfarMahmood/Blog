@@ -1,11 +1,11 @@
 // COMPONENTS
 import { MainData } from "@/data/main-data";
-import AuthorDetail from "../cards/AuthorDetail";
-import BlogCard from "../cards/BlogCard";
+import AuthorDetail from "../cards/authorDetail";
+import BlogCard from "../cards/blogCard";
 import Creating from "../cards/CreatingCard";
-import FeatureCard from "../cards/FeatureCard";
+import FeatureCard from "../cards/featureCard";
 import Technology from "../cards/TechnologyCard";
-import WorkExperience from "../cards/WorkExperience";
+import WorkExperience from "../cards/workExperience";
 import Pagination from "./Pagingation";
 
 export default function MainContent() {

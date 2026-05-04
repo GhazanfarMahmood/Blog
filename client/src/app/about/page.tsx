@@ -1,5 +1,5 @@
 // COMPONENTS
-import AboutCard from "@/components/cards/AboutCard";
+import AboutCard from "@/components/cards/aboutCard";
 import AboutContent from "@/components/sections/AboutContent";
 import AboutLayout from "@/components/sections/AboutLayout";
 import BreadCrumb from "@/components/sections/BreadCrumb";
