@@ -12,6 +12,7 @@ import Footer from "@/components/common/Footer";
 
 // THEME PROVIDER 
 import { ThemeProvider } from "@/provider/ThemeProvider";
+import ReduxProvider from "@/provider/ReduxProvider";
 
 const dmSans = DM_Sans({
   variable : "--font-dm-sans",
@@ -35,16 +36,18 @@ export default function RootLayout({
       <body
         className={`${dmSans.variable} antialiased`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Header/>
-            {children}
-          <Footer />
-        </ThemeProvider>
+        <ReduxProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Header/>
+              {children}
+            <Footer />
+          </ThemeProvider>
+        </ReduxProvider>
       </body>
     </html>
   );
