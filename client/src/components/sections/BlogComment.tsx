@@ -7,9 +7,21 @@ import author_profile from "@/assets/images/author-img.webp";
 import comment_img2 from "@/assets/icons/comment-img2.jpeg";
 
 // COMPONENT
-import CommentForm from "../forms/commentForm";
+import CommentForm from "../forms/CommentForm";
+import { useGetCommentQuery } from "@/services/api/commentApi";
 
 export default function BlogComment(){
+     const {data, isLoading, error} = useGetCommentQuery();
+    
+        if(isLoading) {
+            return <h1>Loading...</h1>
+        }
+    
+        if(error) {
+            return <h1>Something went wrong.</h1>
+        }
+    
+        console.log(data)
     return <>
         <button aria-label="view-comments"
             className="text-secondary font-extrabold -tracking-[0.03em] leading-[1.2] pb-[3.2px] mt-12 cursor-pointer btn-underline transition-all duration-[0.25s] ease-in dark:text-dark"

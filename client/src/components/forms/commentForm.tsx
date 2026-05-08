@@ -2,6 +2,7 @@
 
 // BELOW IS THE TYPE OF COMMENT FROM TYPE TYPE
 import { CommentFormType } from "@/@types/form-type";
+import { useAddCommentMutation } from "@/services/api/commentApi";
 // REACT ICONS
 import { useState } from "react";
 import { BsCheck } from "react-icons/bs";
@@ -13,6 +14,7 @@ export default function CommentForm(){
         message : "",
         saved: false
     });
+    const [addComment, { isLoading }] = useAddCommentMutation();
 
     const handleChange = (e : React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const {name, type , value} = e.target;
@@ -23,6 +25,25 @@ export default function CommentForm(){
             ...prev, 
             [name]: finalValue
         }))
+    }
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        try {
+            const response = await addComment(commentForm).unwrap();
+            
+            console.log(response);
+
+            setCommentForm({
+                name : "",
+                email : "",
+                message : "",
+                saved: false,
+            })
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     return <div 
@@ -44,7 +65,7 @@ export default function CommentForm(){
             [&_input]:w-full [&_input]:text-primary [&_input]:leading-[1.55] [&_input]:py-[9px] [&_input]:px-4 [&_input]:border [&_input]:border-br [&_input]:rounded-lg
             [&_textarea]:w-full [&_textarea]:h-32! [&_textarea]:text-primary [&_textarea]:leading-[1.55] [&_textarea]:py-[9px] [&_textarea]:px-4 [&_textarea]:border [&_textarea]:border-br [&_textarea]:rounded-lg
             "
-            onSubmit={(e) => e.preventDefault()}
+            onSubmit={handleSubmit}
         >
             <div>
                 <label htmlFor="comment-name">Name *</label>

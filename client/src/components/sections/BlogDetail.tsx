@@ -20,21 +20,9 @@ import Creating from "../cards/CreatingCard";
 // IMAGE FROM ASSETS
 import blog_detail_img1 from "@/assets/images/blog-detail-img1.webp";
 import blog_detail_img2 from "@/assets/images/blog-detail-img2.webp";
-import { useGetCommentByNameQuery } from "@/services/api/commentApi";
 
 
 export default function BlogDetailPage(){
-    const {data, isLoading, error} = useGetCommentByNameQuery();
-
-    if(isLoading) {
-        return <h1>Loading...</h1>
-    }
-
-    if(error) {
-        return <h1>Something went wrong.</h1>
-    }
-
-    console.log(data)
     return <>
         <div 
             className="container"
