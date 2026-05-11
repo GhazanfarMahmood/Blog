@@ -10,7 +10,7 @@ export const commentApi = createApi({
 
     endpoints: (builder) => ({
 
-        getComment : builder.query<CommentFormType[], string>({
+        getComment : builder.query<CommentFormType[], void>({
             query : () => `/comments`,
         }),
 
