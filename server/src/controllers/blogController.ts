@@ -71,8 +71,8 @@ export const getBlogsByCategory = async (req: Request, res: Response) => {
 
 export const updateBlog = async (req: Request, res: Response) => {
     try {
-        const { id } = req.params;
-
+        const id = req.params.id as string;
+        
         if(!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({ message: "Invalid blog ID"})
         }
