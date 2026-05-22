@@ -1,3 +1,5 @@
+"use client";
+
 // COMPONENTS
 import { MainData } from "@/data/main-data";
 import AuthorDetail from "../cards/AuthorDetail";
@@ -7,8 +9,22 @@ import FeatureCard from "../cards/FeatureCard";
 import Technology from "../cards/TechnologyCard";
 import WorkExperience from "../cards/WorkExperience";
 import Pagination from "./Pagingation";
+import { useGetBlogQuery } from "@/services/api/blogApi";
 
 export default function MainContent() {
+    const {data, isLoading, error} = useGetBlogQuery();
+
+    if(isLoading) {
+        return <p>blog data is loading....</p>
+    }
+
+    if(error) {
+        return <p>Something went wrong.</p>
+    }
+
+    if(data) {
+        console.log(data);
+    }
     return <>
         <div className="container">
             <div className="grid grid-cols-1 lg:grid-cols-[minmax(530px,826px)_minmax(370px,382px)] gap-[40px] mb-16 md:mb-24 lg:mb-28">

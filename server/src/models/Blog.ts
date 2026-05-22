@@ -6,8 +6,8 @@ const blogSchema = new mongoose.Schema({
     excerpt : {type: String, required: true},
     content: {type: String, required: true},
     thumbnail : {type: String, required: true},
-    category : {type: String, required: true},
-    tags : {type: String, required: true},
+    category : {type: [String], required: true, default: []},
+    tags : {type: [String], required: true, default: []},
     author: {type: String, required: true},
     isPublished: {type: Boolean, default: false},
 }, {timestamps: true});
