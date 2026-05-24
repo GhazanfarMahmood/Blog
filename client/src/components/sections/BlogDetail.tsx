@@ -239,9 +239,9 @@ export default function BlogDetailPage(){
                 <div
                     className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-6 lg:gap-y-12 mb-16 md:mb-24 lg:mb-28"
                 >
-                    {NextBlogData.map((data) => {
+                    {/* {NextBlogData.map((data) => {
                         return <BlogCard title={data.title} img={data.img} category={data.category} subCategory={data.subCategory} reading={data.reading} authorName={data.authorName} month={data.month} year={data.year} day={data.day} description={data.description} key={data.id} />
-                    })}
+                    })} */}
                 </div>
             </div>
         </div>

@@ -20,7 +20,7 @@ export default function BlogCard(
         <div 
             className="mb-5 relative"
         >
-            <Link href={"/"} aria-label={title}>
+            <Link href={`/blog/${slug}`} aria-label={title}>
                 <Image src={img} alt={title} width={400} height={225} 
                     className="w-full h-[225px] object-cover rounded-2xl" 
                 />
@@ -45,7 +45,7 @@ export default function BlogCard(
             <div 
                 className="flex items-center justify-start gap-1.5"
             >
-                <Link href={"/"} aria-label={`${authorName}-authorName`}
+                <Link href={`/blog/${slug}`} aria-label={`${authorName}-authorName`}
                     className="text-[15px] font-semibold leading-[1.2] -tracking-[0.02em] text-secondary capitalize transition-all duration-[0.25s] ease-in hover:text-primary dark:text-dark dark:hover:text-para"
                 >
                     {authorName}
