@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 
 export const blogApi = createApi({
@@ -10,10 +10,10 @@ export const blogApi = createApi({
 
     endpoints : (builder) => ({
 
-        getBlog : builder.query({
+        getBlogs : builder.query({
             query : () => `/blogs`,
         }),
     }),
 });
 
-export const { useGetBlogQuery }  = blogApi;
+export const { useGetBlogsQuery }  = blogApi;
