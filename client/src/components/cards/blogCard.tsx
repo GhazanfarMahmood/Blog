@@ -56,7 +56,7 @@ export default function BlogCard(
                     on {`${dateFormatter}`}
                 </span>
             </div>
-                <Link href={"/"} aria-label={title}
+                <Link href={`/blog/${slug}`} aria-label={title}
                     className="block text-[21px] font-bold text-primary leading-[1.2] -tracking-[0.04em] mt-2.5 transition-all duration-[0.25s] ease-in hover:text-para"
                 >
                     {title}

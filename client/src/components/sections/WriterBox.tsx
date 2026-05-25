@@ -3,7 +3,7 @@ import { WriterData } from "@/data/writer-data";
 import Pagination from "./Pagingation";
 
 // DATA FROM CONSTANT
-import BlogCard from "../cards/blogCard";
+import BlogCard from "../cards/BlogCard";
 
 export default function WriterBox(){
     return <div 

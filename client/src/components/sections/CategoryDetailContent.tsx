@@ -1,5 +1,5 @@
 // COMPONENTS
-import BlogCard from "../cards/blogCard";
+import BlogCard from "../cards/BlogCard";
 import CategoryDetailInfo from "./CategoryDetailInfo";
 
 // IMAGES AND ICONS

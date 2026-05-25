@@ -7,13 +7,20 @@ import mongoose from 'mongoose';
 import Blog from '../models/Blog';
 
 function createRandomBlog(){
-    const title = faker.book.title();
+    const title = faker.book.title();   
 
     return {
         title,
         slug : faker.helpers.slugify(title).toLowerCase(),
         excerpt : faker.lorem.sentences(2),
-        content : faker.lorem.paragraph(5),
+        content: Array.from({ length : 5}, () => 
+            faker.lorem.sentences(
+                faker.number.int({
+                    min: 15,
+                    max: 30
+                })
+            )
+        ).join("\n\n"),
         
         thumbnail: faker.image.url({
             width: 800,
