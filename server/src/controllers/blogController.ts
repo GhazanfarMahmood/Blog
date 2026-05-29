@@ -60,7 +60,7 @@ export const getBlogsByCategory = async (req: Request, res: Response) => {
     try {
         const { slug } = req.params;
 
-        const blogs = await Blog.find({ slug }).sort({ createdAt : -1, });
+        const blogs = await Blog.find({ category : slug }).sort({ createdAt : -1, });
 
         res.status(200).json(blogs);
     }catch (error) {
