@@ -20,9 +20,21 @@ import Creating from "../cards/CreatingCard";
 // IMAGE FROM ASSETS
 import blog_detail_img1 from "@/assets/images/blog-detail-img1.webp";
 import blog_detail_img2 from "@/assets/images/blog-detail-img2.webp";
+import { BlogDetailType } from "@/@types/blog-type";
 
 
-export default function BlogDetailPage({title, author, category, excerpt, createdAt, reading, thumbnail, content}){
+export default function BlogDetailPage(
+    {
+        title, 
+        author, 
+        category, 
+        excerpt, 
+        createdAt, 
+        reading, 
+        thumbnail, 
+        content
+    }: BlogDetailType
+){
     const dateFormatter = new Date(createdAt).toLocaleDateString("en-US", {
         day : "numeric",
         month : "long",
@@ -72,7 +84,7 @@ export default function BlogDetailPage({title, author, category, excerpt, create
                 <div 
                     className="hidden lg:block"
                 >
-                    <SideLink />
+                    <SideLink reading={reading} />
                 </div>
                 <div>
                     <div
@@ -126,7 +138,7 @@ export default function BlogDetailPage({title, author, category, excerpt, create
                         <div
                             className="w-full order-3 block lg:hidden"
                         >
-                            <SideLink />
+                            <SideLink reading={reading} />
                         </div>
                     </div>
                     <div

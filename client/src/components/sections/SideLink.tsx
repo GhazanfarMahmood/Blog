@@ -11,7 +11,7 @@ import linkedin_icon from "@/assets/icons/linkedin.svg";
 import { BsLink45Deg } from "react-icons/bs";
 
 
-export default function SideLink(){
+export default function SideLink({reading} : {reading : string}){
     return <>
         <div 
             className="h-fit flex flex-row lg:flex-col items-center justify-start lg:justify-center sticky top-5 lg:-ml-7"
@@ -19,7 +19,7 @@ export default function SideLink(){
             <div
                 className="w-20 h-20 hidden lg:flex items-center justify-center text-[15px] leading-[1.2] font-semibold -tracking-[0.02em] text-primary text-center bg-light px-2.5 rounded-full shadow-links transition-all duration-[0.25s] ease-in hover:opacity-80 dark:bg-heading dark:shadow-search-field"
             >
-                4 min read
+                {reading} min read
             </div>
             <span
                 className="block lg:hidden text-xs font-extrabold tracking-widest uppercase leading-[1.2] text-primary mr-5"

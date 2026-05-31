@@ -1,10 +1,24 @@
+"use client";
+
 // CATEGORY CARD COMPONENT
+import { useGetCategoryQuery } from "@/services/api/categoryApi";
 import CategoryCard from "../cards/CategoryCard";
 
 // CATEGORY DATA
 import { CategoryData } from "@/data/category-data";
 
 export default function CategoryContent(){
+    const {data, isLoading, error} = useGetCategoryQuery();
+
+    if(isLoading) {
+        return <p>Loading...</p>
+    }
+
+    if(error) {
+        return <p>Error</p>
+    }
+
+    console.log(data);
     return <>
         <div 
             className="container mb-16 md:mb-24 lg:mb-28"
@@ -15,8 +29,8 @@ export default function CategoryContent(){
                 Categories
             </h1>
             <div className="max-w-[410px] sm:max-w-none grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mx-auto sm:mx-0">
-                {CategoryData.map((item) => {
-                    return <CategoryCard mainImg={item.img} icon={item.icon} name={item.name} key={item.id} />
+                {data?.map((item) => {
+                    return <CategoryCard mainImg={item.image} icon={item.icon} name={item.categoryName} key={item._id} />
                 })}
             </div>
         </div>

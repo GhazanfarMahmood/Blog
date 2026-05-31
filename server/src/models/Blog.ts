@@ -1,10 +1,10 @@
 import mongoose  from "mongoose";
 
 const blogSchema = new mongoose.Schema({
-    title : {type : String, required : true},
+    title : {type: String, required : true},
     thumbnail : {type: String, required: true},
     category : {type: [String], required: true, default: []},
-    reading : {type : Number, required: true},
+    reading : {type: Number, required: true},
     author: {type: String, required: true},
     excerpt : {type: String, required: true},
     content: {type: String, required: true},

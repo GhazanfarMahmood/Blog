@@ -1,7 +1,6 @@
 "use client";
 
 // COMPONENTS
-import { MainData } from "@/data/main-data";
 import AuthorDetail from "../cards/AuthorDetail";
 import BlogCard from "../cards/BlogCard";
 import Creating from "../cards/CreatingCard";
@@ -22,14 +21,14 @@ export default function MainContent() {
         return <p>Something went wrong.</p>
     }
 
+    console.log(data);
 
-    console.log(data)
     return <>
         <div className="container">
             <div className="grid grid-cols-1 lg:grid-cols-[minmax(530px,826px)_minmax(370px,382px)] gap-[40px] mb-16 md:mb-24 lg:mb-28">
                 <div>
                     <div className="grid grid-cols-1 md:max-lg:grid-cols-2 lg:max-xl:grid-cols-1 xl:grid-cols-2 gap-x-6 gap-y-6 lg:gap-y-12">
-                        {data.map((item) =>{
+                        {data?.map((item) =>{
                             return <BlogCard 
                                 title = {item.title} 
                                 img={item.thumbnail} 

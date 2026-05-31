@@ -1,5 +1,6 @@
 "use client";
 
+import { BlogDetailType } from "@/@types/blog-type";
 // COMPONENTS
 import BlogDetailPage from "@/components/sections/BlogDetail";
 import BreadCrumb from "@/components/sections/BreadCrumb";
@@ -9,7 +10,8 @@ import { useParams } from "next/navigation";
 
 export default function BlogDetail() {
     const params = useParams();
-    const {data, isLoading, error} = useGetBlogsBySlugQuery(params.slug);
+    const slug = params.slug as string;
+    const {data, isLoading, error} = useGetBlogsBySlugQuery(slug);
 
     if(isLoading) {
         return <p>page is loading...</p>
@@ -19,7 +21,11 @@ export default function BlogDetail() {
         return <p>some type of error is coming...</p>
     }
     
-    const {title, author, category, excerpt, createdAt, reading, thumbnail, content} = data;
+    if(!data) {
+        return  <p>Blog not found</p>;
+    }
+
+    const {title, author, category, excerpt, createdAt, reading, thumbnail, content}: BlogDetailType = data;
 
     return <>
         <div
