@@ -26,6 +26,7 @@ function createRandomCategory(categoryName : string) {
             height : 368
         }),
         icon : faker.internet.emoji(),
+        description : faker.lorem.sentences(3),
         isPublished : true,
     }
 };

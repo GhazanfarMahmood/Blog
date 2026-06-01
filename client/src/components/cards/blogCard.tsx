@@ -28,7 +28,7 @@ export default function BlogCard(
             <div 
                 className="w-full flex flex-wrap items-center justify-start gap-2 absolute top-5 px-5 [&_a]:text-[11px] [&_a]:font-extrabold [&_a]:uppercase [&_a]:text-heading [&_a]:leading-[1.2] [&_a]:tracking-widest [&_a]:bg-light [&_a]:p-[5px_11px] [&_a]:rounded-md [&_a]:dark:bg-dark"
             >
-                {category.map((item, id) => {
+                {category?.map((item, id) => {
                     return <Link href={"/"} aria-label={`${item}-link`} key={id}>{item}</Link>
                 })}
                 <span

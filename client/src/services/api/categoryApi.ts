@@ -13,8 +13,12 @@ export const categoryApi = createApi({
         getCategory : builder.query<CategoryType[], void>({
             query: () => `/categories`,
         }),
+
+        getCategoryBySlug : builder.query({
+            query : (slug) => `/categories/${slug}`,
+        }),
         
     })
 });
 
-export const { useGetCategoryQuery } = categoryApi;
+export const { useGetCategoryQuery, useGetCategoryBySlugQuery } = categoryApi;

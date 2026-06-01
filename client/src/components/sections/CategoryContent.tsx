@@ -30,7 +30,7 @@ export default function CategoryContent(){
             </h1>
             <div className="max-w-[410px] sm:max-w-none grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mx-auto sm:mx-0">
                 {data?.map((item) => {
-                    return <CategoryCard mainImg={item.image} icon={item.icon} name={item.categoryName} key={item._id} />
+                    return <CategoryCard mainImg={item.image} icon={item.icon} name={item.categoryName} slug={item.slug} key={item._id} />
                 })}
             </div>
         </div>

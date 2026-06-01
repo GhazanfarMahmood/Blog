@@ -4,9 +4,9 @@ import mongoose from "mongoose";
 
 export const createCategory = async (req: Request, res: Response) =>{
     try {
-        const {categoryName, slug, image, icon} = req.body;
+        const {categoryName, slug, image, icon, description} = req.body;
 
-        if(!categoryName || !slug || !image) {
+        if(!categoryName || !slug || !image || !description) {
             return res.status(400).json({message : "All fields are required"});
         }
 
@@ -22,7 +22,8 @@ export const createCategory = async (req: Request, res: Response) =>{
             categoryName,
             slug,
             image, 
-            icon
+            icon,
+            description
         });
 
         res.status(201).json({

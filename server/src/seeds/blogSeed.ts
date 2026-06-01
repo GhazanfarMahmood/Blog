@@ -26,14 +26,11 @@ function createRandomBlog(){
             width: 800,
             height: 800
         }),
-        category : [
-            faker.helpers.arrayElement([
-                "MERN",
-                "Web Development",
-                "JavaScript",
-                "Backend",
-            ])
-        ],
+        category : {
+            type : mongoose.Schema.Types.ObjectId,
+            ref : "Category",
+            required: true
+        },
         tags : faker.helpers.arrayElements(
             ["React", "Node", "Express", "MongoDB", "TypeScript"],
             2
