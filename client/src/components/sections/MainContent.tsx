@@ -21,8 +21,6 @@ export default function MainContent() {
         return <p>Something went wrong.</p>
     }
 
-    console.log(data);
-
     return <>
         <div className="container">
             <div className="grid grid-cols-1 lg:grid-cols-[minmax(530px,826px)_minmax(370px,382px)] gap-[40px] mb-16 md:mb-24 lg:mb-28">

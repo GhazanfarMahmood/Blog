@@ -1,7 +1,9 @@
+import { CategoryType } from "./category-type"
+
 // BLOG CARD TYPE
 export type BlogContentType = {
     author : string,
-    category : string[],
+    category : CategoryType[],
     content : string,
     createdAt : string,
     excerpt : string,
@@ -19,7 +21,7 @@ export type BlogContentType = {
 export type BlogDetailType = {
     title : string,
     author : string,
-    category : string,
+    category : CategoryType[],
     excerpt : string,
     createdAt : string,
     reading : string,

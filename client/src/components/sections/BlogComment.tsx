@@ -20,8 +20,7 @@ export default function BlogComment(){
         if(error) {
             return <h1>Something went wrong.</h1>
         }
-    
-        console.log(data)
+        
     return <>
         <button aria-label="view-comments"
             className="text-secondary font-extrabold -tracking-[0.03em] leading-[1.2] pb-[3.2px] mt-12 cursor-pointer btn-underline transition-all duration-[0.25s] ease-in dark:text-dark"

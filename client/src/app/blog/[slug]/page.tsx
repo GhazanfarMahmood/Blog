@@ -26,7 +26,7 @@ export default function BlogDetail() {
     }
 
     const {title, author, category, excerpt, createdAt, reading, thumbnail, content}: BlogDetailType = data;
-
+    
     return <>
         <div
             className="[&_ul]:justify-center"

@@ -40,6 +40,7 @@ export default function BlogDetailPage(
         month : "long",
         year : "numeric",
     })
+
     return <>
         <div 
             className="container"
@@ -68,14 +69,18 @@ export default function BlogDetailPage(
             >
                 {excerpt}
             </p>
-            <Link aria-label="category-link" href={"/"}
-                className="block w-fit text-[11px] font-extrabold leading-[1.2] uppercase tracking-[0.1em] text-nowrap text-primary bg-light dark:bg-transparent p-[5px_10px] rounded-md mx-auto mt-6 mb-[27px] dark:border dark:border-br shadow-links dark:shadow-none transition-all duration-[0.25s] ease-in hover:text-para hover:shadow-link-hover hover:opacity-70 dark:hover:text-primary"    
-            >
-                {category}
-            </Link>
+            <div className="flex items-center justify-center flex-wrap gap-2 mt-6 mb-[27px]">
+                {category && category.map((item) => {
+                return <Link aria-label="category-link" href={`/category/${item.slug}`} key={item._id}
+                        className="block w-fit text-[11px] font-extrabold leading-[1.2] uppercase tracking-[0.1em] text-nowrap text-primary bg-light dark:bg-transparent p-[5px_10px] rounded-md dark:border dark:border-br shadow-links dark:shadow-none transition-all duration-[0.25s] ease-in hover:text-para hover:shadow-link-hover hover:opacity-70 dark:hover:text-primary"    
+                    >
+                        {item.categoryName}
+                    </Link>
+                })}
+            </div>
             <div>
-                <Image src={thumbnail} alt="blog-detail-img" width={1248} height={702}
-                    className="w-full h-[702px] object-cover rounded-2xl"
+                <Image src={thumbnail} alt="blog-detail-img" width={1248} height={500}
+                    className="w-full h-[500px] object-cover rounded-2xl"
                 />
             </div>
             <div 
@@ -130,11 +135,15 @@ export default function BlogDetailPage(
                                 on {dateFormatter}
                             </span>
                         </div>
-                        <Link aria-label="category-link" href={"/"}
-                            className="block w-fit text-[11px] font-extrabold leading-[1.2] uppercase tracking-[0.1em] text-nowrap text-primary bg-light dark:bg-transparent p-[5px_10px] rounded-md dark:border dark:border-br shadow-links dark:shadow-none transition-all duration-[0.25s] ease-in hover:text-para hover:shadow-link-hover hover:opacity-70 dark:hover:text-primary"    
-                        >
-                            {category}
-                        </Link>
+                         <div className="flex items-center justify-center flex-wrap gap-2 mt-6 mb-[27px]">
+                            {category && category.map((item) => {
+                            return <Link aria-label="category-link" href={`/category/${item.slug}`} key={item._id}
+                                    className="block w-fit text-[11px] font-extrabold leading-[1.2] uppercase tracking-[0.1em] text-nowrap text-primary bg-light dark:bg-transparent p-[5px_10px] rounded-md dark:border dark:border-br shadow-links dark:shadow-none transition-all duration-[0.25s] ease-in hover:text-para hover:shadow-link-hover hover:opacity-70 dark:hover:text-primary"    
+                                >
+                                    {item.categoryName}
+                                </Link>
+                            })}
+                        </div>
                         <div
                             className="w-full order-3 block lg:hidden"
                         >

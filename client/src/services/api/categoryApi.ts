@@ -8,16 +8,21 @@ export const categoryApi = createApi({
         baseUrl : "http://localhost:5000/api"
     }),
 
+    refetchOnFocus : false,
+    refetchOnReconnect : false,
+
     endpoints : (builder) => ({
 
         getCategory : builder.query<CategoryType[], void>({
             query: () => `/categories`,
+            keepUnusedDataFor: 86400,
         }),
 
         getCategoryBySlug : builder.query({
             query : (slug) => `/categories/${slug}`,
         }),
         
+
     })
 });
 

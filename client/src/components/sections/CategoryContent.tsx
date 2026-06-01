@@ -17,8 +17,6 @@ export default function CategoryContent(){
     if(error) {
         return <p>Error</p>
     }
-
-    console.log(data);
     return <>
         <div 
             className="container mb-16 md:mb-24 lg:mb-28"

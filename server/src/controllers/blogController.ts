@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Blog from "../models/Blog";
+import Category from "../models/Category";
 import mongoose from "mongoose";
 
 export const createBlog = async (req: Request, res: Response) => {
@@ -32,7 +33,9 @@ export const createBlog = async (req: Request, res: Response) => {
 
 export const getBlogs = async (req: Request, res: Response) => {
     try {
-        const blogs = await Blog.find().sort({ createdAt : -1});
+        const blogs = await Blog.find()
+        .populate("category")
+        .sort({ createdAt : -1});
 
         res.status(200).json(blogs)
     } catch(error) {
@@ -44,7 +47,7 @@ export const getBlogsBySlug = async (req: Request, res: Response) => {
     try {
         const { slug } = req.params;
         
-        const blog = await Blog.findOne({ slug });
+        const blog = await Blog.findOne({ slug }).populate("category");
 
         if(!blog) {
             return res.status(404).json({ message : "Blog not found" });
@@ -60,7 +63,13 @@ export const getBlogsByCategory = async (req: Request, res: Response) => {
     try {
         const { slug } = req.params;
 
-        const blogs = await Blog.find({ category : slug }).sort({ createdAt : -1, });
+        const category = await Category.findOne({ slug });
+
+        if(!category) {
+            return res.status(404).json({ message : "Category not found"});
+        } 
+        
+        const blogs = await Blog.find({ category : category._id }).populate("category").sort({ createdAt : -1});
 
         res.status(200).json(blogs);
     }catch (error) {

@@ -1,3 +1,4 @@
+import { CategoryType } from "@/@types/category-type";
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 
@@ -6,13 +7,14 @@ import { AiFillClockCircle } from "react-icons/ai";
 
 export default function BlogCard(
     {title, img, category, reading, authorName, date, description, slug} : 
-    {title : string, img: string | StaticImageData, category: string[], reading: string, authorName : string, date: string, description: string, slug: string}
+    {title : string, img: string | StaticImageData, category: CategoryType[], reading: string, authorName : string, date: string, description: string, slug: string}
 ){
     const dateFormatter = new Date(date).toLocaleDateString("en-US", {
         day : "numeric",
         month : "long",
         year : "numeric"
     });
+
     return <>
      <div
         className="group"
@@ -28,8 +30,8 @@ export default function BlogCard(
             <div 
                 className="w-full flex flex-wrap items-center justify-start gap-2 absolute top-5 px-5 [&_a]:text-[11px] [&_a]:font-extrabold [&_a]:uppercase [&_a]:text-heading [&_a]:leading-[1.2] [&_a]:tracking-widest [&_a]:bg-light [&_a]:p-[5px_11px] [&_a]:rounded-md [&_a]:dark:bg-dark"
             >
-                {category?.map((item, id) => {
-                    return <Link href={"/"} aria-label={`${item}-link`} key={id}>{item}</Link>
+                {category?.map((item) => {
+                    return <Link href={`/category/${item.slug}`} aria-label={`${item.categoryName}-link`} key={item._id}>{item.categoryName}</Link>
                 })}
                 <span
                     className="flex items-center justify-center gap-1 bg--bg-clock text-[15px] font-semibold leading-[1.2] text-light p-[5px_7px] rounded-[100px] xs:ml-auto opacity-0 invisible transition-all duration-[0.25s] ease-in group-hover:opacity-100 group-hover:visible dark:text-dark"
