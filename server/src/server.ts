@@ -5,6 +5,7 @@ import connectDB from "./config/db";
 import commentRoutes from "./routes/commentRoutes";
 import blogRoutes from "./routes/blogRoutes";
 import categoryRoutes from "./routes/categoryRoutes";
+import writerRoutes from "./routes/writerRoutes";
 
 dotenv.config();
 
@@ -28,6 +29,8 @@ app.use("/api/comments", commentRoutes)
 app.use("/api/blogs", blogRoutes);
 
 app.use("/api/categories", categoryRoutes);
+
+app.use("/api/writers", writerRoutes);
 
 app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`)

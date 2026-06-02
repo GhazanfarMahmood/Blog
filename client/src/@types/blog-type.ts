@@ -1,8 +1,9 @@
+import { AuthorType } from "./author-type"
 import { CategoryType } from "./category-type"
 
 // BLOG CARD TYPE
 export type BlogContentType = {
-    author : string,
+    author : AuthorType,
     category : CategoryType[],
     content : string,
     createdAt : string,

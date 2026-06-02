@@ -32,7 +32,7 @@ export default function MainContent() {
                                 img={item.thumbnail} 
                                 category={item.category} 
                                 reading={item.reading} 
-                                authorName={item.author} 
+                                author={item.author}
                                 date={item.createdAt}
                                 description={item.excerpt} 
                                 slug={item.slug}

@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Blog from "../models/Blog";
 import Category from "../models/Category";
+import Writer from "../models/Writer";
 import mongoose from "mongoose";
 
 export const createBlog = async (req: Request, res: Response) => {
@@ -35,6 +36,7 @@ export const getBlogs = async (req: Request, res: Response) => {
     try {
         const blogs = await Blog.find()
         .populate("category")
+        .populate("author")
         .sort({ createdAt : -1});
 
         res.status(200).json(blogs)
@@ -47,7 +49,7 @@ export const getBlogsBySlug = async (req: Request, res: Response) => {
     try {
         const { slug } = req.params;
         
-        const blog = await Blog.findOne({ slug }).populate("category");
+        const blog = await Blog.findOne({ slug }).populate("category").populate("author");
 
         if(!blog) {
             return res.status(404).json({ message : "Blog not found" });
@@ -69,13 +71,38 @@ export const getBlogsByCategory = async (req: Request, res: Response) => {
             return res.status(404).json({ message : "Category not found"});
         } 
         
-        const blogs = await Blog.find({ category : category._id }).populate("category").sort({ createdAt : -1});
+        const blogs = await Blog.find({ category : category._id }).populate("category").populate("author").sort({ createdAt : -1});
 
         res.status(200).json(blogs);
     }catch (error) {
         res.status(500).json({ message : "Server error"});
     }
 };
+
+export const getBlogsByWriter = async (req: Request, res: Response) => {
+    try {
+        const { slug } = req.params;
+
+        const writer = await Writer.findOne({ slug });
+
+        if(!writer) {
+            return res.status(404).json({message : "Writer not found"});
+        }
+
+        const blogs = await Blog.find({ author : writer._id })
+        .populate("category")
+        .populate("author")
+        .sort({ createdAt: -1 });
+
+        res.status(200).json({
+            writer, blogs
+        });
+
+
+    } catch (error) {
+        res.status(500).json({ message : "Server Error" });
+    }
+}
 
 
 export const updateBlog = async (req: Request, res: Response) => {

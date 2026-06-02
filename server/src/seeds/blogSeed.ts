@@ -6,8 +6,9 @@ dotenv.config();
 import mongoose from 'mongoose';
 import Blog from '../models/Blog';
 import Category from '../models/Category';
+import Writer from "../models/Writer";
 
-function createRandomBlog(categories : any[]){
+function createRandomBlog(categories : any[], writers: any[]){
     const title = faker.book.title();   
 
     return {
@@ -35,7 +36,7 @@ function createRandomBlog(categories : any[]){
             ["React", "Node", "Express", "MongoDB", "TypeScript"],
             2
         ),
-        author : faker.person.fullName(),
+        author : faker.helpers.arrayElement(writers)._id,
 
         isPublished : faker.datatype.boolean(),
         reading : faker.number.int({min: 1, max: 8})
@@ -52,14 +53,15 @@ async function seedBlogs(){
         await mongoose.connect(process.env.MONGO_URI);
 
         const categories = await Category.find();
+        const writers = await Writer.find();
 
-        if(categories.length === 0) {
+        if(categories.length === 0 || writers.length === 0) {
             throw new Error (
-                "No categories found. Seed categories first."
+                "Seed categories and writers first."
             );
         }
 
-        const blogs = faker.helpers.multiple(() => createRandomBlog(categories), {
+        const blogs = faker.helpers.multiple(() => createRandomBlog(categories, writers), {
             count: 10,
         });
 

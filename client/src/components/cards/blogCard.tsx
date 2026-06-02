@@ -1,3 +1,4 @@
+import { AuthorType } from "@/@types/author-type";
 import { CategoryType } from "@/@types/category-type";
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
@@ -6,8 +7,8 @@ import Link from "next/link";
 import { AiFillClockCircle } from "react-icons/ai";
 
 export default function BlogCard(
-    {title, img, category, reading, authorName, date, description, slug} : 
-    {title : string, img: string | StaticImageData, category: CategoryType[], reading: string, authorName : string, date: string, description: string, slug: string}
+    {title, img, category, reading, author, date, description, slug} : 
+    {title : string, img: string | StaticImageData, category: CategoryType[], reading: string, author : AuthorType, date: string, description: string, slug: string,}
 ){
     const dateFormatter = new Date(date).toLocaleDateString("en-US", {
         day : "numeric",
@@ -15,6 +16,7 @@ export default function BlogCard(
         year : "numeric"
     });
 
+    console.log(author?.slug)
     return <>
      <div
         className="group"
@@ -47,10 +49,10 @@ export default function BlogCard(
             <div 
                 className="flex items-center justify-start gap-1.5"
             >
-                <Link href={`/blog/${slug}`} aria-label={`${authorName}-authorName`}
+                <Link href={`/writer/${author?.slug}`} aria-label={`${author?.name}-authorName`}
                     className="text-[15px] font-semibold leading-[1.2] -tracking-[0.02em] text-secondary capitalize transition-all duration-[0.25s] ease-in hover:text-primary dark:text-dark dark:hover:text-para"
                 >
-                    {authorName}
+                    {author?.name}
                 </Link>
                 <span
                     className="text-[15px] font-semibold leading-[1.2] -tracking-[0.02em] text-para capitalize"
