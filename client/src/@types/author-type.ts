@@ -2,6 +2,7 @@
 export type AuthorType = {
     _id : string,
     name : string,
+    writerImg : string,
     designation : string | null,
     slug : string,
     excerpt : string | null,

@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.get("/", getWriter);
 
-router.get("/slug/:slug", getWriterBySlug);
+router.get("/:slug", getWriterBySlug);
 
 router.post("/", createWriter);
 

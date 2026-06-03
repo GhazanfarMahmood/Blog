@@ -15,8 +15,7 @@ export default function BlogCard(
         month : "long",
         year : "numeric"
     });
-
-    console.log(author?.slug)
+    
     return <>
      <div
         className="group"
