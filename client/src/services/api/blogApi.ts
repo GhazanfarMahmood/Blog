@@ -21,9 +21,13 @@ export const blogApi = createApi({
 
         getBlogsByCategory : builder.query<BlogContentType[], string>({
             query: (slug) => `/blogs/category/${slug}`
+        }),
+
+        getBlogsByWriter : builder.query({
+            query : (slug) => `/blogs/writer/${slug}`
         })
 
     }),
 });
 
-export const { useGetBlogsQuery, useGetBlogsBySlugQuery, useGetBlogsByCategoryQuery }  = blogApi;
+export const { useGetBlogsQuery, useGetBlogsBySlugQuery, useGetBlogsByCategoryQuery, useGetBlogsByWriterQuery }  = blogApi;

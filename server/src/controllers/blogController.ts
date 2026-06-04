@@ -94,9 +94,7 @@ export const getBlogsByWriter = async (req: Request, res: Response) => {
         .populate("author")
         .sort({ createdAt: -1 });
 
-        res.status(200).json({
-            writer, blogs
-        });
+        res.status(200).json(blogs);
 
 
     } catch (error) {
