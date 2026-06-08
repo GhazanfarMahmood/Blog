@@ -21,11 +21,13 @@ import ThemeToggle from "../modals/ThemeToggle";
 
 // ADDING USESTATE HOOK
 import { useState } from "react";
+import { useGetCategoryQuery } from "@/services/api/categoryApi";
 
 export default function Header(){
     const [searchActive, setSearchActive] = useState<boolean>(false);
     const [activeHeader, setActiveHeader] = useState<boolean>(false);
     const [themeDropdown, setThemeDropdown] = useState<boolean>(false);
+    const {data, isLoading, error} = useGetCategoryQuery();
 
     const handleSearch = () => {
         setSearchActive(!searchActive);
@@ -71,7 +73,7 @@ export default function Header(){
                         className="hidden dark:block" 
                     />
                 </Link>
-                <HeaderLink activeHeader={activeHeader} setActiveHeader={setActiveHeader} />
+                <HeaderLink activeHeader={activeHeader} setActiveHeader={setActiveHeader} data={data} error={error} />
                 <div 
                     className="flex items-center justify-center ml-auto relative"
                 >
@@ -105,7 +107,7 @@ export default function Header(){
                         <ThemeToggle themeDropdown={themeDropdown} setThemeDropdown={setThemeDropdown} />
                     </div>
                 </div>
-                <HeaderSearch searchActive={searchActive} setSearchActive={setSearchActive} />
+                <HeaderSearch searchActive={searchActive} setSearchActive={setSearchActive} data={data} error={error} />
             </div>
             <div 
                 className={`hidden lg:hidden! w-full h-[100dvh] bg-header-bg fixed top-0 left-0 z-[2] ${activeHeader && "block!"}`} 

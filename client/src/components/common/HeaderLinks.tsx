@@ -23,7 +23,7 @@ import { useEffect, useState } from "react";
 import ThemeToggle from "@/components/modals/ThemeToggle";
 
 export function HeaderLink(
-    { activeHeader, setActiveHeader } : {activeHeader: boolean, setActiveHeader: (arg: boolean) => void}
+    { activeHeader, setActiveHeader, data, error } : {activeHeader: boolean, setActiveHeader: (arg: boolean) => void, data: any, error: string}
 ) {
     const [openDropdown, setOpenDropdown] = useState<{ [key: string]: boolean }>({});
     const [isMobile, setIsMobile] = useState<boolean>(false);
@@ -51,6 +51,10 @@ export function HeaderLink(
         }
     };
 
+    if(error) {
+        return <p>Some type of error</p>
+    }
+
     return (
         <div
             className={`w-full max-w-[430px] lg:max-w-none h-[100dvh] lg:h-fit flex flex-col justify-start bg-light lg:bg-transparent dark:bg-bg sm:dark:bg-none fixed lg:static top-0 -left-full z-[4] transition-all duration-[0.4s] ease-in ${activeHeader && "left-0"}`}
@@ -77,20 +81,20 @@ export function HeaderLink(
                     const isOpen = openDropdown[item.id];
                     return (
                         <li key={item.id} 
-                            className={`w-full lg:w-fit group ${item.category ? "relative flex lg:block items-center flex-wrap " : ""}`}
+                            className={`w-full lg:w-fit group ${item.isDropdown ? "relative flex lg:block items-center flex-wrap " : ""}`}
                         >
                             <Link
-                                href={"/category"} aria-label={`${item.name}-link`}
-                                className={`flex justify-start lg:justify-center items-center gap-1.5  font-semibold text-primary capitalize p-[6px_14px] rounded-lg transition-all duration-[.25s] ease-in lg:group-hover:bg--link-bg ${item.category && "w-[75%] lg:w-fit order-1 lg:order-0"}`}
+                                href={`${item.href}`} aria-label={`${item.name}-link`}
+                                className={`flex justify-start lg:justify-center items-center gap-1.5  font-semibold text-primary capitalize p-[6px_14px] rounded-lg transition-all duration-[.25s] ease-in lg:group-hover:bg--link-bg ${item.isDropdown && "w-[75%] lg:w-fit order-1 lg:order-0"}`}
                             >
                                 {item.name}
-                                {item.category && (
+                                {item.isDropdown && (
                                     <FaChevronDown 
                                         className={`w-3 h-3 hidden lg:block transition-all duration-[.25s] ease-in lg:group-hover:-rotate-180`} 
                                     />
                                 )}
                             </Link>
-                            {item.category && (
+                            {item.isDropdown && (
                                 <button 
                                     className={`h-9 ml-auto pr-1 block lg:hidden cursor-pointer ${"order-2 lg:order-none w-[25%] lg:w-auto"}`}
                                     onClick={() => toggleDropdown(item.id)} aria-label="dropdown-open"
@@ -100,7 +104,7 @@ export function HeaderLink(
                                     />  
                                 </button>
                             )}
-                            {item.category && (
+                            {item.isDropdown && (
                                 <ul
                                     className={`
                                         w-full lg:w-[234px] bg-light dark:bg-transparent lg:dark:bg-[#222] py-1 lg:py-3.5 pl-3 pr-4 rounded-lg shadow-none dark:shadow-none lg:shadow-links static lg:absolute top-11 transition-all duration-[0.25s] ease-in order-3 lg:order-none 
@@ -114,13 +118,13 @@ export function HeaderLink(
                                         after:content-none lg:after:content-['']
                                     `}
                                 >
-                                    {item.category?.map((items) => (
-                                        <li key={items.id}>
+                                    {data?.map((items) => (
+                                        <li key={items._id}>
                                             <Link
-                                                href={"/"} aria-label={`${item.name}-link`}
+                                                href={`/category/${items.slug}`} aria-label={`${item.categoryName}-link`}
                                                 className="w-[97%] block text-para lg:text-primary font-semibold capitalize leading-6 py-1 lg:py-2 px-4 rounded-lg transition-all duration-[0.25s] ease-in hover:bg--link-bg hover:ml-2"
                                             >
-                                                {items.name}
+                                                {items.categoryName}
                                             </Link>
                                         </li>
                                     ))}

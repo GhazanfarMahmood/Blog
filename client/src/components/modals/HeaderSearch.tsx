@@ -1,15 +1,22 @@
+"use client"
+
 // SEARCH DATA LINK
-import { searchLinks } from "@/data/header-data";
 
 // LINK FROM NEXT LINK 
 import Link from "next/link";
+import { useState } from "react";
 
 // REACT ICON
 import { IoMdClose } from "react-icons/io";
 
 export function HeaderSearch(
-    {searchActive, setSearchActive}: {searchActive : boolean, setSearchActive: (arg: boolean) => void}
+    {searchActive, setSearchActive, data, error}: {searchActive : boolean, setSearchActive: (arg: boolean) => void, data: any, error: string}
 ){
+    const [search, setSearch] = useState("");
+
+    if(error) {
+        return <p>Sometype of error come</p>
+    }
     return <div 
             className={`w-[calc(100%-48px)] sm:w-[430px] lg:w-[480px] bg-light dark:bg-[#222] py-6 sm:py-10 px-5 sm:px-8 rounded-2xl shadow-search dark:shadow-none opacity-0 invisible absolute top-[90%] sm:top-[104%] right-6 z-[4] transition-all duration-[0.25s] ease-in ${searchActive && "opacity-100 visible"}`}
         >
@@ -41,12 +48,12 @@ export function HeaderSearch(
         <ul 
             className="flex items-center justify-start gap-[9px] sm:gap-[9px] flex-wrap mt-3 sm:mt-4 md:mt-6"
         >
-            {searchLinks.map((link) => {
-               return <li key={link.id}>
-                    <Link href={"/"} aria-label={`${link.name} link`}
+            {data?.map((link) => {
+               return <li key={link._id}>
+                    <Link href={`/category/${link.slug}`} aria-label={`${link.categoryName} link`}
                         className="text-[11px] font-extrabold leading-[1.2] uppercase tracking-[0.1em] text-nowrap text-primary bg-light dark:bg-transparent p-[5px_10px] rounded-md dark:border dark:border-br shadow-links dark:shadow-none transition-all duration-[0.25s] ease-in hover:text-para hover:shadow-link-hover hover:opacity-70 dark:hover:text-primary"
                     >
-                        {link.name}
+                        {link.categoryName}
                     </Link>
                </li>
             })}
