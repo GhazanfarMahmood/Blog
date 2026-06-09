@@ -23,12 +23,20 @@ export default function SearchContent(){
     return <>
         <BreadCrumb pageName="Your searched for technology" />
         <SearchLayout name={query} />
-        <div
-            className="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-6 lg:gap-y-12 mb-16 md:mb-24 lg:mb-28"
-        >
-        {data?.map((item) => {
-            return <BlogCard title = {item.title} img={item.thumbnail} category={item.category} reading={item.reading} author={item.author} date={item.createdAt} description={item.excerpt} slug={item.slug} key={item._id}/>
-        })}
-    </div>
+        {!data?.length ?  
+            <div className="container flex items-center justify-center my-12">
+                <h1 className="text-[35px] xs:text-[50px] md:text-[80px] xl:text-9xl font-extrabold bg-clip-text text-transparent bg-linear-(--linear-bg) text-center dark:text-dark">No Blog Found</h1>
+            </div>
+            : 
+            <div
+                className="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-6 lg:gap-y-12 mb-16 md:mb-24 lg:mb-28"
+            >
+            {
+                data?.map((item) => {
+                    return <BlogCard title = {item.title} img={item.thumbnail} category={item.category} reading={item.reading} author={item.author} date={item.createdAt} description={item.excerpt} slug={item.slug} key={item._id}/>
+                })
+            }
+        </div>
+        }
     </>
 }
