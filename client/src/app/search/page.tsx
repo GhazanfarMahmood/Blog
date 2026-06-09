@@ -1,21 +1,7 @@
-// COMPONENTS
-import BlogCard from "@/components/cards/BlogCard";
-import BreadCrumb from "@/components/sections/BreadCrumb";
-import SearchLayout from "@/components/sections/SearchLayout";
-
-// SEARCH DATA
-import { SearchData } from "@/data/search-data";
+import SearchContent from "@/components/sections/SearchContent";
 
 export default function Search(){
     return <>
-        <BreadCrumb pageName="Your searched for technology" />
-        <SearchLayout />
-        <div
-            className="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-6 lg:gap-y-12 mb-16 md:mb-24 lg:mb-28"
-        >
-            {SearchData.map((item) => {
-                return <BlogCard title = {item.title} img={item.img} category={item.category} reading={item.reading} author={item.authorName} date={item.date} description={item.description} key={item.id}/>
-            })}
-        </div>
+        <SearchContent />
     </>
 }

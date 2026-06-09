@@ -1,8 +1,10 @@
 import express from "express";
-import { createBlog, deleteBlog, getBlogs, getBlogsByCategory, getBlogsBySlug, getBlogsByWriter, updateBlog } from "../controllers/blogController";
+import { createBlog, deleteBlog, getBlogs, getBlogsByCategory, getBlogsBySearch, getBlogsBySlug, getBlogsByWriter, updateBlog } from "../controllers/blogController";
 const router = express.Router();
 
 router.get("/", getBlogs);
+
+router.get("/search", getBlogsBySearch);
 
 router.get("/category/:slug", getBlogsByCategory);
 

@@ -1,22 +1,37 @@
 "use client"
-
-// SEARCH DATA LINK
-
+import { CategoryType } from "@/@types/category-type";
+import { SerializedError } from "@reduxjs/toolkit";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 // LINK FROM NEXT LINK 
 import Link from "next/link";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import React, { FormEvent, useState } from "react";
 
 // REACT ICON
 import { IoMdClose } from "react-icons/io";
 
 export function HeaderSearch(
-    {searchActive, setSearchActive, data, error}: {searchActive : boolean, setSearchActive: (arg: boolean) => void, data: any, error: string}
+    {searchActive, setSearchActive, data, error}: {searchActive : boolean, setSearchActive: (arg: boolean) => void, data: CategoryType[] | undefined, error: FetchBaseQueryError | SerializedError | undefined}
 ){
     const [search, setSearch] = useState("");
+    const router = useRouter();
 
     if(error) {
         return <p>Sometype of error come</p>
     }
+
+    const handleSubmit = (e: FormEvent) => {
+        e.preventDefault();
+
+        const trimmedSearch = search.trim();
+
+        if(!trimmedSearch) return;
+
+        router.push(`/search?q=${encodeURIComponent(trimmedSearch)}`)
+        setSearch("");
+        setSearchActive(false);
+    }
+    
     return <div 
             className={`w-[calc(100%-48px)] sm:w-[430px] lg:w-[480px] bg-light dark:bg-[#222] py-6 sm:py-10 px-5 sm:px-8 rounded-2xl shadow-search dark:shadow-none opacity-0 invisible absolute top-[90%] sm:top-[104%] right-6 z-[4] transition-all duration-[0.25s] ease-in ${searchActive && "opacity-100 visible"}`}
         >
@@ -35,11 +50,13 @@ export function HeaderSearch(
         </button>
         <form 
             className="flex items-center justify-center flex-col sm:flex-row gap-2 bg-transparent sm:bg-light dark:bg-[#222] p-[5px] border-0 sm:border border-solid border-br rounded-lg shadow-none sm:shadow-search-field hover:shadow-none sm:hover:shadow-hover transition-all duration-[0.25s] ease-in"
+            onSubmit={handleSubmit}
         >
             <input type="text" placeholder="Start Typing" aria-label="search box"
                 className="w-full text-primary focus:outline-none rounded-lg py-2 px-4 font-medium border border-solid border-br sm:border-0 shadow-search-field sm:shadow-none transition-all duration-[0.25s] ease-in hover:shadow-hover sm:hover:shadow-none" 
+                value={search} onChange={(e) => setSearch(e.target.value)} autoFocus
             />
-            <button type="button" 
+            <button type="submit" 
                 className="w-full sm:w-fit p-[10px_18px] bg-linear-(--linear-bg) min-h-10 flex items-center justify-center leading-[1.2] text-light dark:text-dark font-bold -tracking-[0.03em] rounded-lg cursor-pointer transition-all duration-[0.25s] ease-in hover:shadow-btn-hover "
             >
                 Search
@@ -52,6 +69,7 @@ export function HeaderSearch(
                return <li key={link._id}>
                     <Link href={`/category/${link.slug}`} aria-label={`${link.categoryName} link`}
                         className="text-[11px] font-extrabold leading-[1.2] uppercase tracking-[0.1em] text-nowrap text-primary bg-light dark:bg-transparent p-[5px_10px] rounded-md dark:border dark:border-br shadow-links dark:shadow-none transition-all duration-[0.25s] ease-in hover:text-para hover:shadow-link-hover hover:opacity-70 dark:hover:text-primary"
+                        onClick={() => setSearchActive(false)}
                     >
                         {link.categoryName}
                     </Link>

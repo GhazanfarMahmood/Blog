@@ -21,13 +21,17 @@ import linkedin_icon from "@/assets/icons/linkedin.svg";
 import { links } from "@/data/header-data";
 import { useEffect, useState } from "react";
 import ThemeToggle from "@/components/modals/ThemeToggle";
+import { CategoryType } from "@/@types/category-type";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { SerializedError } from "@reduxjs/toolkit";
 
 export function HeaderLink(
-    { activeHeader, setActiveHeader, data, error } : {activeHeader: boolean, setActiveHeader: (arg: boolean) => void, data: any, error: string}
+    { activeHeader, setActiveHeader, data, error } : {activeHeader: boolean, setActiveHeader: (arg: boolean) => void, data: CategoryType[] | undefined, error: FetchBaseQueryError | SerializedError | undefined}
 ) {
     const [openDropdown, setOpenDropdown] = useState<{ [key: string]: boolean }>({});
     const [isMobile, setIsMobile] = useState<boolean>(false);
     const [themeDropdown, setThemeDropdown] = useState<boolean>(false);
+    console.log(links)
 
     useEffect(() => {
         const handleResize = () :void => {
@@ -121,7 +125,7 @@ export function HeaderLink(
                                     {data?.map((items) => (
                                         <li key={items._id}>
                                             <Link
-                                                href={`/category/${items.slug}`} aria-label={`${item.categoryName}-link`}
+                                                href={`/category/${items.slug}`} aria-label={`${items.categoryName}-link`}
                                                 className="w-[97%] block text-para lg:text-primary font-semibold capitalize leading-6 py-1 lg:py-2 px-4 rounded-lg transition-all duration-[0.25s] ease-in hover:bg--link-bg hover:ml-2"
                                             >
                                                 {items.categoryName}

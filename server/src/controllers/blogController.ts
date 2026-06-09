@@ -45,6 +45,37 @@ export const getBlogs = async (req: Request, res: Response) => {
     }
 }
 
+export const getBlogsBySearch = async (req: Request, res: Response) => {
+    try {
+        const { q } = req.query;
+
+        if (!q || typeof q !== "string") {
+            return res.status(400).json({
+                message: "Search query is required"
+            });
+        }
+
+        const blogs = await Blog.find({
+            $or: [
+                { title: { $regex: q, $options: "i" } },
+                { excerpt: { $regex: q, $options: "i" } },
+                { tags: { $in: [new RegExp(q, "i")] } }
+            ]
+        })
+        .populate("category")
+        .populate("author")
+        .sort({ createdAt: -1 });
+
+        return res.status(200).json(blogs);
+
+    } catch (error) {
+        return res.status(500).json({
+            message: "Server Error"
+        });
+    }
+};
+
+
 export const getBlogsBySlug = async (req: Request, res: Response) => {
     try {
         const { slug } = req.params;
