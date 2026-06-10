@@ -1,13 +1,8 @@
 // COMPONENTS
-import HeroBanner from "@/components/sections/HeroBanner";
-import MainContent from "@/components/sections/MainContent";
-import TrendingTopic from "@/components/sections/TrendingTopic";
-
+import HomeContent from "@/components/sections/HomeContent";
 
 export default function Main(){
   return (<>
-    <HeroBanner />
-    <TrendingTopic />
-    <MainContent />
+    <HomeContent />
   </>)
 }

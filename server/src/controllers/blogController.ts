@@ -3,6 +3,7 @@ import Blog from "../models/Blog";
 import Category from "../models/Category";
 import Writer from "../models/Writer";
 import mongoose from "mongoose";
+import { getPagination } from "../utils/pagination";
 
 export const createBlog = async (req: Request, res: Response) => {
     try {
@@ -34,12 +35,26 @@ export const createBlog = async (req: Request, res: Response) => {
 
 export const getBlogs = async (req: Request, res: Response) => {
     try {
+        const {page, limit, skip} = getPagination(req.query.page, req.query.limit);  
         const blogs = await Blog.find()
+        .sort({ createdAt : -1})
+        .skip(skip)
+        .limit(limit)
         .populate("category")
-        .populate("author")
-        .sort({ createdAt : -1});
+        .populate("author");
 
-        res.status(200).json(blogs)
+        const totalBlogs = await Blog.countDocuments();
+
+        const totalPages = Math.ceil(totalBlogs / limit);
+
+        res.status(200).json({
+            blogs, 
+            currentPage : page, 
+            totalPages, 
+            totalBlogs,
+            hasNextPage: page < totalPages,
+            hasPrevPage: page > 1,
+        });
     } catch(error) {
         res.status(500).json({ message : "Server error" })
     }
@@ -47,6 +62,7 @@ export const getBlogs = async (req: Request, res: Response) => {
 
 export const getBlogsBySearch = async (req: Request, res: Response) => {
     try {
+        const { page, limit, skip } = getPagination(req.query.page, req.query.limit);
         const { q } = req.query;
 
         if (!q || typeof q !== "string") {
@@ -55,18 +71,33 @@ export const getBlogsBySearch = async (req: Request, res: Response) => {
             });
         }
 
-        const blogs = await Blog.find({
+        const searchQuery = {
             $or: [
                 { title: { $regex: q, $options: "i" } },
                 { excerpt: { $regex: q, $options: "i" } },
                 { tags: { $in: [new RegExp(q, "i")] } }
             ]
-        })
-        .populate("category")
-        .populate("author")
-        .sort({ createdAt: -1 });
+        };
 
-        return res.status(200).json(blogs);
+        const blogs = await Blog.find(searchQuery)
+            .populate("category")
+            .populate("author")
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit);
+
+        const totalBlogs = await Blog.countDocuments(searchQuery);
+
+        const totalPages = Math.ceil(totalBlogs / limit);
+
+        return res.status(200).json({
+            blogs,
+            currentPage: page,
+            totalPages,
+            totalBlogs,
+            hasNextPage: page < totalPages,
+            hasPrevPage: page > 1,
+        });
 
     } catch (error) {
         return res.status(500).json({
@@ -94,6 +125,7 @@ export const getBlogsBySlug = async (req: Request, res: Response) => {
 
 export const getBlogsByCategory = async (req: Request, res: Response) => {
     try {
+        const {page, limit, skip} = getPagination(req.query.page, req.query.limit);  
         const { slug } = req.params;
 
         const category = await Category.findOne({ slug });
@@ -102,9 +134,26 @@ export const getBlogsByCategory = async (req: Request, res: Response) => {
             return res.status(404).json({ message : "Category not found"});
         } 
         
-        const blogs = await Blog.find({ category : category._id }).populate("category").populate("author").sort({ createdAt : -1});
+        const blogs = await Blog.find({ category : category._id })
+        .populate("category")
+        .populate("author")
+        .sort({ createdAt : -1})
+        .skip(skip)
+        .limit(limit);
 
-        res.status(200).json(blogs);
+        const totalBlogs = await Blog.countDocuments({
+            category: category._id
+        });
+        const totalPages = Math.ceil(totalBlogs / limit);
+
+        res.status(200).json({
+            blogs,
+            currentPage : page,
+            totalPages,
+            totalBlogs,
+            hasNextPage: page < totalPages,
+            hasPrevPage: page > 1,
+        });
     }catch (error) {
         res.status(500).json({ message : "Server error"});
     }
@@ -112,6 +161,7 @@ export const getBlogsByCategory = async (req: Request, res: Response) => {
 
 export const getBlogsByWriter = async (req: Request, res: Response) => {
     try {
+        const {page, limit, skip} = getPagination(req.query.page, req.query.limit);  
         const { slug } = req.params;
 
         const writer = await Writer.findOne({ slug });
@@ -123,9 +173,23 @@ export const getBlogsByWriter = async (req: Request, res: Response) => {
         const blogs = await Blog.find({ author : writer._id })
         .populate("category")
         .populate("author")
-        .sort({ createdAt: -1 });
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit);
 
-        res.status(200).json(blogs);
+         const totalBlogs = await Blog.countDocuments({
+            author: writer._id
+        });
+        const totalPages = Math.ceil(totalBlogs / limit);
+
+        res.status(200).json({
+            blogs,
+            currentPage : page,
+            totalPages,
+            totalBlogs,
+            hasNextPage: page < totalPages,
+            hasPrevPage: page > 1,
+        });
 
 
     } catch (error) {

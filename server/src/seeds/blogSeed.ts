@@ -62,7 +62,7 @@ async function seedBlogs(){
         }
 
         const blogs = faker.helpers.multiple(() => createRandomBlog(categories, writers), {
-            count: 10,
+            count: 194,
         });
 
 

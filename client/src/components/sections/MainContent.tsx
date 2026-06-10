@@ -1,17 +1,18 @@
 "use client";
 
+import { useState } from "react";
 // COMPONENTS
 import AuthorDetail from "../cards/AuthorDetail";
 import BlogCard from "../cards/BlogCard";
 import Creating from "../cards/CreatingCard";
 import FeatureCard from "../cards/FeatureCard";
 import Technology from "../cards/TechnologyCard";
-import WorkExperience from "../cards/WorkExperience";
 import Pagination from "./Pagingation";
 import { useGetBlogsQuery } from "@/services/api/blogApi";
 
 export default function MainContent() {
-    const {data, isLoading, error} = useGetBlogsQuery();
+    const [page, setPage] = useState(1);
+    const {data, isLoading, error} = useGetBlogsQuery({page, limit: 10});
 
     if(isLoading) {
         return <p>blog data is loading....</p>
@@ -21,12 +22,14 @@ export default function MainContent() {
         return <p>Something went wrong.</p>
     }
 
+    console.log(data);
+
     return <>
         <div className="container">
             <div className="grid grid-cols-1 lg:grid-cols-[minmax(530px,826px)_minmax(370px,382px)] gap-[40px] mb-16 md:mb-24 lg:mb-28">
                 <div>
                     <div className="grid grid-cols-1 md:max-lg:grid-cols-2 lg:max-xl:grid-cols-1 xl:grid-cols-2 gap-x-6 gap-y-6 lg:gap-y-12">
-                        {data?.map((item) =>{
+                        {data?.blogs.map((item) =>{
                             return <BlogCard 
                                 title = {item.title} 
                                 img={item.thumbnail} 
@@ -40,12 +43,11 @@ export default function MainContent() {
                             />
                         } )}
                     </div>
-                    <Pagination />
+                    <Pagination setPage={setPage} currentPage={data?.currentPage} totalPages={data?.totalPages} hasPrevPage={data?.hasPrevPage} hasNextPage={data?.hasNextPage} />
                 </div>
                 <div>
                     <AuthorDetail />
                     <FeatureCard />
-                    <WorkExperience />
                     <Technology />
                     <Creating />
                 </div>
