@@ -1,18 +1,30 @@
 "use client";
 
-import { useState } from "react";
 // COMPONENTS
 import AuthorDetail from "../cards/AuthorDetail";
 import BlogCard from "../cards/BlogCard";
 import Creating from "../cards/CreatingCard";
 import FeatureCard from "../cards/FeatureCard";
 import Technology from "../cards/TechnologyCard";
-import Pagination from "./Pagingation";
+import PaginationComponent from "./PagingationComponent";
+
+//  HOOOKS
 import { useGetBlogsQuery } from "@/services/api/blogApi";
+import { useState } from "react";
+
+// USING SWIPER SLIDER
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+
+// SWIPER CSS
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 export default function MainContent() {
     const [page, setPage] = useState(1);
     const {data, isLoading, error} = useGetBlogsQuery({page, limit: 10});
+    
 
     if(isLoading) {
         return <p>blog data is loading....</p>
@@ -21,8 +33,6 @@ export default function MainContent() {
     if(error) {
         return <p>Something went wrong.</p>
     }
-
-    console.log(data);
 
     return <>
         <div className="container">
@@ -43,10 +53,34 @@ export default function MainContent() {
                             />
                         } )}
                     </div>
-                    <Pagination setPage={setPage} currentPage={data?.currentPage} totalPages={data?.totalPages} hasPrevPage={data?.hasPrevPage} hasNextPage={data?.hasNextPage} />
+                    <PaginationComponent setPage={setPage} currentPage={data?.currentPage} totalPages={data?.totalPages} hasPrevPage={data?.hasPrevPage} hasNextPage={data?.hasNextPage} />
                 </div>
                 <div>
-                    <AuthorDetail />
+                    <Swiper
+                        modules={[Navigation, Pagination, Autoplay]}
+                        navigation={true}
+                        loop={true}
+                        pagination={{ clickable: true }}
+                        scrollbar={{ draggable: true }}
+                        autoplay={{
+                            delay: 3000,
+                            pauseOnMouseEnter: true,
+                            disableOnInteraction: false,
+                        }}
+                    >
+                        <SwiperSlide>
+                            <AuthorDetail />
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <AuthorDetail />
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <AuthorDetail />
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <AuthorDetail />
+                        </SwiperSlide>
+                    </Swiper>
                     <FeatureCard />
                     <Technology />
                     <Creating />

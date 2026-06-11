@@ -9,7 +9,7 @@ import CategoryDetailInfo from "./CategoryDetailInfo";
 import { useState } from "react";
 import { useGetCategoryBySlugQuery } from "@/services/api/categoryApi";
 import { useGetBlogsByCategoryQuery } from "@/services/api/blogApi";
-import Pagination from "./Pagingation";
+import PaginationComponent from "./PagingationComponent";
 
 export default function CategoryDetailContent(){
     const [page, setPage] = useState(1);
@@ -36,7 +36,7 @@ export default function CategoryDetailContent(){
                     return <BlogCard title={item.title} img={item.thumbnail} category={item.category} reading={item.reading} author={item.author} date={item.createdAt} description={item.excerpt} slug={item.slug} key={item._id} />
                 })}
             </div>
-            <Pagination setPage={setPage} currentPage={blogData?.currentPage} totalPages={blogData?.totalPages} hasPrevPage={blogData?.hasPrevPage} hasNextPage={blogData?.hasNextPage} />
+            <PaginationComponent setPage={setPage} currentPage={blogData?.currentPage} totalPages={blogData?.totalPages} hasPrevPage={blogData?.hasPrevPage} hasNextPage={blogData?.hasNextPage} />
         </div>
     </>
 }

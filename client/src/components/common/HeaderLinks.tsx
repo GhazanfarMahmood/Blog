@@ -19,8 +19,14 @@ import linkedin_icon from "@/assets/icons/linkedin.svg";
 
 // LINKS
 import { links } from "@/data/header-data";
+
+// HOOKS
 import { useEffect, useState } from "react";
+
+// COMPONENTS
 import ThemeToggle from "@/components/modals/ThemeToggle";
+
+// TYPES
 import { CategoryType } from "@/@types/category-type";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { SerializedError } from "@reduxjs/toolkit";
@@ -31,8 +37,6 @@ export function HeaderLink(
     const [openDropdown, setOpenDropdown] = useState<{ [key: string]: boolean }>({});
     const [isMobile, setIsMobile] = useState<boolean>(false);
     const [themeDropdown, setThemeDropdown] = useState<boolean>(false);
-    console.log(links)
-
     useEffect(() => {
         const handleResize = () :void => {
             const mobile = window.innerWidth <= 991;

@@ -19,7 +19,7 @@ import { HeaderLink } from "./HeaderLinks";
 import { HeaderSearch } from "../modals/HeaderSearch";
 import ThemeToggle from "../modals/ThemeToggle";
 
-// ADDING USESTATE HOOK
+// HOOKS
 import { useState } from "react";
 import { useGetCategoryQuery } from "@/services/api/categoryApi";
 

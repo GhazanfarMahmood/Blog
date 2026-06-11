@@ -6,7 +6,7 @@ import BlogCard from "../cards/BlogCard"
 import { useGetBlogsBySearchQuery } from "@/services/api/blogApi";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
-import Pagination from "./Pagingation";
+import PaginationComponent from "./PagingationComponent";
 
 export default function SearchContent(){
     const [page, setPage] = useState(1);
@@ -40,7 +40,7 @@ export default function SearchContent(){
                         })
                     }
                 </div>
-                <Pagination setPage={setPage} currentPage={data?.currentPage} totalPages={data?.totalPages} hasPrevPage={data?.hasPrevPage} hasNextPage={data?.hasNextPage} />
+                <PaginationComponent setPage={setPage} currentPage={data?.currentPage} totalPages={data?.totalPages} hasPrevPage={data?.hasPrevPage} hasNextPage={data?.hasNextPage} />
             </div>
         }
     </>

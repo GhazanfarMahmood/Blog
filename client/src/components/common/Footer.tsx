@@ -14,6 +14,8 @@ import linkedin_icon from "@/assets/icons/linkedin.svg";
 
 // FOOTER DATA
 import { footerCategory, homeLink, pagesLink } from "@/data/footer-data";
+
+// HOOK
 import { useState } from "react";
 
 export default function Footer(){

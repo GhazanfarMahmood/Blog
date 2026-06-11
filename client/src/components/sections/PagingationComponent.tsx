@@ -7,7 +7,7 @@ import chevron_right from "@/assets/icons/chevron-right.svg"
 import React from "react";
 import { getPaginationRange } from "@/utils/pagination";
 
-export default function Pagination({setPage, currentPage, totalPages, hasPrevPage, hasNextPage}: {setPage : React.Dispatch<React.SetStateAction<number>>, currentPage : number | undefined, totalPages: number | undefined, hasPrevPage : boolean | undefined, hasNextPage : boolean | undefined}){
+export default function PaginationComponent({setPage, currentPage, totalPages, hasPrevPage, hasNextPage}: {setPage : React.Dispatch<React.SetStateAction<number>>, currentPage : number | undefined, totalPages: number | undefined, hasPrevPage : boolean | undefined, hasNextPage : boolean | undefined}){
     const pages = getPaginationRange(currentPage ?? 1, totalPages ?? 1);
 
     return <>

@@ -9,7 +9,7 @@ import { useGetWriterBySlugQuery } from "@/services/api/writerApi";
 import { useParams } from "next/navigation";
 import BlogCard from "../cards/BlogCard";
 import { useState } from "react";
-import Pagination from "./Pagingation";
+import PaginationComponent from "./PagingationComponent";
 
 
 export default function WriterContent(){
@@ -48,7 +48,7 @@ export default function WriterContent(){
                         />
                 }) }
             </div>
-            <Pagination setPage={setPage} currentPage={writerBlog?.currentPage} totalPages={writerBlog?.totalPages} hasPrevPage={writerBlog?.hasPrevPage} hasNextPage={writerBlog?.hasNextPage} />
+            <PaginationComponent setPage={setPage} currentPage={writerBlog?.currentPage} totalPages={writerBlog?.totalPages} hasPrevPage={writerBlog?.hasPrevPage} hasNextPage={writerBlog?.hasNextPage} />
         </div>
     </>
 }
