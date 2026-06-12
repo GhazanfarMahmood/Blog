@@ -30,7 +30,7 @@ export default function WriterContent(){
 
     return <>
         <BreadCrumb pageName={`Archives for ${writer?.name}`} />
-        <AuthorBox name={writer?.name} designation={writer?.designation} writerImg={writer?.writerImg} excerpt={writer?.excerpt} location={writer?.location} fbLink={writer?.fbLink} instagramLink={writer?.instagramLink} twitterLink={writer?.twitterLink} LinkedinLink={writer?.LinkedinLink}  />
+            <AuthorBox name={writer?.name} designation={writer?.designation} writerImg={writer?.writerImg} excerpt={writer?.excerpt} location={writer?.location} fbLink={writer?.fbLink} instagramLink={writer?.instagramLink} twitterLink={writer?.twitterLink} LinkedinLink={writer?.LinkedinLink}  />
         {/* <WriterBox /> */}
         <div className="container mb-16 md:mb-24 lg:mb-28">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-6 lg:gap-y-12">
@@ -45,7 +45,7 @@ export default function WriterContent(){
                         description={item.excerpt} 
                         slug={item.slug}
                         key={item._id}
-                        />
+                    />
                 }) }
             </div>
             <PaginationComponent setPage={setPage} currentPage={writerBlog?.currentPage} totalPages={writerBlog?.totalPages} hasPrevPage={writerBlog?.hasPrevPage} hasNextPage={writerBlog?.hasNextPage} />

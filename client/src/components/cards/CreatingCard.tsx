@@ -15,7 +15,7 @@ export default function Creating(){
         <span
             className="block text-xs font-extrabold uppercase leading-[1.2] tracking-widest text-para mb-5"
         >
-            Creating
+            Latest Blogs
         </span>
         <ul
             className="flex flex-col items-start justify-start gap-5"

@@ -36,7 +36,8 @@ function createRandomWriter(name : string) {
         instagramLink : `https://instagram.com/${faker.internet.username()}`,
         LinkedinLink : `https://linkedin.com/in/${faker.internet.username()}`,
         excerpt : faker.lorem.sentences(3),
-        location : `${faker.location.city()}, ${faker.location.country()}`
+        location : `${faker.location.city()}, ${faker.location.country()}`,
+        isFeatured : faker.datatype.boolean(),
     }
 }
 

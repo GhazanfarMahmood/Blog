@@ -17,6 +17,7 @@ const blogSchema = new mongoose.Schema({
     slug : {type: String, required: true, trim: true},
     tags : {type: [String], required: true, default: []},
     isPublished: {type: Boolean, default: false},
+    isFeatured: {type: Boolean, default: false},
 }, {timestamps: true});
 
 export default mongoose.model("Blog", blogSchema);

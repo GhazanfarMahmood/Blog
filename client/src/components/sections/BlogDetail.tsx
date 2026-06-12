@@ -160,11 +160,11 @@ export default function BlogDetailPage(
                     <BlogComment />
                 </div>
                 <div>
-                    <AuthorDetail />
+                    {/* <AuthorDetail />
                     <FeatureCard />
                     <WorkExperience />
-                    <Technology />
-                    <Creating />
+                    <Technology /> */}
+                    {/* <Creating /> */}
                 </div>
             </div>  
             <div>

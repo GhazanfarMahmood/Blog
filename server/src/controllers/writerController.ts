@@ -4,7 +4,9 @@ import mongoose from "mongoose";
 
 export const createWriter = async (req : Request, res: Response) => {
     try {
-        const {name, designation, slug, excerpt, location, fbLink, twitterLink, instagramLink, LinkedinLink} = req.body;
+        const {name, designation, slug, excerpt, location, fbLink, twitterLink, instagramLink, LinkedinLink, isFeatured
+            
+        } = req.body;
 
         if(!name || !location) {
             return res.status(400).json({ message : "Name and location are required" });
@@ -30,6 +32,7 @@ export const createWriter = async (req : Request, res: Response) => {
             twitterLink: twitterLink || "", 
             instagramLink: instagramLink || "", 
             LinkedinLink : LinkedinLink || "",
+            isFeatured,
         });
 
         res.status(201).json({

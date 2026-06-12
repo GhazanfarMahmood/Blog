@@ -45,10 +45,18 @@ export const getBlogs = async (req: Request, res: Response) => {
 
         const totalBlogs = await Blog.countDocuments();
 
+        const writers = await Writer.find({isFeatured: true});
+        const featuredBlogs = await Blog.find({isFeatured: true})
+        .limit(5)
+        .populate("category")
+        .populate("author");
+        
         const totalPages = Math.ceil(totalBlogs / limit);
 
         res.status(200).json({
             blogs, 
+            featuredAuthor : writers,
+            featuredBlogs : featuredBlogs,
             currentPage : page, 
             totalPages, 
             totalBlogs,

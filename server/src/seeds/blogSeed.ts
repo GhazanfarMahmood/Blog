@@ -39,6 +39,7 @@ function createRandomBlog(categories : any[], writers: any[]){
         author : faker.helpers.arrayElement(writers)._id,
 
         isPublished : faker.datatype.boolean(),
+        isFeatured : faker.datatype.boolean(),
         reading : faker.number.int({min: 1, max: 8})
     }
 }

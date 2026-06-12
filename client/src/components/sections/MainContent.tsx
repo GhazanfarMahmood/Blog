@@ -34,6 +34,8 @@ export default function MainContent() {
         return <p>Something went wrong.</p>
     }
 
+    console.log(data);
+
     return <>
         <div className="container">
             <div className="grid grid-cols-1 lg:grid-cols-[minmax(530px,826px)_minmax(370px,382px)] gap-[40px] mb-16 md:mb-24 lg:mb-28">
@@ -56,33 +58,61 @@ export default function MainContent() {
                     <PaginationComponent setPage={setPage} currentPage={data?.currentPage} totalPages={data?.totalPages} hasPrevPage={data?.hasPrevPage} hasNextPage={data?.hasNextPage} />
                 </div>
                 <div>
-                    <Swiper
-                        modules={[Navigation, Pagination, Autoplay]}
-                        navigation={true}
-                        loop={true}
-                        pagination={{ clickable: true }}
-                        scrollbar={{ draggable: true }}
-                        autoplay={{
-                            delay: 3000,
-                            pauseOnMouseEnter: true,
-                            disableOnInteraction: false,
-                        }}
-                    >
-                        <SwiperSlide>
-                            <AuthorDetail />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <AuthorDetail />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <AuthorDetail />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <AuthorDetail />
-                        </SwiperSlide>
-                    </Swiper>
-                    <FeatureCard />
-                    <Technology />
+                    {!data?.featuredAuthor.length ?  
+                        <>
+                        {data?.featuredAuthor.map((item) => {
+                           return <AuthorDetail
+                            name={item.name}
+                            designation={item.designation}
+                            writerImg={item.writerImg}
+                            excerpt={item.excerpt}
+                            location={item.location}
+                            fbLink={item.fbLink}
+                            twitterLink={item.twitterLink}
+                            instagramLink={item.instagramLink}
+                            LinkedinLink={item.LinkedinLink}
+                            slug={item.slug}
+                            key={item._id}
+                           />
+                        })}
+                        </>
+                    : <div
+                            className="relative px-3"
+                        >
+                            <Swiper
+                                modules={[Navigation, Pagination, Autoplay]}
+                                navigation={true}
+                                loop={true}
+                                pagination={{ clickable: true }}
+                                scrollbar={{ draggable: true }}
+                                spaceBetween={10}
+                                speed={1200}
+                                autoplay={{
+                                    delay: 3000,
+                                    pauseOnMouseEnter: true,
+                                    disableOnInteraction: false,
+                                }}
+                            >
+                                {data?.featuredAuthor.map((item) => {
+                                    return <SwiperSlide key={item._id} className="h-auto!">
+                                        <AuthorDetail   
+                                            name={item.name}
+                                            designation={item.designation}
+                                            writerImg={item.writerImg}
+                                            excerpt={item.excerpt}
+                                            location={item.location}
+                                            fbLink={item.fbLink}
+                                            twitterLink={item.twitterLink}
+                                            instagramLink={item.instagramLink}
+                                            LinkedinLink={item.LinkedinLink} 
+                                            slug={item.slug}
+                                        />
+                                    </SwiperSlide>
+                                })}
+                            </Swiper>
+                        </div> }
+                    <FeatureCard featuredBlogs={data?.featuredBlogs} />
+                    {/* <Technology /> */}
                     <Creating />
                 </div>
             </div>

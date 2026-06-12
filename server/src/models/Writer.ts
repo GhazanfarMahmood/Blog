@@ -11,6 +11,7 @@ const writerSchema = new mongoose.Schema({
     twitterLink : {type : String, default : ""},
     instagramLink : {type : String, default : ""},
     LinkedinLink : {type : String, default : ""},
+    isFeatured : {type : Boolean, default : false}
 }, {timestamps: true});
 
 export default mongoose.model("Writer", writerSchema);  
