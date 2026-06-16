@@ -86,7 +86,7 @@ export default function MainContent() {
                                 pagination={{ clickable: true }}
                                 scrollbar={{ draggable: true }}
                                 spaceBetween={10}
-                                speed={1200}
+                                speed={1000}
                                 autoplay={{
                                     delay: 3000,
                                     pauseOnMouseEnter: true,

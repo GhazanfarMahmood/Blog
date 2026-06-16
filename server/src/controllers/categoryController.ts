@@ -18,9 +18,11 @@ export const createCategory = async (req: Request, res: Response) =>{
             return res.status(409).json({message : "Category already exists"});
         }
 
+        const finalSlug = slug?.toLowerCase().trim() || categoryName.toLowerCase().replace(/\s+/g, "-")
+
         const newCategory = await Category.create({
             categoryName,
-            slug,
+            slug  : finalSlug,
             image, 
             icon,
             description

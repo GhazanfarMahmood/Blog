@@ -33,6 +33,7 @@ export default function FeatureCard({featuredBlogs} : {featuredBlogs: BlogConten
                 pagination={{ clickable: true }}
                 scrollbar={{ draggable: true }}
                 spaceBetween={10}
+                speed={1000}
                 autoplay={{
                     delay: 3000,
                     pauseOnMouseEnter: true,
