@@ -45,7 +45,7 @@ export default function FeatureCard({featuredBlogs} : {featuredBlogs: BlogConten
                         <div 
                             className="h-[300px] rounded-2xl overflow-hidden relative group"
                         >
-                            <Link href={"/"} aria-label={item.title} 
+                            <Link href={`/blog/${item.slug}`} aria-label={item.title} 
                                 className="absolute top-0 left-0 w-full h-full after:w-full after:h-full after:bg--feature-bg after:absolute after:top-0 after:left-0 after:z-[1] after:content-['']after:transition-all after:duration-[0.25s] after:ease-in group-hover:after:bg-"
                             >
                                 <Image src={item.thumbnail} alt="feature-img" width={370} height={300}
@@ -68,7 +68,7 @@ export default function FeatureCard({featuredBlogs} : {featuredBlogs: BlogConten
                                 className="absolute bottom-7 left-7 right-7 z-[2]"
                             >
                                 <span
-                                    className="flex items-center justify-start gap-[5px] mt-auto"
+                                    className="flex items-center justify-start gap-[5px] mt-auto flex-wrap"
                                 >
                                     <Link href={`/writer/${item.author?.slug}`} aria-label={item.author?.name}
                                         className="text-[15px] text-light font-semibold leading-[1.2] -tracking-[0.02em] capitalize opacity-100! transition-all duration-[0.25s] ease-in hover:opacity-70! dark:text-dark"

@@ -9,7 +9,7 @@ import Technology from "../cards/TechnologyCard";
 import PaginationComponent from "./PagingationComponent";
 
 //  HOOOKS
-import { useGetBlogsQuery } from "@/services/api/blogApi";
+import { useGetBlogsQuery, useGetSideBarDataQuery } from "@/services/api/blogApi";
 import { useState } from "react";
 
 // USING SWIPER SLIDER
@@ -23,25 +23,26 @@ import 'swiper/css/pagination';
 
 export default function MainContent() {
     const [page, setPage] = useState(1);
-    const {data, isLoading, error} = useGetBlogsQuery({page, limit: 10});
-    
+    const {data: blogData, isLoading : blogLoading, error: blogError} = useGetBlogsQuery({page, limit: 10});
+    const {data: sideBarData, isLoading: sideBarLoading, error: sideBarError} = useGetSideBarDataQuery();
 
-    if(isLoading) {
+
+    if(blogLoading || sideBarLoading) {
         return <p>blog data is loading....</p>
     }
 
-    if(error) {
+    if(blogError || sideBarError) {
         return <p>Something went wrong.</p>
     }
 
-    console.log(data);
+    console.log(sideBarData);
 
     return <>
         <div className="container">
             <div className="grid grid-cols-1 lg:grid-cols-[minmax(530px,826px)_minmax(370px,382px)] gap-[40px] mb-16 md:mb-24 lg:mb-28">
                 <div>
                     <div className="grid grid-cols-1 md:max-lg:grid-cols-2 lg:max-xl:grid-cols-1 xl:grid-cols-2 gap-x-6 gap-y-6 lg:gap-y-12">
-                        {data?.blogs.map((item) =>{
+                        {blogData?.blogs.map((item) =>{
                             return <BlogCard 
                                 title = {item.title} 
                                 img={item.thumbnail} 
@@ -55,25 +56,26 @@ export default function MainContent() {
                             />
                         } )}
                     </div>
-                    <PaginationComponent setPage={setPage} currentPage={data?.currentPage} totalPages={data?.totalPages} hasPrevPage={data?.hasPrevPage} hasNextPage={data?.hasNextPage} />
+                    <PaginationComponent setPage={setPage} currentPage={blogData?.currentPage} totalPages={blogData?.totalPages} hasPrevPage={blogData?.hasPrevPage} hasNextPage={blogData?.hasNextPage} />
                 </div>
                 <div>
-                    {!data?.featuredAuthor.length ?  
+                    {sideBarData?.featuredWriters.length === 1 ?  
                         <>
-                        {data?.featuredAuthor.map((item) => {
-                           return <AuthorDetail
-                            name={item.name}
-                            designation={item.designation}
-                            writerImg={item.writerImg}
-                            excerpt={item.excerpt}
-                            location={item.location}
-                            fbLink={item.fbLink}
-                            twitterLink={item.twitterLink}
-                            instagramLink={item.instagramLink}
-                            LinkedinLink={item.LinkedinLink}
-                            slug={item.slug}
-                            key={item._id}
-                           />
+                        {sideBarData?.featuredWriters.map((item) => {
+                           return <div key={item._id} className="pb-[25px]">
+                            <AuthorDetail
+                                name={item.name}
+                                designation={item.designation}
+                                writerImg={item.writerImg}
+                                excerpt={item.excerpt}
+                                location={item.location}
+                                fbLink={item.fbLink}
+                                twitterLink={item.twitterLink}
+                                instagramLink={item.instagramLink}
+                                LinkedinLink={item.LinkedinLink}
+                                slug={item.slug}
+                            />
+                           </div>
                         })}
                         </>
                     : <div
@@ -93,7 +95,7 @@ export default function MainContent() {
                                     disableOnInteraction: false,
                                 }}
                             >
-                                {data?.featuredAuthor.map((item) => {
+                                {sideBarData?.featuredWriters.map((item) => {
                                     return <SwiperSlide key={item._id} className="h-auto!">
                                         <AuthorDetail   
                                             name={item.name}
@@ -111,9 +113,8 @@ export default function MainContent() {
                                 })}
                             </Swiper>
                         </div> }
-                    <FeatureCard featuredBlogs={data?.featuredBlogs} />
-                    {/* <Technology /> */}
-                    <Creating />
+                    <FeatureCard featuredBlogs={sideBarData?.featuredBlogs} />
+                    <Creating latestBlogs={sideBarData?.latestBlogs} />
                 </div>
             </div>
         </div>

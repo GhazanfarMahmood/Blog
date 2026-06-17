@@ -21,7 +21,7 @@ export type BlogContentType = {
 // BLOG DETAIL TYPE
 export type BlogDetailType = {
     title : string,
-    author : string,
+    author : AuthorType,
     category : CategoryType[],
     excerpt : string,
     createdAt : string,

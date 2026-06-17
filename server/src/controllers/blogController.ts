@@ -45,18 +45,11 @@ export const getBlogs = async (req: Request, res: Response) => {
 
         const totalBlogs = await Blog.countDocuments();
 
-        const writers = await Writer.find({isFeatured: true});
-        const featuredBlogs = await Blog.find({isFeatured: true})
-        .limit(5)
-        .populate("category")
-        .populate("author");
-        
+
         const totalPages = Math.ceil(totalBlogs / limit);
 
         res.status(200).json({
             blogs, 
-            featuredAuthor : writers,
-            featuredBlogs : featuredBlogs,
             currentPage : page, 
             totalPages, 
             totalBlogs,
@@ -65,6 +58,32 @@ export const getBlogs = async (req: Request, res: Response) => {
         });
     } catch(error) {
         res.status(500).json({ message : "Server error" })
+    }
+}
+
+export const getSidebarData = async (req: Request, res: Response) => {
+    try {
+        const featuredWriters = await Writer.find({isFeatured: true});
+
+        const featuredBlogs = await Blog.find({isFeatured: true})
+        .limit(5)
+        .populate("category")
+        .populate("author")
+        .sort({createdAT : -1});
+        
+        const latestBlogs = await Blog.find()
+        .limit(3)
+        .populate("category")
+        .populate("author")
+        .sort({createdAt : -1});
+
+        res.status(200).json({
+            featuredWriters,
+            featuredBlogs,
+            latestBlogs,
+        });
+    } catch (error) {
+        res.status(500).json({message : "Server error"});
     }
 }
 
@@ -115,19 +134,44 @@ export const getBlogsBySearch = async (req: Request, res: Response) => {
 };
 
 
-export const getBlogsBySlug = async (req: Request, res: Response) => {
+export const getBlogsBySlug = async (
+    req: Request,
+    res: Response
+) => {
     try {
         const { slug } = req.params;
-        
-        const blog = await Blog.findOne({ slug }).populate("category").populate("author");
 
-        if(!blog) {
-            return res.status(404).json({ message : "Blog not found" });
+        const blog = await Blog.findOne({ slug })
+            .populate("category")
+            .populate("author");
+
+        if (!blog) {
+            return res.status(404).json({
+                message: "Blog not found",
+            });
         }
 
-        res.status(200).json(blog);
+        const previousBlog = await Blog.findOne({
+            _id: { $lt: blog._id },
+        })
+            .select("title slug")
+            .sort({ _id: -1 });
+
+        const nextBlog = await Blog.findOne({
+            _id: { $gt: blog._id },
+        })
+            .select("title slug")
+            .sort({ _id: 1 });
+
+        res.status(200).json({
+            blog,
+            previousBlog,
+            nextBlog,
+        });
     } catch (error) {
-        res.status(500).json({ message : "Server error" });
+        res.status(500).json({
+            message: "Server error",
+        });
     }
 };
 

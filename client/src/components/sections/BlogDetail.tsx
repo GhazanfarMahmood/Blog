@@ -18,28 +18,23 @@ import Technology from "../cards/TechnologyCard";
 import Creating from "../cards/CreatingCard";
 
 // IMAGE FROM ASSETS
-import blog_detail_img1 from "@/assets/images/blog-detail-img1.webp";
-import blog_detail_img2 from "@/assets/images/blog-detail-img2.webp";
 import { BlogDetailType } from "@/@types/blog-type";
+import { useGetSideBarDataQuery } from "@/services/api/blogApi";
+import { ExtendBlogType } from "@/@types/extend-blog-type";
 
 
 export default function BlogDetailPage(
     {
-        title, 
-        author, 
-        category, 
-        excerpt, 
-        createdAt, 
-        reading, 
-        thumbnail, 
-        content
-    }: BlogDetailType
+        blog, previousBlog, nextBlog
+    }: ExtendBlogType
 ){
-    const dateFormatter = new Date(createdAt).toLocaleDateString("en-US", {
+    const dateFormatter = new Date(blog.createdAt).toLocaleDateString("en-US", {
         day : "numeric",
         month : "long",
         year : "numeric",
     })
+
+    const {data, isLoading, error} = useGetSideBarDataQuery();
 
     return <>
         <div 
@@ -48,10 +43,10 @@ export default function BlogDetailPage(
             <div 
                 className="flex items-center justify-center gap-1.5 mb-2.5"
             >
-                <Link aria-label={`${author}-authorName`} href={"/"}
+                <Link aria-label={`${blog?.author.name}-authorName`} href={`/writer/${blog?.author.slug}`}
                     className="text-[15px] font-semibold leading-[1.2] -tracking-[0.02em] text-secondary capitalize transition-all duration-[0.25s] ease-in hover:text-primary dark:text-dark dark:hover:text-para" 
                 >
-                    {author}
+                    {blog?.author.name}
                 </Link>
                 <span 
                     className="text-[15px] font-semibold leading-[1.2] -tracking-[0.02em] text-para capitalize"
@@ -62,15 +57,15 @@ export default function BlogDetailPage(
             <h2
                 className="max-w-[720px] text-primary text-[42px] md:text-[44px] lg:text-[52px] font-bold leading-[1.2] -tracking-[0.04em] text-center mx-auto mb-2.5"
             >
-                {title}
+                {blog?.title}
             </h2>
             <p
                 className="max-w-[640px] text-lg text-center text-primary text-balance leading-[1.55] mx-auto opacity-70"
             >
-                {excerpt}
+                {blog?.excerpt}
             </p>
             <div className="flex items-center justify-center flex-wrap gap-2 mt-6 mb-[27px]">
-                {category && category.map((item) => {
+                {blog?.category && blog?.category.map((item) => {
                 return <Link aria-label="category-link" href={`/category/${item.slug}`} key={item._id}
                         className="block w-fit text-[11px] font-extrabold leading-[1.2] uppercase tracking-[0.1em] text-nowrap text-primary bg-light dark:bg-transparent p-[5px_10px] rounded-md dark:border dark:border-br shadow-links dark:shadow-none transition-all duration-[0.25s] ease-in hover:text-para hover:shadow-link-hover hover:opacity-70 dark:hover:text-primary"    
                     >
@@ -79,7 +74,7 @@ export default function BlogDetailPage(
                 })}
             </div>
             <div>
-                <Image src={thumbnail} alt="blog-detail-img" width={1248} height={500}
+                <Image src={blog?.thumbnail} alt="blog-detail-img" width={1248} height={500}
                     className="w-full h-[500px] object-cover rounded-2xl"
                 />
             </div>
@@ -89,7 +84,7 @@ export default function BlogDetailPage(
                 <div 
                     className="hidden lg:block"
                 >
-                    <SideLink reading={reading} />
+                    <SideLink reading={blog?.reading} />
                 </div>
                 <div>
                     <div
@@ -115,7 +110,7 @@ export default function BlogDetailPage(
                         <p
                             className="whitespace-pre-line"
                         >
-                            {content}
+                            {blog?.content}
                         </p>
                     </div>
                     <div
@@ -124,10 +119,10 @@ export default function BlogDetailPage(
                         <div 
                             className="flex items-center justify-center gap-1.5 mb-2.5"
                         >
-                            <Link aria-label={`${author}-authorName`} href={"/"}
+                            <Link aria-label={`${blog?.author.name}-authorName`} href={`/writer/${blog?.author.slug}`}
                                 className="text-[15px] font-semibold leading-[1.2] -tracking-[0.02em] text-secondary capitalize transition-all duration-[0.25s] ease-in hover:text-primary dark:text-dark dark:hover:text-para" 
                             >
-                                {author}
+                                {blog?.author.name}
                             </Link>
                             <span 
                                 className="text-[15px] font-semibold leading-[1.2] -tracking-[0.02em] text-para capitalize"
@@ -136,7 +131,7 @@ export default function BlogDetailPage(
                             </span>
                         </div>
                          <div className="flex items-center justify-center flex-wrap gap-2 mt-6 mb-[27px]">
-                            {category && category.map((item) => {
+                            {blog?.category && blog?.category.map((item) => {
                             return <Link aria-label="category-link" href={`/category/${item.slug}`} key={item._id}
                                     className="block w-fit text-[11px] font-extrabold leading-[1.2] uppercase tracking-[0.1em] text-nowrap text-primary bg-light dark:bg-transparent p-[5px_10px] rounded-md dark:border dark:border-br shadow-links dark:shadow-none transition-all duration-[0.25s] ease-in hover:text-para hover:shadow-link-hover hover:opacity-70 dark:hover:text-primary"    
                                 >
@@ -147,38 +142,39 @@ export default function BlogDetailPage(
                         <div
                             className="w-full order-3 block lg:hidden"
                         >
-                            <SideLink reading={reading} />
+                            <SideLink reading={blog?.reading} />
                         </div>
                     </div>
                     <div
                         className="flex flex-col sm:flex-row justify-center gap-6 mt-6"
                     >
-                        {ArticleNavigationData.map((item) => {
+                        {/* {ArticleNavigationData.map((item) => {
                             return <ArticleNavigation key={item.id} title={item.title} id={item.id} />
-                        })}
+                        })} */}
+                        <ArticleNavigation title={previousBlog.title} slug={previousBlog.slug} id={previousBlog._id} type={"previous"} />
+                        <ArticleNavigation title={nextBlog.title} slug={nextBlog.slug} id={nextBlog._id} type={"next"} />
                     </div>
                     <BlogComment />
                 </div>
                 <div>
-                    {/* <AuthorDetail />
-                    <FeatureCard />
-                    <WorkExperience />
-                    <Technology /> */}
-                    {/* <Creating /> */}
+                    <div className="h-fit pb-[25px]">
+                    <AuthorDetail
+                        name={blog?.author.name}
+                        designation={blog?.author.designation}
+                        writerImg={blog?.author.writerImg}
+                        excerpt={blog?.author.excerpt}
+                        location={blog?.author.location}
+                        fbLink={blog?.author.fbLink}
+                        twitterLink={blog?.author.twitterLink}
+                        instagramLink={blog?.author.instagramLink}
+                        LinkedinLink={blog?.author.LinkedinLink}
+                        slug={blog?.author.slug}
+                    />
+                    </div>
+                    <FeatureCard featuredBlogs={data?.featuredBlogs} />
+                    <Creating latestBlogs={data?.latestBlogs} />
                 </div>
-            </div>  
-            <div>
-                <h3
-                    className="text-[33px] text-primary font-bold leading-[1.2] -tracking-[0.04em] capitalize mb-6 sm:mb-8"
-                >Read Next</h3>
-                <div
-                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-6 lg:gap-y-12 mb-16 md:mb-24 lg:mb-28"
-                >
-                    {/* {NextBlogData.map((data) => {
-                        return <BlogCard title={data.title} img={data.img} category={data.category} subCategory={data.subCategory} reading={data.reading} authorName={data.authorName} month={data.month} year={data.year} day={data.day} description={data.description} key={data.id} />
-                    })} */}
-                </div>
-            </div>
+             </div>  
         </div>
     </>
 }

@@ -1,5 +1,6 @@
-import { BlogDetailType } from "@/@types/blog-type";
+import { ExtendBlogType } from "@/@types/extend-blog-type";
 import { PaginatedBlogType } from "@/@types/paginated-blog-type";
+import { SideBarDataType } from "@/@types/sidebar-type";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 
@@ -16,7 +17,11 @@ export const blogApi = createApi({
             query : ({ page, limit }) => `/blogs?page=${page}&limit=${limit}`,
         }),
 
-        getBlogsBySlug : builder.query<BlogDetailType, string>({
+        getSideBarData : builder.query<SideBarDataType, void>({
+            query: () => `/blogs/sidebar-data`
+        }),
+
+        getBlogsBySlug : builder.query<ExtendBlogType, string>({
             query : (slug) =>  `/blogs/${slug}`,
         }),
 
@@ -35,4 +40,4 @@ export const blogApi = createApi({
     }),
 });
 
-export const { useGetBlogsQuery, useGetBlogsBySlugQuery, useGetBlogsByCategoryQuery, useGetBlogsByWriterQuery, useGetBlogsBySearchQuery }  = blogApi;
+export const { useGetBlogsQuery, useGetSideBarDataQuery, useGetBlogsBySlugQuery, useGetBlogsByCategoryQuery, useGetBlogsByWriterQuery, useGetBlogsBySearchQuery }  = blogApi;
