@@ -1,6 +1,7 @@
 import { blogApi } from "@/services/api/blogApi";
 import { categoryApi } from "@/services/api/categoryApi";
 import { commentApi } from "@/services/api/commentApi";
+import { contactApi } from "@/services/api/contactApi";
 import { writerApi } from "@/services/api/writerApi";
 import { configureStore } from "@reduxjs/toolkit";
 
@@ -9,11 +10,12 @@ export const store = configureStore({
         [commentApi.reducerPath] : commentApi.reducer,
         [blogApi.reducerPath] : blogApi.reducer,
         [categoryApi.reducerPath] : categoryApi.reducer,
-        [writerApi.reducerPath] : writerApi.reducer
+        [writerApi.reducerPath] : writerApi.reducer,
+        [contactApi.reducerPath] : contactApi.reducer,
     },
 
     middleware: (getDefaultMiddleware) => 
-        getDefaultMiddleware().concat(commentApi.middleware, blogApi.middleware, categoryApi.middleware, writerApi.middleware),
+        getDefaultMiddleware().concat(commentApi.middleware, blogApi.middleware, categoryApi.middleware, writerApi.middleware, contactApi.middleware),
 });
 
 
