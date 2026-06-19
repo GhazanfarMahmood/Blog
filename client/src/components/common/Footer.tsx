@@ -13,13 +13,16 @@ import insta_icon from "@/assets/icons/insta.svg";
 import linkedin_icon from "@/assets/icons/linkedin.svg";
 
 // FOOTER DATA
-import { footerCategory, homeLink, pagesLink } from "@/data/footer-data";
+import { pagesLink } from "@/data/footer-data";
 
 // HOOK
 import { useState } from "react";
+import { useGetCategoryQuery } from "@/services/api/categoryApi";
 
 export default function Footer(){
     const [footerLinks, setFooterLinks] = useState("");
+    const {data, isLoading, error} = useGetCategoryQuery();
+
     return (<>
         <div className="container">
             <div 
@@ -72,7 +75,6 @@ export default function Footer(){
                         >
                             Welcome to ultimate source for fresh perspectives! Explore curated content to enlighten, entertain and engage global readers.
                         </p>
-                        {/* HERE'S IN UL I DEFINE CLASSES FOR ANCHOR THAT IS (LINK) */}
                         <ul 
                             className="flex items-center justify-start mt-2 mb-4 lg:mb-0 -ml-2 *:w-10 *:h-10 *:flex *:items-center *:justify-center [&_img]:transition [&_img]:duration-[0.25s] [&_img]:ease-in [&_img]:filter-(--filter-primary) dark:[&_img]:filter-(--filter-white) [&_a]:hover:*:filter-(--filter-secondary) dark:[&_img]:hover:opacity-80"
                         >
@@ -111,15 +113,15 @@ export default function Footer(){
                                 className={`strong-after ${footerLinks === "active-one" && "rotation-active"}`} 
                                 onClick={() => {setFooterLinks(footerLinks !== "active-one" ? "active-one" : "")}}
                             >
-                                Home Pages
+                                Categories
                             </strong>
                             <ul 
                                 className={`${footerLinks === "active-one" && "h-fit! visible! opacity-100! mt-[18px]!"}`}
                             >
-                                {homeLink.map((link) =>{
-                                    return <li key={link.id}>
-                                        <Link href={"/"} aria-label={`${link.name}-link`}>
-                                            {link.name}
+                                {data?.slice(0, data?.length / 2).map((link) =>{
+                                    return <li key={link._id}>
+                                        <Link href={`/category/${link.slug}`} aria-label={`${link.categoryName}-link`}>
+                                            {link.categoryName}
                                         </Link>
                                     </li>
                                 })}
@@ -135,10 +137,10 @@ export default function Footer(){
                             <ul 
                                 className={`${footerLinks === "active-two" && "h-fit! visible! opacity-100! mt-[18px]!"}`}
                             >
-                                {footerCategory.map((link) =>{
-                                    return <li key={link.id}>
-                                        <Link href={"/"} aria-label={`${link.name}-link`}>
-                                            {link.name}
+                                {data?.slice(data?.length / 2).map((link) =>{
+                                    return <li key={link._id}>
+                                        <Link href={`/category/${link.slug}`} aria-label={`${link.categoryName}-link`}>
+                                            {link.categoryName}
                                         </Link>
                                     </li>
                                 })}
@@ -156,7 +158,7 @@ export default function Footer(){
                             >
                                 {pagesLink.map((link) =>{
                                     return <li key={link.id}>
-                                        <Link href={"/"} aria-label={`${link.name}-link`}>
+                                        <Link href={`${link.href}`} aria-label={`${link.name}-link`}>
                                             {link.name}
                                         </Link>
                                     </li>
