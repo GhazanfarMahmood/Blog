@@ -8,6 +8,7 @@ import categoryRoutes from "./routes/categoryRoutes";
 import writerRoutes from "./routes/writerRoutes";
 import contactRoutes from "./routes/contactRoutes";
 import aboutRoutes from "./routes/aboutRoutes";
+import uploadRoutes from "./routes/uploadRotes";
 
 dotenv.config();
 
@@ -37,6 +38,8 @@ app.use("/api/writers", writerRoutes);
 app.use("/api/contacts", contactRoutes);
 
 app.use("/api/about", aboutRoutes);
+
+app.use("/api/upload", uploadRoutes);
 
 app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`)

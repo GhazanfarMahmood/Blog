@@ -1,3 +1,4 @@
+import { aboutApi } from "@/services/api/aboutApi";
 import { blogApi } from "@/services/api/blogApi";
 import { categoryApi } from "@/services/api/categoryApi";
 import { commentApi } from "@/services/api/commentApi";
@@ -12,10 +13,11 @@ export const store = configureStore({
         [categoryApi.reducerPath] : categoryApi.reducer,
         [writerApi.reducerPath] : writerApi.reducer,
         [contactApi.reducerPath] : contactApi.reducer,
+        [aboutApi.reducerPath] : aboutApi.reducer
     },
 
     middleware: (getDefaultMiddleware) => 
-        getDefaultMiddleware().concat(commentApi.middleware, blogApi.middleware, categoryApi.middleware, writerApi.middleware, contactApi.middleware),
+        getDefaultMiddleware().concat(commentApi.middleware, blogApi.middleware, categoryApi.middleware, writerApi.middleware, contactApi.middleware, aboutApi.middleware),
 });
 
 

@@ -1,8 +1,10 @@
+// TYPE
 import { ExtendBlogType } from "@/@types/extend-blog-type";
 import { PaginatedBlogType } from "@/@types/paginated-blog-type";
 import { SideBarDataType } from "@/@types/sidebar-type";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+// QUERY FROM REACT
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const blogApi = createApi({
     reducerPath : "blogApi",
