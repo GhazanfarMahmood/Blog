@@ -1,11 +1,10 @@
 "use client";
 
-// CATEGORY CARD COMPONENT
+// HOOK
 import { useGetCategoryQuery } from "@/services/api/categoryApi";
-import CategoryCard from "../cards/CategoryCard";
 
-// CATEGORY DATA
-import { CategoryData } from "@/data/category-data";
+// COMPONENTS
+import CategoryCard from "../cards/CategoryCard";
 
 export default function CategoryContent(){
     const {data, isLoading, error} = useGetCategoryQuery();

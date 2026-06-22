@@ -1,10 +1,13 @@
+// ICONS & IMAGES
+import { AiFillClockCircle } from "react-icons/ai";
+
+// NEXT LINKS 
+import Link from "next/link";
+
+// TYPES, NEXT IMAGE ALONG WITH IMG TYPE.
 import { AuthorType } from "@/@types/author-type";
 import { CategoryType } from "@/@types/category-type";
 import Image, { StaticImageData } from "next/image";
-import Link from "next/link";
-
-// ICONS
-import { AiFillClockCircle } from "react-icons/ai";
 
 export default function BlogCard(
     {title, img, category, reading, author, date, description, slug} : 
@@ -12,7 +15,7 @@ export default function BlogCard(
 ){
     const dateFormatter = new Date(date).toLocaleDateString("en-US", {
         day : "numeric",
-        month : "long",
+        month : "short",
         year : "numeric"
     });
     

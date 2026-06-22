@@ -1,9 +1,11 @@
 // NEXT JS IMAGE
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
+
+// TYPE
+import { CategoryDetailInfoType } from "@/@types/category-type";
 
 export default function CategoryDetailInfo(
-    {img, title, description}
-    : {img: string | StaticImageData, title : string, description: string}
+    {img, title, description} : CategoryDetailInfoType
 ){
     return <div
         className="w-full container pb-12 border-b border-b-br mb-12"

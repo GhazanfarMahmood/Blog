@@ -5,10 +5,9 @@ import AuthorDetail from "../cards/AuthorDetail";
 import BlogCard from "../cards/BlogCard";
 import Creating from "../cards/CreatingCard";
 import FeatureCard from "../cards/FeatureCard";
-import Technology from "../cards/TechnologyCard";
-import PaginationComponent from "./PagingationComponent";
+import PaginationComponent from "./PaginationComponent";
 
-//  HOOOKS
+//  HOOKS
 import { useGetBlogsQuery, useGetSideBarDataQuery } from "@/services/api/blogApi";
 import { useState } from "react";
 
@@ -26,7 +25,6 @@ export default function MainContent() {
     const {data: blogData, isLoading : blogLoading, error: blogError} = useGetBlogsQuery({page, limit: 10});
     const {data: sideBarData, isLoading: sideBarLoading, error: sideBarError} = useGetSideBarDataQuery();
 
-
     if(blogLoading || sideBarLoading) {
         return <p>blog data is loading....</p>
     }
@@ -35,13 +33,17 @@ export default function MainContent() {
         return <p>Something went wrong.</p>
     }
 
-    console.log(sideBarData);
-
     return <>
-        <div className="container">
-            <div className="grid grid-cols-1 lg:grid-cols-[minmax(530px,826px)_minmax(370px,382px)] gap-[40px] mb-16 md:mb-24 lg:mb-28">
+        <div 
+            className="container"
+        >
+            <div 
+                className="grid grid-cols-1 lg:grid-cols-[minmax(530px,826px)_minmax(370px,382px)] gap-[40px] mb-16 md:mb-24 lg:mb-28"
+            >
                 <div>
-                    <div className="grid grid-cols-1 md:max-lg:grid-cols-2 lg:max-xl:grid-cols-1 xl:grid-cols-2 gap-x-6 gap-y-6 lg:gap-y-12">
+                    <div 
+                        className="grid grid-cols-1 md:max-lg:grid-cols-2 lg:max-xl:grid-cols-1 xl:grid-cols-2 gap-x-6 gap-y-6 lg:gap-y-12"
+                    >
                         {blogData?.blogs.map((item) =>{
                             return <BlogCard 
                                 title = {item.title} 
@@ -56,13 +58,22 @@ export default function MainContent() {
                             />
                         } )}
                     </div>
-                    <PaginationComponent setPage={setPage} currentPage={blogData?.currentPage} totalPages={blogData?.totalPages} hasPrevPage={blogData?.hasPrevPage} hasNextPage={blogData?.hasNextPage} />
+                    <PaginationComponent 
+                        setPage={setPage} 
+                        currentPage={blogData?.currentPage} 
+                        totalPages={blogData?.totalPages} 
+                        hasPrevPage={blogData?.hasPrevPage} 
+                        hasNextPage={blogData?.hasNextPage} 
+                    />
                 </div>
                 <div>
                     {sideBarData?.featuredWriters.length === 1 ?  
                         <>
                         {sideBarData?.featuredWriters.map((item) => {
-                           return <div key={item._id} className="pb-[25px]">
+                           return <div 
+                                key={item._id} 
+                                className="pb-[25px]"
+                            >
                             <AuthorDetail
                                 name={item.name}
                                 designation={item.designation}
@@ -113,8 +124,12 @@ export default function MainContent() {
                                 })}
                             </Swiper>
                         </div> }
-                    <FeatureCard featuredBlogs={sideBarData?.featuredBlogs} />
-                    <Creating latestBlogs={sideBarData?.latestBlogs} />
+                    <FeatureCard 
+                        featuredBlogs={sideBarData?.featuredBlogs} 
+                    />
+                    <Creating 
+                        latestBlogs={sideBarData?.latestBlogs} 
+                    />
                 </div>
             </div>
         </div>

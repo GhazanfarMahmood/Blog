@@ -1,18 +1,22 @@
 "use client";
 
+// COMPONENT
 import BreadCrumb from "./BreadCrumb"
 import SearchLayout from "./SearchLayout"
 import BlogCard from "../cards/BlogCard"
+import PaginationComponent from "./PaginationComponent";
+
+// HOOKS
 import { useGetBlogsBySearchQuery } from "@/services/api/blogApi";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
-import PaginationComponent from "./PagingationComponent";
 
 export default function SearchContent(){
     const [page, setPage] = useState(1);
     const searchParams = useSearchParams();
     const query = searchParams.get("q") || "";
-    const {data, isLoading, error} = useGetBlogsBySearchQuery({query, page, limit: 12})
+    const {data, isLoading, error} = useGetBlogsBySearchQuery({query, page, limit: 12});
+
     if(isLoading) {
         return <p>Loading</p>
     }
@@ -21,7 +25,6 @@ export default function SearchContent(){
         return <p>some type of error</p>
     }
 
-    console.log(data)
     return <>
         <BreadCrumb pageName="Your searched for technology" />
         <SearchLayout name={query} />

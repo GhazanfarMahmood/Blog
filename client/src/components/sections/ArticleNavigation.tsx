@@ -4,7 +4,7 @@ import Link from "next/link";
 // REACT ICONS
 import { GoChevronLeft, GoChevronRight  } from "react-icons/go";
 
-export default function ArticleNavigation ({title, slug, id, type} : {title : string, slug: string, id: string, type: string}) {
+export default function ArticleNavigation ({title, slug, type} : {title : string, slug: string, type: string}) {
     return <>
             <Link
                 href={`/blog/${slug}`}

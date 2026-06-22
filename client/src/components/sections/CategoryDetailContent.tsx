@@ -1,15 +1,15 @@
 "use client";
 
-// COMPONENTS
+// HOOK
 import { useParams } from "next/navigation";
-import BlogCard from "../cards/BlogCard";
-import CategoryDetailInfo from "./CategoryDetailInfo";
-
-// API TO FETCH DATA
 import { useState } from "react";
 import { useGetCategoryBySlugQuery } from "@/services/api/categoryApi";
 import { useGetBlogsByCategoryQuery } from "@/services/api/blogApi";
-import PaginationComponent from "./PagingationComponent";
+
+// COMPONENTS
+import BlogCard from "../cards/BlogCard";
+import CategoryDetailInfo from "./CategoryDetailInfo";
+import PaginationComponent from "./PaginationComponent";
 
 export default function CategoryDetailContent(){
     const [page, setPage] = useState(1);
@@ -23,8 +23,6 @@ export default function CategoryDetailContent(){
         return <p>page is loading</p>
     }
     const {categoryName, description, image} = category;
-
-    console.log(blogData);
 
     return <>
         <CategoryDetailInfo img={image} title={categoryName} description={description} />

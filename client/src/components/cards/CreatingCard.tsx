@@ -1,9 +1,6 @@
 // NEXT JS LINK
 import Link from "next/link";
 
-// CREATING DATA
-import { CreatingData } from "@/data/main-data";
-
 // REACT ICONS
 import { TbExternalLink } from "react-icons/tb";
 import { BlogContentType } from "@/@types/blog-type";

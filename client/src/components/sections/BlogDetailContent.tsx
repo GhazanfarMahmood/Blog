@@ -1,14 +1,15 @@
 "use client";
 
-import { BlogDetailType } from "@/@types/blog-type";
+// HOOKS 
 import { useGetBlogsBySlugQuery } from "@/services/api/blogApi";
 import { useParams } from "next/navigation";
 
 // COMPONENTS
 import BlogDetailPage from "@/components/sections/BlogDetail";
 import BreadCrumb from "@/components/sections/BreadCrumb";
-import { ExtendBlogType } from "@/@types/extend-blog-type";
 
+// TYPE
+import { ExtendBlogType } from "@/@types/extend-blog-type";
 
 export default function BlogDetailContent(){
     const params = useParams();
@@ -34,7 +35,7 @@ export default function BlogDetailContent(){
      <div
             className="[&_ul]:justify-center"
         >
-            <BreadCrumb pageName={data?.blog.title} subPageName="Startups" />
+            <BreadCrumb pageName={data?.blog.title} subPageName={"blog"} />
         </div>
         <BlogDetailPage
             blog={blog}

@@ -13,3 +13,16 @@ export type AuthorType = {
     LinkedinLink : string | null,
     createdAt : string,
 }
+
+export type AuthorDetailType = {
+    name: string, 
+    designation: string | null, 
+    writerImg: string, 
+    excerpt: string | null, 
+    slug: string, 
+    location: string, 
+    fbLink: string | null, 
+    twitterLink: string | null, 
+    instagramLink: string | null, 
+    LinkedinLink: string | null
+}

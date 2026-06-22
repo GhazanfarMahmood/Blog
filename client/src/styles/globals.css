@@ -250,8 +250,9 @@
     }
   }
   /* CREATING A BREADCRUMB */
-  .breadcrumb a::after {width: 10px; height: 10px; background: no-repeat center / contain url("../assets/icons/chevron-right.svg"); position: absolute; inset: 0; margin-block: auto; margin-left: auto; content: "";}
+  .breadcrumb a::after, .breadcrumb .sub-page::after {width: 10px; height: 10px; background: no-repeat center / contain url("../assets/icons/chevron-right.svg"); position: absolute; inset: 0; margin-block: auto; margin-left: auto; content: "";}
   .dark .breadcrumb a::after {filter: var(--filter-white);}
+  .breadcrumb .sub-page {position: relative; padding-right: 16px;}
   /* ANCHOR OR BUTTON UNDERLINE */
   .btn-underline {background: linear-gradient(to right,var(--secondary) 0%,var(--secondary) 98%); background-size: 100% 1px; background-repeat: no-repeat; background-position: left 98%;}
   .dark .btn-underline {background: linear-gradient(to right,var(--dark) 0%,var(--dark) 98%); background-size: 100% 1px; background-repeat: no-repeat; background-position: left 98%;}

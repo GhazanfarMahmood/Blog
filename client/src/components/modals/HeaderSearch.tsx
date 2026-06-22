@@ -1,9 +1,12 @@
 "use client"
-import { CategoryType } from "@/@types/category-type";
-import { SerializedError } from "@reduxjs/toolkit";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+
+// TYPE
+import { SearchType } from "@/@types/search-type";
+
 // LINK FROM NEXT LINK 
 import Link from "next/link";
+
+// HOOK
 import { useRouter } from "next/navigation";
 import React, { FormEvent, useState } from "react";
 
@@ -11,7 +14,7 @@ import React, { FormEvent, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 
 export function HeaderSearch(
-    {searchActive, setSearchActive, data, error}: {searchActive : boolean, setSearchActive: (arg: boolean) => void, data: CategoryType[] | undefined, error: FetchBaseQueryError | SerializedError | undefined}
+    {searchActive, setSearchActive, data, error}: SearchType
 ){
     const [search, setSearch] = useState("");
     const router = useRouter();

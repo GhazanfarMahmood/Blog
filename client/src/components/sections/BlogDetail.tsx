@@ -2,24 +2,20 @@
 
 // NEXT JS IMAGE AND LINK
 import Link from "next/link";
+import Image from "next/image";
 
 // COMPONENTS
-import { NextBlogData } from "@/data/next-blog";
-import BlogCard from "../cards/BlogCard";
 import ArticleNavigation from "./ArticleNavigation";
-import { ArticleNavigationData } from "@/data/article-navigation";
 import BlogComment from "./BlogComment";
-import Image from "next/image";
 import SideLink from "./SideLink";
 import AuthorDetail from "../cards/AuthorDetail";
 import FeatureCard from "../cards/FeatureCard";
-import WorkExperience from "../cards/WorkExperience";
-import Technology from "../cards/TechnologyCard";
 import Creating from "../cards/CreatingCard";
 
-// IMAGE FROM ASSETS
-import { BlogDetailType } from "@/@types/blog-type";
+// HOOKS
 import { useGetSideBarDataQuery } from "@/services/api/blogApi";
+
+// BLOG DETAIL TYPE
 import { ExtendBlogType } from "@/@types/extend-blog-type";
 
 
@@ -148,11 +144,8 @@ export default function BlogDetailPage(
                     <div
                         className="flex flex-col sm:flex-row justify-center gap-6 mt-6"
                     >
-                        {/* {ArticleNavigationData.map((item) => {
-                            return <ArticleNavigation key={item.id} title={item.title} id={item.id} />
-                        })} */}
-                        <ArticleNavigation title={previousBlog.title} slug={previousBlog.slug} id={previousBlog._id} type={"previous"} />
-                        <ArticleNavigation title={nextBlog.title} slug={nextBlog.slug} id={nextBlog._id} type={"next"} />
+                        <ArticleNavigation title={previousBlog.title} slug={previousBlog.slug} type={"previous"} />
+                        <ArticleNavigation title={nextBlog.title} slug={nextBlog.slug} type={"next"} />
                     </div>
                     <BlogComment />
                 </div>

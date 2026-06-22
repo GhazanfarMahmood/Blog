@@ -1,8 +1,11 @@
-// NEXT JS IMAGE, IMAGE TYPE AND LINK
-import Image, { StaticImageData } from "next/image";
+// TYPE
+import { CategoryCardType } from "@/@types/category-type";
+
+// NEXT JS IMAGE AND LINK
+import Image from "next/image";
 import Link from "next/link";
 
-export default function CategoryCard({mainImg, icon, name, slug} : {mainImg:string | StaticImageData, icon: string, name:string, slug: string}){
+export default function CategoryCard({mainImg, icon, name, slug} : CategoryCardType){
     return <>
         <Link href={`/category/${slug}`} aria-label={`${name}-link`}
             className="h-[348px] lg:h-[368px] rounded-2xl relative overflow-hidden"

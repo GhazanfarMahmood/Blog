@@ -75,7 +75,9 @@ export default function FeatureCard({featuredBlogs} : {featuredBlogs: BlogConten
                                     >
                                         {item.author?.name}
                                     </Link>
-                                    <div className="flex items-center justify-start gap-[5px] text-[15px] font-semibold leading-[1.2] text-light opacity-70 dark:text-dark">
+                                    <div 
+                                        className="flex items-center justify-start gap-[5px] text-[15px] font-semibold leading-[1.2] text-light opacity-70 dark:text-dark"
+                                    >
                                         on
                                         <span>
                                             {new Date(item.createdAt).toLocaleDateString("en-US", {

@@ -8,8 +8,10 @@ import fb_icon from "@/assets/icons/fb-icon.svg";
 import x_icon from "@/assets/icons/x.svg";
 import insta_icon from "@/assets/icons/insta.svg";
 import linkedin_icon from "@/assets/icons/linkedin.svg";
+import { AuthorDetailType } from "@/@types/author-type";
 
-export default function AuthorDetail({name, designation, writerImg, excerpt, slug, location, fbLink, twitterLink, instagramLink, LinkedinLink} : {name: string, designation: string | null, writerImg: string, excerpt: string | null, slug: string, location: string, fbLink: string | null, twitterLink: string | null, instagramLink: string | null, LinkedinLink: string | null}){
+export default function AuthorDetail(
+    {name, designation, writerImg, excerpt, slug, location, fbLink, twitterLink, instagramLink, LinkedinLink} : AuthorDetailType){
     return <div 
         className="h-full flex flex-col max-w-[450px] lg:max-w-none bg-light p-8 rounded-2xl border border-br dark:bg-[#222] mx-auto lg:mx-0"
     >
@@ -21,13 +23,19 @@ export default function AuthorDetail({name, designation, writerImg, excerpt, slu
         <div 
             className="flex items-center justify-start gap-2.5 flex-nowrap"
         >
-            <Image src={writerImg} alt={name} width={50} height={50}
+            <Image 
+                src={writerImg} 
+                alt={name} 
+                width={50} 
+                height={50}
                 className="rounded-full"
             />
             <span
                 className="flex flex-col"
             >
-                <Link href={`/writer/${slug}`} aria-label="author-name"
+                <Link 
+                    href={`/writer/${slug}`} 
+                    aria-label="author-name"
                     className="block text-lg font-bold leading-[1.2] text-primary -tracking-[0.04em] capitalize mb-1.5 transition-all duration-[0.25s] ease-in hover:opacity-70"
                 >
                     {name}

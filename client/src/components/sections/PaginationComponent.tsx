@@ -4,22 +4,40 @@ import Image from "next/image";
 // ICONS
 import chevron_left from "@/assets/icons/chevron-left.svg"
 import chevron_right from "@/assets/icons/chevron-right.svg"
-import React from "react";
+
+// GETTING PAGINATION FUNCTION
 import { getPaginationRange } from "@/utils/pagination";
 
-export default function PaginationComponent({setPage, currentPage, totalPages, hasPrevPage, hasNextPage}: {setPage : React.Dispatch<React.SetStateAction<number>>, currentPage : number | undefined, totalPages: number | undefined, hasPrevPage : boolean | undefined, hasNextPage : boolean | undefined}){
+// TYPE
+import { PaginationType } from "@/@types/pagination-type";
+
+export default function PaginationComponent({setPage, currentPage, totalPages, hasPrevPage, hasNextPage}: PaginationType){
     const pages = getPaginationRange(currentPage ?? 1, totalPages ?? 1);
 
     return <>
         <div 
             className="flex items-center justify-center mt-10 *:w-10 *:h-10 *:flex *:items-center *:justify-center *:text-primary *:font-extrabold *:leading-[1.2] *:first:dark:filter-(--filter-dark) *:last:dark:filter-(--filter-dark) [&_button]:cursor-pointer"
         >
-            <button aria-label="previous" disabled={!hasPrevPage} onClick={() => setPage(prev => Math.max(prev - 1, 1))}>
-                <Image src={chevron_left} alt="chevron-left" width={14} height={14} />
+            <button 
+                aria-label="previous" 
+                disabled={!hasPrevPage} 
+                onClick={() => setPage(prev => Math.max(prev - 1, 1))}
+                className={`${!hasPrevPage && "cursor-not-allowed! opacity-50"}`}
+            >
+                <Image 
+                    src={chevron_left} 
+                    alt="chevron-left" 
+                    width={14} 
+                    height={14} 
+                />
             </button>
             {pages.map((page, index) => {
                 if(page === "...") {
-                    return <span key={index}>...</span>
+                    return <span 
+                        key={index}
+                    >
+                        ...
+                    </span>
                 }
 
                 return (
@@ -33,7 +51,12 @@ export default function PaginationComponent({setPage, currentPage, totalPages, h
                 )
             })}
 
-            <button aria-label="next" disabled={!hasNextPage} onClick={() => setPage(prev => prev + 1)}>
+            <button 
+                aria-label="next" 
+                disabled={!hasNextPage} 
+                onClick={() => setPage(prev => prev + 1)}
+                className={`${!hasNextPage && "cursor-not-allowed! opacity-50"}`}
+            >
                 <Image src={chevron_right} alt="chevron_right" width={14} height={14} />
             </button>
         </div>
