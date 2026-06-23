@@ -6,8 +6,7 @@ import AboutContent from "@/components/sections/AboutContent";
 import AboutLayout from "@/components/sections/AboutLayout";
 import BreadCrumb from "@/components/sections/BreadCrumb";
 
-// ABOUT DATA
-import { AboutData } from "@/data/about-data";
+// HOOK
 import { useGetAboutQuery } from "@/services/api/aboutApi";
 
 export default function AboutDetailContent () {
@@ -20,6 +19,7 @@ export default function AboutDetailContent () {
     if(error) {
         return <p>Some type of error is coming.</p>
     }
+
     return <>
         <BreadCrumb pageName="About" />
         <AboutLayout title={data?.title} images={data?.images} />

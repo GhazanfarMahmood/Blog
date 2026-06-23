@@ -16,12 +16,32 @@ import linkedin_icon from "@/assets/icons/linkedin.svg";
 import { pagesLink } from "@/data/footer-data";
 
 // HOOK
-import { useState } from "react";
+import React, { useState } from "react";
 import { useGetCategoryQuery } from "@/services/api/categoryApi";
+import { useSubscribeNewsletterMutation } from "@/services/api/newsLetterApi";
 
 export default function Footer(){
     const [footerLinks, setFooterLinks] = useState("");
     const {data, isLoading, error} = useGetCategoryQuery();
+    const [email, setEmail] = useState("");
+    const [subscribeNewsletter, { isLoading : newsLetterLoading }] = useSubscribeNewsletterMutation();
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        try {
+            const response = await subscribeNewsletter({
+                email,
+            }).unwrap();
+
+            console.log(response)
+
+            setEmail("");
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
 
     return (<>
         <div className="container">
@@ -40,12 +60,16 @@ export default function Footer(){
                 </p>
                 <form 
                     className="w-full max-w-[400px] flex items-center justify-center flex-col sm:flex-row gap-2 bg-transparent dark:bg-[#222] sm:bg-light p-[5px] border-0 sm:border border-solid border-br rounded-lg shadow-none sm:shadow-search-field transition-all duration-[0.25s] ease-in hover:shadow-none sm:hover:shadow-hover"
+                    onSubmit={handleSubmit}
                 >
                     <input type="email" placeholder="Enter Your Email" 
                         className="w-full text-primary font-medium py-2 px-4 border border-solid border-br sm:border-0 rounded-lg shadow-search-field sm:shadow-none transition-all duration-[0.25s] ease-in focus:outline-none hover:shadow-hover sm:hover:shadow-none" 
                         aria-label="email-input"
+                        name="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                     />
-                    <button type="button" 
+                    <button type="submit" 
                         className="w-full sm:w-fit min-h-10 flex items-center justify-center leading-[1.2] text-light dark:text-dark font-bold -tracking-[0.03em] bg-linear-(--linear-bg) p-[10px_18px] rounded-lg cursor-pointer transition-all duration-[0.25s] ease-in hover:shadow-btn-hover"
                     >
                         Subscribe

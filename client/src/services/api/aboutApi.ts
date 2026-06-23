@@ -1,5 +1,6 @@
 
 // QUERY FROM REACT
+import { AboutType } from "@/@types/about-type";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const aboutApi = createApi({
@@ -11,7 +12,7 @@ export const aboutApi = createApi({
 
     endpoints : (builder) => ({
 
-        getAbout : builder.query({
+        getAbout : builder.query<AboutType, void>({
             query : () => `/about`,
         }),
 

@@ -1,4 +1,4 @@
-export default function AboutContent({description}){
+export default function AboutContent({description} : {description : string | undefined}){
     return <div className="container">
         <div 
             className="max-w-[640px] mx-auto mb-16
