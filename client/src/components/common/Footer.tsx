@@ -18,7 +18,7 @@ import { pagesLink } from "@/data/footer-data";
 // HOOK
 import React, { useState } from "react";
 import { useGetCategoryQuery } from "@/services/api/categoryApi";
-import { useSubscribeNewsletterMutation } from "@/services/api/newsLetterApi";
+import { useSubscribeNewsletterMutation } from "@/services/api/newsletterApi";
 
 export default function Footer(){
     const [footerLinks, setFooterLinks] = useState("");

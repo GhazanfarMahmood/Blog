@@ -3,7 +3,7 @@ import { blogApi } from "@/services/api/blogApi";
 import { categoryApi } from "@/services/api/categoryApi";
 import { commentApi } from "@/services/api/commentApi";
 import { contactApi } from "@/services/api/contactApi";
-import { newsletterApi } from "@/services/api/newsLetterApi";
+import { newsletterApi } from "@/services/api/newsletterApi";
 import { writerApi } from "@/services/api/writerApi";
 import { configureStore } from "@reduxjs/toolkit";
 
