@@ -4,7 +4,6 @@ import Newsletter from "../models/Newsletter";
 
 export const subscribeNewsletter = async (req: Request, res: Response) => {
     try {
-        console.log(req.body)
         const {email} = req.body;
 
 
@@ -27,7 +26,6 @@ export const subscribeNewsletter = async (req: Request, res: Response) => {
             subscriber,
         });
     } catch (error) {
-        console.log("NEWSLETTER ERROR:", error);
         res.status(500).json({message : "Server error"})
     }
 }

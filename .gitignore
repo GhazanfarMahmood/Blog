@@ -1,54 +1,100 @@
-#below is all gitignore file related to backend
-/server/node_modules/
-/server/.env
-/server/dist/
-/server/build/
-/server/*.log
-/server/.cache/
+# ==========================================================
+# Dependencies
+# ==========================================================
+**/node_modules
 
-#below is all gitignore related to frontend/client
+# ==========================================================
+# git.js
+# ==========================================================
+**/.next
+**/out
 
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# ==========================================================
+# Build Output
+# ==========================================================
+**/dist
+**/build
+**/coverage
 
-# dependencies
-/client/node_modules
-/client/.pnp
-/client/.pnp.*
-/client/.yarn/*
-!/client/.yarn/patches
-!/client/.yarn/plugins
-!/client/.yarn/releases
-!/client/.yarn/versions
+# ==========================================================
+# Environment Variables
+# ==========================================================
+**/.env
+**/.env.local
+**/.env.development.local
+**/.env.production.local
+**/.env.test.local
 
-# testing
-/client/coverage
+# ==========================================================
+# Logs
+# ==========================================================
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# next.js
-/client/.next/
-/client/out/
-/client/dist
+# ==========================================================
+# TypeScript
+# ==========================================================
+*.tsbuildinfo
 
-# production
-/client/build
+# ==========================================================
+# Cache
+# ==========================================================
+.eslintcache
+.parcel-cache
+.turbo
+.cache
 
-# misc
-/client/.DS_Store
-/client/*.pem
+# ==========================================================
+# Package Managers
+# ==========================================================
+.pnpm-store
+.npm
 
-# debug
-/client/npm-debug.log*
-/client/yarn-debug.log*
-/client/yarn-error.log*
-/client/.pnpm-debug.log*
+# Yarn
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+!.yarnrc.yml
 
-# env files (can opt-in for committing if needed)
-/client/.env*
+# ==========================================================
+# IDEs
+# ==========================================================
+.vscode/
+.idea/
 
-# vercel
-/client/.vercel
+# ==========================================================
+# Operating System Files
+# ==========================================================
+.DS_Store
+Thumbs.db
+Desktop.ini
 
-# typescript
-/client/*.tsbuildinfo
-/client/next-env.d.ts
-/client/Thumbs.db
+# ==========================================================
+# Temporary Files
+# ==========================================================
+*.tmp
+*.temp
+*.swp
 
+# ==========================================================
+# Testing
+# ==========================================================
+.nyc_output
+
+# ==========================================================
+# Vercel
+# ==========================================================
+.vercel
+
+# ==========================================================
+# Miscellaneous
+# ==========================================================
+*.pid
+*.seed
+*.pid.lock

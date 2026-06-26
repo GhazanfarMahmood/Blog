@@ -1,7 +1,6 @@
 // NEXT JS IMAGE
 import Image from "next/image";
 
-
 export default function AboutLayout({title, images} : {title : string | undefined, images : string[] | undefined}){
     return <div className="container">
         <h1

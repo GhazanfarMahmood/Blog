@@ -1,11 +1,9 @@
 "use client";
 
-// TRENDING DATA
-import { trendingData } from "@/data/trending-data";
+// HOOK
 import { useGetCategoryQuery } from "@/services/api/categoryApi";
 
-// LINK AND IMAGE FROM NEXT LINK
-import Image from "next/image";
+// LINK
 import Link from "next/link";
 
 export default function TrendingTopic (){

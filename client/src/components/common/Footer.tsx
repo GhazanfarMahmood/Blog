@@ -124,7 +124,6 @@ export default function Footer(){
                             </li>
                         </ul>
                     </div>
-                    {/* HERE'S IN DIV I DEFINE THE TAILWIND UTILITIES CLASSES FOR DIRECT CHILD THAT IS (DIV), STRONG CHILD, UL CHILD AND LAST ONE FOR ANCHOR THAT IS (LINK) */}
                     <div 
                         className="flex items-start justify-start lg:justify-end gap-x-12 xl:gap-x-20 gap-y-5 md:gap-y-8 md:flex-wrap flex-col md:flex-row 
                         [&>*]:w-full [&>*]:md:w-fit 

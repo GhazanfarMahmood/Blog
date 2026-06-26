@@ -16,6 +16,8 @@ import { FiMenu } from "react-icons/fi";
 
 // HEADER LINKS
 import { HeaderLink } from "./HeaderLinks";
+
+// MODAL
 import { HeaderSearch } from "../modals/HeaderSearch";
 import ThemeToggle from "../modals/ThemeToggle";
 

@@ -7,7 +7,6 @@ export const newsletterApi = createApi({
         baseUrl : "http://localhost:5000/api",
     }),
 
-
     endpoints : (builder) => ({
         subscribeNewsletter : builder.mutation({
             query : (emailData) => ({
