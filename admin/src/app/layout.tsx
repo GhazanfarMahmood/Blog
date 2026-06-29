@@ -5,6 +5,7 @@ import { DM_Sans } from "next/font/google";
 
 // GLOBALS CSS
 import "@/styles/globals.css";
+import { cn } from "@/lib/utils";
 
 const dmSans = DM_Sans({
   variable : "--font-dm-sans",
@@ -26,7 +27,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${dmSans.variable} h-full antialiased`}
+      className={cn("h-full", "antialiased", dmSans.variable)}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
