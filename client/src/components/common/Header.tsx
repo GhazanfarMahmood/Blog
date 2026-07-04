@@ -1,6 +1,6 @@
 "use client";
 
-// NEXT JS IMAGE AND LINK FOR OPTIMIZATION AND SINGLE PAGE APPLICATION WE USE NEXT JS IMAGE AND LINK
+// NEXT JS IMAGE AND LINK, FOR OPTIMIZATION AND SINGLE PAGE APPLICATION WE USE NEXT JS IMAGE AND LINK
 import Image from "next/image";
 import Link from "next/link";
 
@@ -15,17 +15,21 @@ import { IoSearch } from "react-icons/io5";
 import { FiMenu } from "react-icons/fi";
 
 // HEADER LINKS
-import { HeaderLink } from "./headerLinks";
-import { HeaderSearch } from "../modals/headerSearch";
-import ThemeToggle from "../modals/themeToggle";
+import { HeaderLink } from "./HeaderLinks";
 
-// ADDING USESTATE HOOK
+// MODAL
+import { HeaderSearch } from "../modals/HeaderSearch";
+import ThemeToggle from "../modals/ThemeToggle";
+
+// HOOKS
 import { useState } from "react";
+import { useGetCategoryQuery } from "@/services/api/categoryApi";
 
 export default function Header(){
     const [searchActive, setSearchActive] = useState<boolean>(false);
     const [activeHeader, setActiveHeader] = useState<boolean>(false);
     const [themeDropdown, setThemeDropdown] = useState<boolean>(false);
+    const {data, isLoading, error} = useGetCategoryQuery();
 
     const handleSearch = () => {
         setSearchActive(!searchActive);
@@ -49,12 +53,14 @@ export default function Header(){
     }
 
     return (<>
-        <header className="bg-bg">
+        <header 
+            className="bg-bg"
+        >
             <div 
                 className="container flex items-center justify-center gap-5 py-[25px] relative"
             >
                 <button 
-                    className="mr-auto lg:hidden" aria-label="menu-open" 
+                    className="mr-auto cursor-pointer lg:hidden" aria-label="menu-open" 
                     onClick={menuToggle}
                 >
                     <FiMenu className="w-6 h-6" />
@@ -62,10 +68,14 @@ export default function Header(){
                 <Link href={"/"} 
                     className="flex-none lg:mr-auto" aria-label="site logo"
                 >
-                    <Image src={Logo} alt="revision" width={131} height={38} className="dark:hidden" />
-                    <Image src={dark_logo} alt="revision" width={131} height={38} className="hidden dark:block" />
+                    <Image src={Logo} alt="revision" width={131} height={38} 
+                        className="dark:hidden" 
+                    />
+                    <Image src={dark_logo} alt="revision" width={131} height={38} 
+                        className="hidden dark:block" 
+                    />
                 </Link>
-                <HeaderLink activeHeader={activeHeader} setActiveHeader={setActiveHeader} />
+                <HeaderLink activeHeader={activeHeader} setActiveHeader={setActiveHeader} data={data} error={error} />
                 <div 
                     className="flex items-center justify-center ml-auto relative"
                 >
@@ -76,7 +86,9 @@ export default function Header(){
                             className={`w-9 h-9 flex justify-center items-center rounded-full cursor-pointer transition-all duration-[0.25s] ease-in hover:bg--link-bg ${searchActive && "bg--link-bg"}`} 
                             aria-label="search button" onClick={handleSearch}
                         >
-                            <IoSearch className="w-6 h-6" />
+                            <IoSearch 
+                                className="w-6 h-6" 
+                            />
                         </button>
                     </div>
                     <button 
@@ -84,14 +96,20 @@ export default function Header(){
                         aria-label="theme toggle button"
                         onClick={handleThemeDropdown}
                     >
-                        <MdOutlineWbSunny className="dark:hidden" /> 
-                        <FiMoon className="hidden dark:block"/>
+                        <MdOutlineWbSunny 
+                            className="dark:hidden" 
+                        /> 
+                        <FiMoon 
+                            className="hidden dark:block"
+                        />
                     </button>
-                    <div className="hidden lg:block">
+                    <div 
+                        className="hidden lg:block"
+                    >
                         <ThemeToggle themeDropdown={themeDropdown} setThemeDropdown={setThemeDropdown} />
                     </div>
                 </div>
-                <HeaderSearch searchActive={searchActive} setSearchActive={setSearchActive} />
+                <HeaderSearch searchActive={searchActive} setSearchActive={setSearchActive} data={data} error={error} />
             </div>
             <div 
                 className={`hidden lg:hidden! w-full h-[100dvh] bg-header-bg fixed top-0 left-0 z-[2] ${activeHeader && "block!"}`} 

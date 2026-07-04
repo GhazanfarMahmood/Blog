@@ -1,10 +1,8 @@
 // COMPONENTS
-import BreadCrumb from "@/components/layout/breadCrumb";
-import CategoryDetailContent from "@/components/layout/categoryDetailContent";
+import CategorySection from "@/components/sections/CategorySection";
 
 export default function CategoryDetail(){
     return <>
-        <BreadCrumb pageName={"Technology"} />
-        <CategoryDetailContent />
+        <CategorySection />
     </>
 }

@@ -1,9 +1,13 @@
-import Image, { StaticImageData } from "next/image";
+// TYPE
+import { CategoryCardType } from "@/@types/category-type";
+
+// NEXT JS IMAGE AND LINK
+import Image from "next/image";
 import Link from "next/link";
 
-export default function CategoryCard({mainImg, icon, name} : {mainImg:string | StaticImageData, icon:string | StaticImageData, name:string}){
+export default function CategoryCard({mainImg, icon, name, slug} : CategoryCardType){
     return <>
-        <Link href={"/"} aria-label={`${name}-link`}
+        <Link href={`/category/${slug}`} aria-label={`${name}-link`}
             className="h-[348px] lg:h-[368px] rounded-2xl relative overflow-hidden"
         >
             <Image src={mainImg} alt={`${name}-img`} width={368} height={368}
@@ -12,9 +16,7 @@ export default function CategoryCard({mainImg, icon, name} : {mainImg:string | S
             <span
                 className="flex items-center justify-center gap-[5px] text-primary font-bold leading-[1.2] capitalize -tracking-[0.04em] bg-light dark:bg-[#222] py-3 px-6 rounded-[100px] shadow-search-field absolute bottom-8 right-2/4 translate-x-2/4 "
             >
-                <Image src={icon} alt={`${name}-icon`} width={24} height={24}
-                    className="dark:filter-(--filter-dark)"
-                />
+                {icon}
                 {name}
             </span>
         </Link>

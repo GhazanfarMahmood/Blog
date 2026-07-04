@@ -14,9 +14,9 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 // SLIDER DATA
-import { FeatureSlider } from "@/constants/main-data";
+import { BlogContentType } from "@/@types/blog-type";
 
-export default function FeatureCard(){
+export default function FeatureCard({featuredBlogs} : {featuredBlogs: BlogContentType[] | undefined}){
     return <>
         <div 
             className="max-w-[450px] lg:max-w-none relative px-3 mx-auto lg:mx-0"
@@ -32,46 +32,63 @@ export default function FeatureCard(){
                 loop={true}
                 pagination={{ clickable: true }}
                 scrollbar={{ draggable: true }}
+                spaceBetween={10}
+                speed={1000}
                 autoplay={{
                     delay: 3000,
                     pauseOnMouseEnter: true,
                     disableOnInteraction: false,
                 }}
             >
-                {FeatureSlider.map((item) => {
-                    return <SwiperSlide key={item.id}>
+                {featuredBlogs?.map((item) => {
+                    return <SwiperSlide key={item._id}>
                         <div 
                             className="h-[300px] rounded-2xl overflow-hidden relative group"
                         >
-                            <Link href={"/"} aria-label={item.title} 
+                            <Link href={`/blog/${item.slug}`} aria-label={item.title} 
                                 className="absolute top-0 left-0 w-full h-full after:w-full after:h-full after:bg--feature-bg after:absolute after:top-0 after:left-0 after:z-[1] after:content-['']after:transition-all after:duration-[0.25s] after:ease-in group-hover:after:bg-"
                             >
-                                <Image src={item.sliderImg} alt="feature-img" width={370} height={300}
+                                <Image src={item.thumbnail} alt="feature-img" width={370} height={300}
                                     className="w-full h-full object-cover"
                                 />
                             </Link>
-                            <Link href={"/"} aria-label={item.category}
-                                className="text-[11px] font-extrabold text-light leading-[1.2] tracking-widest uppercase bg--feature-li-bg p-[5px_10px] rounded-md absolute top-6 left-7 z-[2] dark:text-dark"
+                            <div 
+                                className="flex items-center justify-start gap-2 absolute top-6 left-7 z-[2]"
                             >
-                                {item.category}
-                            </Link>
+                                {item?.category.map((item => {
+                                    return <Link href={`/category/${item.slug}`} aria-label={item.categoryName} key={item._id}
+                                    className="text-[11px] font-extrabold text-light leading-[1.2] tracking-widest uppercase bg--feature-li-bg p-[5px_10px] rounded-md dark:text-dark"
+                                >
+                                    {item.categoryName}
+                                </Link>
+                                }))}
+                            </div>
+                            
                             <div
                                 className="absolute bottom-7 left-7 right-7 z-[2]"
                             >
                                 <span
-                                    className="flex items-center justify-start gap-[5px] mt-auto"
+                                    className="flex items-center justify-start gap-[5px] mt-auto flex-wrap"
                                 >
-                                    <Link href={"/"} aria-label={item.authorName}
+                                    <Link href={`/writer/${item.author?.slug}`} aria-label={item.author?.name}
                                         className="text-[15px] text-light font-semibold leading-[1.2] -tracking-[0.02em] capitalize opacity-100! transition-all duration-[0.25s] ease-in hover:opacity-70! dark:text-dark"
                                     >
-                                        {item.authorName}
+                                        {item.author?.name}
                                     </Link>
-                                    <div className="flex items-center justify-start gap-[5px] text-[15px] font-semibold leading-[1.2] text-light opacity-70 dark:text-dark">
+                                    <div 
+                                        className="flex items-center justify-start gap-[5px] text-[15px] font-semibold leading-[1.2] text-light opacity-70 dark:text-dark"
+                                    >
                                         on
-                                        <span>{`${item.month} ${item.date}, ${item.year}`}</span>
+                                        <span>
+                                            {new Date(item.createdAt).toLocaleDateString("en-US", {
+                                                day : "numeric",
+                                                month : "long",
+                                                year : "numeric"
+                                            })}
+                                        </span>
                                     </div>
                                 </span>
-                                <Link href={"/"} aria-label={item.title}
+                                <Link href={`/blog/${item.slug}`} aria-label={item.title}
                                     className="block text-[21px] font-bold leading-[1.2] -tracking-[0.04em] text-light mt-2 transition-all duration-[0.25s] ease-in hover:opacity-70 dark:text-dark"
                                 >
                                     {item.title}

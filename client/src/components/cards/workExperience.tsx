@@ -1,5 +1,5 @@
-
-import { Experience } from "@/constants/main-data"
+// EXPERIENCE DATA
+import { Experience } from "@/data/main-data"
 
 export default function WorkExperience (){
     return <div

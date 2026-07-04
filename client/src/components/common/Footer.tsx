@@ -7,17 +7,42 @@ import Link from "next/link";
 // IMAGES AND ICONS
 import footer_logo from "@/assets/images/footer-logo.webp";
 import footer_dark from "@/assets/images/footer-dark-logo.webp";
-import fb_icon from "@/assets/images/icons/fb-icon.svg";
-import x_icon from "@/assets/images/icons/x.svg";
-import insta_icon from "@/assets/images/icons/insta.svg";
-import linkedin_icon from "@/assets/images/icons/linkedin.svg";
+import fb_icon from "@/assets/icons/fb-icon.svg";
+import x_icon from "@/assets/icons/x.svg";
+import insta_icon from "@/assets/icons/insta.svg";
+import linkedin_icon from "@/assets/icons/linkedin.svg";
 
 // FOOTER DATA
-import { footerCategory, homeLink, pagesLink } from "@/constants/footer-data";
-import { useState } from "react";
+import { pagesLink } from "@/data/footer-data";
+
+// HOOK
+import React, { useState } from "react";
+import { useGetCategoryQuery } from "@/services/api/categoryApi";
+import { useSubscribeNewsletterMutation } from "@/services/api/newsletterApi";
 
 export default function Footer(){
     const [footerLinks, setFooterLinks] = useState("");
+    const {data, isLoading, error} = useGetCategoryQuery();
+    const [email, setEmail] = useState("");
+    const [subscribeNewsletter, { isLoading : newsLetterLoading }] = useSubscribeNewsletterMutation();
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        try {
+            const response = await subscribeNewsletter({
+                email,
+            }).unwrap();
+
+            console.log(response)
+
+            setEmail("");
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+
     return (<>
         <div className="container">
             <div 
@@ -35,12 +60,16 @@ export default function Footer(){
                 </p>
                 <form 
                     className="w-full max-w-[400px] flex items-center justify-center flex-col sm:flex-row gap-2 bg-transparent dark:bg-[#222] sm:bg-light p-[5px] border-0 sm:border border-solid border-br rounded-lg shadow-none sm:shadow-search-field transition-all duration-[0.25s] ease-in hover:shadow-none sm:hover:shadow-hover"
+                    onSubmit={handleSubmit}
                 >
                     <input type="email" placeholder="Enter Your Email" 
                         className="w-full text-primary font-medium py-2 px-4 border border-solid border-br sm:border-0 rounded-lg shadow-search-field sm:shadow-none transition-all duration-[0.25s] ease-in focus:outline-none hover:shadow-hover sm:hover:shadow-none" 
                         aria-label="email-input"
+                        name="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                     />
-                    <button type="button" 
+                    <button type="submit" 
                         className="w-full sm:w-fit min-h-10 flex items-center justify-center leading-[1.2] text-light dark:text-dark font-bold -tracking-[0.03em] bg-linear-(--linear-bg) p-[10px_18px] rounded-lg cursor-pointer transition-all duration-[0.25s] ease-in hover:shadow-btn-hover"
                     >
                         Subscribe
@@ -70,7 +99,6 @@ export default function Footer(){
                         >
                             Welcome to ultimate source for fresh perspectives! Explore curated content to enlighten, entertain and engage global readers.
                         </p>
-                        {/* HERE'S IN UL I DEFINE CLASSES FOR ANCHOR THAT IS (LINK) */}
                         <ul 
                             className="flex items-center justify-start mt-2 mb-4 lg:mb-0 -ml-2 *:w-10 *:h-10 *:flex *:items-center *:justify-center [&_img]:transition [&_img]:duration-[0.25s] [&_img]:ease-in [&_img]:filter-(--filter-primary) dark:[&_img]:filter-(--filter-white) [&_a]:hover:*:filter-(--filter-secondary) dark:[&_img]:hover:opacity-80"
                         >
@@ -96,7 +124,6 @@ export default function Footer(){
                             </li>
                         </ul>
                     </div>
-                    {/* HERE'S IN DIV I DEFINE THE TAILWIND UTILITIES CLASSES FOR DIRECT CHILD THAT IS (DIV), STRONG CHILD, UL CHILD AND LAST ONE FOR ANCHOR THAT IS (LINK) */}
                     <div 
                         className="flex items-start justify-start lg:justify-end gap-x-12 xl:gap-x-20 gap-y-5 md:gap-y-8 md:flex-wrap flex-col md:flex-row 
                         [&>*]:w-full [&>*]:md:w-fit 
@@ -109,15 +136,15 @@ export default function Footer(){
                                 className={`strong-after ${footerLinks === "active-one" && "rotation-active"}`} 
                                 onClick={() => {setFooterLinks(footerLinks !== "active-one" ? "active-one" : "")}}
                             >
-                                Home Pages
+                                Categories
                             </strong>
                             <ul 
                                 className={`${footerLinks === "active-one" && "h-fit! visible! opacity-100! mt-[18px]!"}`}
                             >
-                                {homeLink.map((link) =>{
-                                    return <li key={link.id}>
-                                        <Link href={"/"} aria-label={`${link.name}-link`}>
-                                            {link.name}
+                                {data?.slice(0, data?.length / 2).map((link) =>{
+                                    return <li key={link._id}>
+                                        <Link href={`/category/${link.slug}`} aria-label={`${link.categoryName}-link`}>
+                                            {link.categoryName}
                                         </Link>
                                     </li>
                                 })}
@@ -133,10 +160,10 @@ export default function Footer(){
                             <ul 
                                 className={`${footerLinks === "active-two" && "h-fit! visible! opacity-100! mt-[18px]!"}`}
                             >
-                                {footerCategory.map((link) =>{
-                                    return <li key={link.id}>
-                                        <Link href={"/"} aria-label={`${link.name}-link`}>
-                                            {link.name}
+                                {data?.slice(data?.length / 2).map((link) =>{
+                                    return <li key={link._id}>
+                                        <Link href={`/category/${link.slug}`} aria-label={`${link.categoryName}-link`}>
+                                            {link.categoryName}
                                         </Link>
                                     </li>
                                 })}
@@ -154,7 +181,7 @@ export default function Footer(){
                             >
                                 {pagesLink.map((link) =>{
                                     return <li key={link.id}>
-                                        <Link href={"/"} aria-label={`${link.name}-link`}>
+                                        <Link href={`${link.href}`} aria-label={`${link.name}-link`}>
                                             {link.name}
                                         </Link>
                                     </li>

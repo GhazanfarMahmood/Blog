@@ -1,8 +1,8 @@
-// HOME PAGE LINK
-import Home from "./home/page";
+// COMPONENTS
+import HomeContent from "@/components/sections/HomeContent";
 
 export default function Main(){
   return (<>
-    <Home />
+    <HomeContent />
   </>)
 }
