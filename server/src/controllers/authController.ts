@@ -40,7 +40,7 @@ export const login = async (req: Request, res : Response) => {
 
         user.lastLogin = new Date();
 
-        await user.save();
+        await user.save({ validateBeforeSave: false });
 
         const token = jwt.sign(
             {
@@ -49,7 +49,7 @@ export const login = async (req: Request, res : Response) => {
             },
             process.env.JWT_SECRET!,
             {
-                exiresIn: "7d"
+                expiresIn: "7d"
             }
         )
 
@@ -78,7 +78,13 @@ export const login = async (req: Request, res : Response) => {
 // CREATE USER (ADMIN CREATION)
 export const createUser = async(req: Request, res: Response) => {
     try {
-        const {name, email, password, role} = req.body;
+        const {name, email, password, role } = req.body;
+
+        if(!name || !email || !password || !role) {
+            return res.status(400).json({
+                message : "All fields are required"
+            });
+        }
 
         const existingUser = await User.findOne({email});
 
@@ -89,6 +95,11 @@ export const createUser = async(req: Request, res: Response) => {
         const hashedPassword = await bcrypt.hash(password, 12);
 
         const user = await User.create({ name, email, password: hashedPassword, role});
+
+        return res.status(201).json({
+            message : "User created successfully",
+            user
+        })
     } catch (error) {
         res.status(500).json({
             message : "Server error"
@@ -103,3 +114,5 @@ export const logout = async(req: Request, res : Response) => {
     });
 };
 
+// JWT logout is usually handled on the frontend by deleting the token from localStorage or cookies.
+// Later, if you implement refresh tokens, logout becomes more involved.
