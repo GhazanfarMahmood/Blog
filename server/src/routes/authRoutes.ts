@@ -5,10 +5,13 @@ const router = express.Router();
 
 router.post("/login", login);
 router.post("/create-user", 
-    verifyToken,
-    authorizationRole("super-admin"),
     createUser
 );
+// router.post("/create-user", 
+//     verifyToken,
+//     authorizationRole("super-admin"),
+//     createUser
+// );
 router.post("/logout", logout);
 
 export default router;

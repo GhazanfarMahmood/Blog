@@ -1,3 +1,3 @@
-const authorizationRole = () => {
+export const authorizationRole = () => {
     return "generate token"
 }
