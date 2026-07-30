@@ -3,14 +3,40 @@
 import { PasswordIcon } from "@/assets/icons";
 import React, { useState } from "react";
 import InputGroup from "../FormElements/InputGroup";
+import { useResetPasswordMutation } from "@/services/api/authApi";
+import { useSearchParams } from "next/navigation";
 
 export default function ResetPasswordForm(){
     const [password, setPassword] = useState({
         newPassword : "",
         confirmPassword : "",
     })
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const searchParams = useSearchParams();
+    const [resetPassword, { isLoading }] = useResetPasswordMutation();
+
+    const token = searchParams.get("token");
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        if(!token) {
+            return;
+        }
+
+        if(password !== confirmPassword) {
+            return;
+        }
+
+        try {
+            const response = await resetPassword({
+                token,
+                password
+            }).unwrap();
+
+            console.log(response);
+        } catch (error) {
+            console.log(error)
+        }
+        
     };
     
      const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

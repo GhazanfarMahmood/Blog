@@ -6,6 +6,7 @@ import React, { useState } from "react";
 // IF NEEDED THEN I PUT THE TOAST FROM SOONER
 import InputGroup from "../FormElements/InputGroup";
 import { Checkbox } from "../FormElements/checkbox";
+import { useLoginMutation } from "@/services/api/authApi";
 
 export default function SigninWithPassword() {
   const [data, setData] = useState({
@@ -13,6 +14,7 @@ export default function SigninWithPassword() {
     password: "",
     remember: false,
   });
+  const [login, { isLoading }] = useLoginMutation();
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setData({
@@ -21,8 +23,19 @@ export default function SigninWithPassword() {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    try {
+      const response = await login({
+        email,
+        password,
+      }).unwrap();
+
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

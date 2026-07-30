@@ -4,12 +4,25 @@ import React, { useState } from "react";
 import InputGroup from "../FormElements/InputGroup";
 import { ArrowLeftIcon, EmailIcon } from "@/assets/icons";
 import Link from "next/link";
+import { useForgotPasswordMutation } from "@/services/api/authApi";
 
 export default function ForgotPasswordForm(){
     const [email, setEmail] = useState("");
+    const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
     
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        try{
+            const response = await forgotPassword({
+                email,
+            }).unwrap();
+
+            console.log(response);
+
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return <form onSubmit={handleSubmit}>
