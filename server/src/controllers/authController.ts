@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import generateToken from "../utils/generateToken";
 import { generateResetToken } from "../utils/resetToken";
 import crypto from "crypto";
+import sendResetEmail from "../utils/sendResetEmail";
 
 // LOGIN USER
 export const login = async (req: Request, res : Response) => {
@@ -217,7 +218,7 @@ export const resetPassword = async (req: Request, res: Response) => {
         return res.status(200).json({
             message : "Password reset successfully",
         });
-        
+
     } catch (error) {
         console.error("RESET PASSWORD ERROR:", error);
 

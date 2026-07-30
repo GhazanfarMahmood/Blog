@@ -1,5 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
+
+dotenv.config();
+
 import cors from "cors";
 import connectDB from "./config/db";
 import commentRoutes from "./routes/commentRoutes";
@@ -12,7 +15,7 @@ import uploadRoutes from "./routes/uploadRotes";
 import newsletterRoutes from "./routes/newsletterRoutes";
 import authRoutes from "./routes/authRoutes";
 
-dotenv.config();
+
 
 connectDB();
 
