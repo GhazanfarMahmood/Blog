@@ -1,6 +1,4 @@
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
 import Image from "next/image";
 import { CameraIcon } from "./_components/icons";
 import { ProfileImageUploader } from "./_components/profile-image";
@@ -14,11 +12,12 @@ type ProfileUser = {
 };
 
 export default async function Page() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
-  const user = session?.user as ProfileUser;
+  const user: ProfileUser = {
+    name : "dummy",
+    image : null,
+    bio : "dummy bio",
+    role : "dummy role"
+  }
 
   const profile = {
     name: user?.name!,

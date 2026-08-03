@@ -10,11 +10,13 @@ export const metadata: Metadata = {
 };
 
 export default async function SettingsPage() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
-  const user = session?.user;
+  const user = {
+    name : "dummy name",
+    email : "dummy email",
+    bio : "dummy bio",
+    phoneNumber : 21334231432,
+    image : null
+  }
 
   return (
     <div className="mx-auto w-full max-w-270">

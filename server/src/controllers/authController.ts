@@ -6,6 +6,7 @@ import generateToken from "../utils/generateToken";
 import { generateResetToken } from "../utils/resetToken";
 import crypto from "crypto";
 import sendResetEmail from "../utils/sendResetEmail";
+import { UploadStream } from "cloudinary";
 
 // LOGIN USER
 export const login = async (req: Request, res : Response) => {
@@ -51,10 +52,15 @@ export const login = async (req: Request, res : Response) => {
             role : user.role
         });
 
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            // Session cookie (removed when browser closes)
+        })
+
         res.status(200).json({
             message : "Login successful",
-
-            token,
 
             user: {
                 id: user._id,
@@ -88,6 +94,17 @@ export const createUser = async (req: Request, res: Response) => {
         if(existingUser) {
             return res.status(400).json({ message : "User already exists" });
         }
+
+        if(role === "super-admin") {
+            const superAdmin = await User.findOne({ role : "super-admin" });
+
+            if (superAdmin) {
+                return res.status(400).json({
+                    message : "Only one Super Admin is allowed",
+                })
+            }
+        }
+
 
         const hashedPassword = await bcrypt.hash(password, 12);
 
@@ -228,6 +245,23 @@ export const resetPassword = async (req: Request, res: Response) => {
     }
 }
 
+export const getMe = async (req: Request, res: Response) => {
+    try {
+        const user = await User.findById((req as any).user.id).select("-password");
+
+        if(!user) {
+            return res.status(404).json({
+                message : "User not found",
+            });
+        }
+
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({
+            message : "Server error",
+        });
+    }
+};
 
 // JWT logout is usually handled on the frontend by deleting the token from localStorage or cookies.
 // Later, if you implement refresh tokens, logout becomes more involved.

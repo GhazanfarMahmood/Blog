@@ -2,7 +2,6 @@
 
 import { UploadIcon } from "@/assets/icons";
 import { ShowcaseSection } from "@/components/Layouts/showcase-section";
-import { authClient, getSession } from "@/lib/auth/auth-client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
@@ -106,8 +105,6 @@ export function UploadPhotoForm({ initialImage }: UploadPhotoFormProps) {
 
     await toast.promise(
       (async () => {
-        await authClient.updateUser({ image: imageSrc });
-        await getSession();
         router.refresh();
       })(),
       {

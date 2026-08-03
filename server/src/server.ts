@@ -5,6 +5,7 @@ dotenv.config();
 
 import cors from "cors";
 import connectDB from "./config/db";
+import cookieParser from "cookie-parser";
 import commentRoutes from "./routes/commentRoutes";
 import blogRoutes from "./routes/blogRoutes";
 import categoryRoutes from "./routes/categoryRoutes";
@@ -15,16 +16,18 @@ import uploadRoutes from "./routes/uploadRotes";
 import newsletterRoutes from "./routes/newsletterRoutes";
 import authRoutes from "./routes/authRoutes";
 
-
-
 connectDB();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors({
-    origin : "http://localhost:3000", 
+    origin : [
+        "http://localhost:3000", 
+        "http://localhost:3001"
+    ],
     credentials:  true
 }))
 

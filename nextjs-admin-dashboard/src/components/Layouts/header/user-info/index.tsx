@@ -6,7 +6,6 @@ import {
   DropdownContent,
   DropdownTrigger,
 } from "@/components/ui/dropdown";
-import { signOut, useSession } from "@/lib/auth/auth-client";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
@@ -18,14 +17,12 @@ import { LogOutIcon, SettingsIcon, UserIcon } from "./icons";
 export function UserInfo() {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
-  const session = useSession();
 
   async function handleLogout() {
     setIsOpen(false);
     const loadingId = toast.loading("Logging out...");
 
     try {
-      await signOut();
       router.push("/auth/sign-in");
       toast.success("Logged out successfully");
     } catch {
@@ -35,27 +32,27 @@ export function UserInfo() {
     }
   }
 
-  if (session.isPending) {
-    return (
-      <div className="flex items-center gap-3" role="presentation">
-        <span className="inline-block size-12 animate-pulse rounded-full bg-gray-200" />
+  // if (session.isPending) {
+  //   return (
+  //     <div className="flex items-center gap-3" role="presentation">
+  //       <span className="inline-block size-12 animate-pulse rounded-full bg-gray-200" />
 
-        <div className="relative h-7 w-fit">
-          <span className="flex h-7 w-30 animate-pulse items-center justify-end rounded-full bg-gray-200 pr-2" />
-          <ChevronUpIcon
-            aria-hidden
-            className="absolute top-1/2 right-2 -translate-y-1/2 rotate-180 text-gray-400/60"
-            strokeWidth={1.5}
-          />
-        </div>
-      </div>
-    );
-  }
+  //       <div className="relative h-7 w-fit">
+  //         <span className="flex h-7 w-30 animate-pulse items-center justify-end rounded-full bg-gray-200 pr-2" />
+  //         <ChevronUpIcon
+  //           aria-hidden
+  //           className="absolute top-1/2 right-2 -translate-y-1/2 rotate-180 text-gray-400/60"
+  //           strokeWidth={1.5}
+  //         />
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   const user = {
-    name: session?.data?.user?.name as string,
-    email: session?.data?.user?.email as string,
-    img: session?.data?.user?.image as string,
+    name: "" as string,
+    email: "" as string,
+    img: "" as string,
   };
 
   return (

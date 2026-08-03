@@ -1,6 +1,5 @@
 "use client";
 
-import { authClient, getSession } from "@/lib/auth/auth-client";
 import Image from "next/image";
 import { type ChangeEvent, useEffect, useId, useState } from "react";
 import { toast } from "sonner";
@@ -58,8 +57,7 @@ export function ProfileImageUploader({
     setImageSrc(base64);
 
     try {
-      await authClient.updateUser({ image: base64 });
-      await getSession();
+     
     } catch {
       toast.error("Upload failed");
     }

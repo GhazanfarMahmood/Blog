@@ -7,14 +7,16 @@ import React, { useState } from "react";
 import InputGroup from "../FormElements/InputGroup";
 import { Checkbox } from "../FormElements/checkbox";
 import { useLoginMutation } from "@/services/api/authApi";
+import { useRouter } from "next/navigation";
 
-export default function SigninWithPassword() {
+export default function LoginWithPassword() {
   const [data, setData] = useState({
     email: "",
     password: "",
     remember: false,
   });
   const [login, { isLoading }] = useLoginMutation();
+  const router = useRouter();
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setData({
@@ -25,17 +27,25 @@ export default function SigninWithPassword() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+  
     try {
       const response = await login({
-        email,
-        password,
+        email : data.email,
+        password : data.password,
       }).unwrap();
+      router.push("/");
 
-      console.log(response);
+      console.log(response);    
     } catch (error) {
       console.log(error);
     }
+
+    setData({
+      email : "",
+      password : "",
+      remember : false,
+    });
+
   };
 
   return (
@@ -62,20 +72,19 @@ export default function SigninWithPassword() {
         icon={<PasswordIcon />}
       />
 
+      <div className="mb-4.5">
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="hover:bg-opacity-90 flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-primary p-4 font-medium text-white transition disabled:cursor-not-allowed disabled:opacity-70"
+        >
+          Sign In
+          {isLoading && (
+            <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-white border-t-transparent dark:border-primary dark:border-t-transparent" />
+          )}
+        </button>
+      </div>
       <div className="mb-6 flex items-center justify-between gap-2 py-2 `font-medium`">
-        <Checkbox
-          label="Remember me"
-          name="remember"
-          withIcon="check"
-          minimal
-          radius="md"
-          onChange={(e) =>
-            setData({
-              ...data,
-              remember: e.target.checked,
-            })
-          }
-        />
 
         <Link
           href="/auth/forgot-password"
@@ -83,19 +92,6 @@ export default function SigninWithPassword() {
         >
           Forgot Password?
         </Link>
-      </div>
-
-      <div className="mb-4.5">
-        <button
-          type="submit"
-          // disabled={loading}
-          className="hover:bg-opacity-90 flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-primary p-4 font-medium text-white transition disabled:cursor-not-allowed disabled:opacity-70"
-        >
-          Sign In
-          {/* {loading && (
-            <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-white border-t-transparent dark:border-primary dark:border-t-transparent" />
-          )} */}
-        </button>
       </div>
       {/* {error && <p className="text-sm text-red-500">{error}</p>} */}
     </form>

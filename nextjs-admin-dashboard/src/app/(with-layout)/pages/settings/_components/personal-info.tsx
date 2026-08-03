@@ -9,7 +9,6 @@ import {
 import InputGroup from "@/components/FormElements/InputGroup";
 import { TextAreaGroup } from "@/components/FormElements/InputGroup/text-area";
 import { ShowcaseSection } from "@/components/Layouts/showcase-section";
-import { authClient } from "@/lib/auth/auth-client";
 import { useState, type FormEvent } from "react";
 import { toast } from "sonner";
 
@@ -61,15 +60,6 @@ export function PersonalInfoForm(personalInfo: UserInfo) {
         bio: formData.bio,
       };
 
-      const updatePromise = authClient.updateUser(updatePayload);
-
-      toast.promise(updatePromise, {
-        loading: "Updating profile...",
-        success: "Profile updated successfully!",
-        error: "Failed to update profile. Please try again.",
-      });
-
-      await updatePromise;
     } catch (error) {
       console.error("Error updating profile:", error);
     } finally {

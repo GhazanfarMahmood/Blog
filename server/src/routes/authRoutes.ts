@@ -1,5 +1,5 @@
 import express from "express";
-import {login, createUser, logout, forgotPassword, resetPassword} from "../controllers/authController";
+import {login, createUser, logout, forgotPassword, resetPassword, getMe} from "../controllers/authController";
 import verifyToken from "../middlewares/verifyToken";
 import authorizationRole from "../middlewares/authorizationRoles";
 
@@ -16,8 +16,8 @@ router.post("/create-user",
 router.post("/logout", logout);
 
 router.post("/forgot-password", forgotPassword);
-
 router.post("/reset-password", resetPassword);
 
+router.get("/me", protect, getMe)
 
 export default router;
