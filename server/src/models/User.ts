@@ -35,7 +35,6 @@ const userSchema = new mongoose.Schema(
       default: null,
     },
 
-    // Authentication
     password: {
       type: String,
       required: true,

@@ -53,22 +53,22 @@ export function UserInfo() {
     } 
   }
 
-  // if (session.isPending) {
-  //   return (
-  //     <div className="flex items-center gap-3" role="presentation">
-  //       <span className="inline-block size-12 animate-pulse rounded-full bg-gray-200" />
+  if (isLoading) {
+    return (
+      <div className="flex items-center gap-3" role="presentation">
+        <span className="inline-block size-12 animate-pulse rounded-full bg-gray-200" />
 
-  //       <div className="relative h-7 w-fit">
-  //         <span className="flex h-7 w-30 animate-pulse items-center justify-end rounded-full bg-gray-200 pr-2" />
-  //         <ChevronUpIcon
-  //           aria-hidden
-  //           className="absolute top-1/2 right-2 -translate-y-1/2 rotate-180 text-gray-400/60"
-  //           strokeWidth={1.5}
-  //         />
-  //       </div>
-  //     </div>
-  //   );
-  // }
+        <div className="relative h-7 w-fit">
+          <span className="flex h-7 w-30 animate-pulse items-center justify-end rounded-full bg-gray-200 pr-2" />
+          <ChevronUpIcon
+            aria-hidden
+            className="absolute top-1/2 right-2 -translate-y-1/2 rotate-180 text-gray-400/60"
+            strokeWidth={1.5}
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <Dropdown isOpen={isOpen} setIsOpen={setIsOpen}>
