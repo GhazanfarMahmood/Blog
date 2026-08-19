@@ -1,7 +1,7 @@
 import { Response, NextFunction } from "express";
 import { AuthRequest } from "./verifyToken";
 
-const authorizationRole = (...roles: string[]) => (req: AuthRequest, res: Response, next: NextFunction) => {
+const authorize = (...roles: string[]) => (req: AuthRequest, res: Response, next: NextFunction) => {
     if(!req.user) {
         return res.status(401).json({
             message : "Unauthorized",
@@ -17,4 +17,4 @@ const authorizationRole = (...roles: string[]) => (req: AuthRequest, res: Respon
     next();
 };
 
-export default authorizationRole;
+export default authorize;

@@ -8,6 +8,7 @@ import InputGroup from "../FormElements/InputGroup";
 import { Checkbox } from "../FormElements/checkbox";
 import { useLoginMutation } from "@/services/api/authApi";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 export default function LoginWithPassword() {
   const [data, setData] = useState({
@@ -33,11 +34,17 @@ export default function LoginWithPassword() {
         email : data.email,
         password : data.password,
       }).unwrap();
+
       router.push("/");
 
-      console.log(response);    
-    } catch (error) {
+      toast.success(response.message);   
+    } catch (error: any) {
       console.log(error);
+      toast.error(
+        error?.data.message ||
+        error?.message ||
+        "Something went wrong"
+      );
     }
 
     setData({

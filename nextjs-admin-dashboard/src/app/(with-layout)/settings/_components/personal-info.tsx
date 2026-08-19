@@ -121,20 +121,6 @@ export function PersonalInfoForm(personalInfo: UserInfo) {
           icon={<EmailIcon />}
           iconPosition="left"
           height="sm"
-          disabled
-        />
-
-        <InputGroup
-          className="mb-5.5"
-          type="text"
-          name="username"
-          label="Username"
-          placeholder="devidjhon24"
-          handleChange={handleInputChange}
-          icon={<UserIcon />}
-          iconPosition="left"
-          height="sm"
-          disabled
         />
 
         <TextAreaGroup

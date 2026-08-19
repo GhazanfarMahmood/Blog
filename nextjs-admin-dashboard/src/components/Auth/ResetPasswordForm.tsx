@@ -5,6 +5,8 @@ import React, { useState } from "react";
 import InputGroup from "../FormElements/InputGroup";
 import { useResetPasswordMutation } from "@/services/api/authApi";
 import { useSearchParams } from "next/navigation";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 export default function ResetPasswordForm(){
     const [password, setPassword] = useState({
@@ -13,6 +15,7 @@ export default function ResetPasswordForm(){
     })
     const searchParams = useSearchParams();
     const [resetPassword, { isLoading }] = useResetPasswordMutation();
+    const router = useRouter();
 
     const token = searchParams.get("token");
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -22,21 +25,31 @@ export default function ResetPasswordForm(){
             return;
         }
 
-        if(password !== confirmPassword) {
+        if(password.newPassword !== password.confirmPassword) {
             return;
         }
 
         try {
             const response = await resetPassword({
                 token,
-                password
+                password : password.newPassword,
             }).unwrap();
 
-            console.log(response);
-        } catch (error) {
-            console.log(error)
+            router.push("/auth/login");
+
+            toast.success(response.message);
+        } catch (error: any) {
+            console.log(error);
+            toast.error(
+                error?.data.message ||
+                error?.message ||
+                "Something went wrong"
+            );
         }
-        
+        setPassword({
+            newPassword : "",
+            confirmPassword : "",
+        });
     };
     
      const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,9 +83,13 @@ export default function ResetPasswordForm(){
         <div className="mb-4.5"></div>
         <button 
             type="submit"
+            disabled={isLoading}
             className="hover:bg-opacity-90 flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-primary p-4 font-medium text-white transition disabled:cursor-not-allowed disabled:opacity-70"
         >
             Reset Password
+            {isLoading && (
+                <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-white border-t-transparent dark:border-primary dark:border-t-transparent" />
+            )}
         </button>
     </form>
 }

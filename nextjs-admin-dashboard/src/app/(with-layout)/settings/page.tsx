@@ -1,7 +1,5 @@
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import { auth } from "@/lib/auth";
 import type { Metadata } from "next";
-import { headers } from "next/headers";
 import { PersonalInfoForm } from "./_components/personal-info";
 import { UploadPhotoForm } from "./_components/upload-photo";
 

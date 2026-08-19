@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
+    // Profile
     name: {
       type: String,
       required: true,
@@ -16,6 +17,25 @@ const userSchema = new mongoose.Schema(
       trim: true,
     },
 
+    phoneNumber: {
+      type: String,
+      default : "",
+      trim : true,
+    },
+
+    aboutMe: {
+      type: String,
+      default: "",
+      trim: true,
+      maxlength: 500,
+    },
+
+    profileImage: {
+      type: String,
+      default: null,
+    },
+
+    // Authentication
     password: {
       type: String,
       required: true,
@@ -27,11 +47,7 @@ const userSchema = new mongoose.Schema(
       default: "viewer",
     },
 
-    isActive: {
-      type: Boolean,
-      default: true,
-    },
-
+    // Password reset
     resetPasswordToken: {
       type: String,
       default: null,
@@ -41,27 +57,6 @@ const userSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
-
-    lastLogin: {
-      type: Date,
-      default: null,
-    },
-
-    failedLoginAttempts : {
-      type: Number,
-      default: 0,
-    },
-
-    lockedUntil: {
-      type: Date,
-      default: null,
-    },
-    
-    passwordChangedAt : {
-      type : Date,
-      default : null,
-    }
-
   },
   {
     timestamps: true,

@@ -5,6 +5,7 @@ import InputGroup from "../FormElements/InputGroup";
 import { ArrowLeftIcon, EmailIcon } from "@/assets/icons";
 import Link from "next/link";
 import { useForgotPasswordMutation } from "@/services/api/authApi";
+import { toast } from "react-toastify";
 
 export default function ForgotPasswordForm(){
     const [email, setEmail] = useState("");
@@ -18,11 +19,17 @@ export default function ForgotPasswordForm(){
                 email,
             }).unwrap();
 
-            console.log(response);
-
-        } catch (error) {
+            toast.success(response.message);
+        } catch (error: any) {
             console.log(error);
+            toast.error(
+                error?.data.message ||
+                error?.message ||
+                "Something went wrong"
+            )
         }
+
+        setEmail("");
     };
 
     return <form onSubmit={handleSubmit}>
@@ -39,9 +46,13 @@ export default function ForgotPasswordForm(){
         <div className="mb-4.5">
             <button 
                 type="submit"
+                disabled={isLoading}
                 className="hover:bg-opacity-90 flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-primary p-4 font-medium text-white transition disabled:cursor-not-allowed disabled:opacity-70"
             >
                 Send Reset Link
+                {isLoading && (
+                    <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-white border-t-transparent dark:border-primary dark:border-t-transparent" />
+                )}
             </button>
             <Link 
                 href={"/auth/sign-in"} 

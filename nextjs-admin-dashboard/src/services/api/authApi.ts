@@ -1,4 +1,15 @@
+import { clearUser, setUser } from "@/redux/features/authSlice";
 import { baseApi } from "./baseApi";
+import { Role } from "@/constants/roles";
+
+export interface AuthUser {
+    id: string;
+    name: string;
+    email: string;
+    aboutMe: string;
+    profileImage: string | null;
+    role: Role;
+}
 
 export const authApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -9,6 +20,7 @@ export const authApi = baseApi.injectEndpoints({
                 method: "POST",
                 body: data,
             }),
+            invalidatesTags: ["Auth"],
         }),
 
         forgotPassword: builder.mutation({
@@ -34,6 +46,44 @@ export const authApi = baseApi.injectEndpoints({
             }),
         }),
 
+        getMe: builder.query<AuthUser, void>({
+            query: () => "/auth/me",
+
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+                try {
+                    const { data } = await queryFulfilled;
+
+                    dispatch(setUser(data));
+                } catch {
+                    dispatch(clearUser());
+                }
+            },
+
+            providesTags : ["Auth"],
+        }),
+
+        updateProfile: builder.mutation<
+            {
+                message: string; 
+                user: {
+                    id: string;
+                    name: string;
+                    email: string;
+                    aboutMe: string;
+                    profileImage: string;
+                    role: string;
+                }
+            },
+            FormData
+        >({
+            query: (formData) => ({
+                url : "/auth/profile",
+                method : "PATCH",
+                body: formData,
+            }),
+            invalidatesTags: ["Auth"],
+        }),
+
     }),
 });
 
@@ -41,5 +91,7 @@ export const {
     useLoginMutation,
     useForgotPasswordMutation,
     useResetPasswordMutation,
-    useLogoutMutation
+    useLogoutMutation,
+    useGetMeQuery,
+    useUpdateProfileMutation
 } = authApi;

@@ -4,6 +4,9 @@ import "@/css/style.css";
 import "flatpickr/dist/flatpickr.min.css";
 import "jsvectormap/dist/jsvectormap.css";
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; 
+
 import type { Metadata } from "next";
 import NextTopLoader from "nextjs-toploader";
 import type { PropsWithChildren } from "react";
@@ -28,14 +31,17 @@ export default function RootLayout({ children }: PropsWithChildren) {
 
           {children}
 
-          <Toaster
-            position="bottom-right"
-            richColors
-            closeButton
-            duration={5000}
-            toastOptions={{
-              className: "dark:bg-gray-dark dark:border-dark-3 dark:text-white",
-            }}
+          <ToastContainer 
+            position="top-right"
+            autoClose={5000} 
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="dark"
           />
         </Providers>
       </body>
