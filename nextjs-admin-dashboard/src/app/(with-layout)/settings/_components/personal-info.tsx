@@ -10,25 +10,29 @@ import InputGroup from "@/components/FormElements/InputGroup";
 import { TextAreaGroup } from "@/components/FormElements/InputGroup/text-area";
 import { ShowcaseSection } from "@/components/Layouts/showcase-section";
 import { useState, type FormEvent } from "react";
-import { toast } from "sonner";
+import { useUpdateProfileMutation } from "@/services/api/authApi";
+import { toast } from "react-toastify";
+
 
 export interface UserInfo {
   name: string;
   phoneNumber?: string;
   email: string;
   bio?: string;
+  role: string;
 }
 
 export function PersonalInfoForm(personalInfo: UserInfo) {
-  const { name, phoneNumber = "", email, bio = "" } = personalInfo;
+  const { name, phoneNumber = "", email, bio = "", role } = personalInfo;
+  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
 
   const [formData, setFormData] = useState<UserInfo>({
     name: name,
     phoneNumber: phoneNumber,
     email: email,
     bio: bio,
+    role : role
   });
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -46,26 +50,46 @@ export function PersonalInfoForm(personalInfo: UserInfo) {
       phoneNumber: phoneNumber,
       email: email,
       bio: bio,
+      role : role
     });
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
 
-    try {
-      const updatePayload = {
-        name: formData.name,
-        phoneNumber: Number(formData.phoneNumber),
-        bio: formData.bio,
+    if(!formData.name.trim()) {
+      toast.error("Name is Required");
+      return;
+    }
+
+    if(canChangeEmail && !formData.email.trim()) {
+      toast.error("Email address is required");
+      return;
+    }
+     const updatePayload = {
+        name: formData.name.trim(),
+        phoneNumber: formData.phoneNumber?.trim() ?? "",
+        aboutMe : formData.bio?.trim() ?? "",
+        ...(canChangeEmail && {
+          email: formData.email.trim().toLowerCase(),
+        }),
       };
 
+
+    try {
+      await updateProfile(updatePayload).unwrap();
+      
+      toast.success("Profile updated successfully");
     } catch (error) {
-      console.error("Error updating profile:", error);
-    } finally {
-      setIsLoading(false);
+      console.error("PROFILE UPDATE ERROR:", error);
+
+      toast.error(
+        error?.data?.message || "Failed to updated profile",
+      );
     }
   };
+
+  const canChangeEmail  = role === "super-admin";
 
   if (!personalInfo.email) {
     return (
@@ -121,6 +145,7 @@ export function PersonalInfoForm(personalInfo: UserInfo) {
           icon={<EmailIcon />}
           iconPosition="left"
           height="sm"
+          disabled={isLoading || !canChangeEmail}
         />
 
         <TextAreaGroup
@@ -145,7 +170,7 @@ export function PersonalInfoForm(personalInfo: UserInfo) {
           </button>
 
           <button
-            className="hover:bg-opacity-90 rounded-lg bg-primary px-6 py-1.75 font-medium text-gray-2 disabled:opacity-50"
+            className={`hover:bg-opacity-90 rounded-lg bg-primary px-6 py-1.75 font-medium text-gray-2 disabled:opacity-50 ${isLoading && "cursor-not-allowed"}`}
             type="submit"
             disabled={isLoading}
           >

@@ -53,10 +53,10 @@ export function UploadPhotoForm({
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-  const [updateProfile, { isLoading }] =
-    useUpdateProfileMutation();
-  const [deleteProfileImage, { isLoading: isDeleting }] =
-    useDeleteProfileImageMutation();
+  // const [updateProfile, { isLoading }] =
+  //   useUpdateProfileMutation();
+  // const [deleteProfileImage, { isLoading: isDeleting }] =
+  //   useDeleteProfileImageMutation();
 
   useEffect(() => {
     setImageSrc(initialImage);
@@ -70,9 +70,10 @@ export function UploadPhotoForm({
   }
 
   function openFilePicker() {
-    if (!isLoading) {
-      inputRef.current?.click();
-    }
+    // CHECKING LOADING
+    // if (!isLoading) {
+    //   inputRef.current?.click();
+    // }
   }
 
   async function handleImageChange(
@@ -125,7 +126,7 @@ export function UploadPhotoForm({
     }
 
     try {
-      await deleteProfileImage().unwrap();
+      // await deleteProfileImage().unwrap();
 
       setImageSrc(null);
       resetInput();
@@ -157,23 +158,13 @@ export function UploadPhotoForm({
     try {
       const formData = new FormData();
 
-      /*
-       * Your backend uses:
-       *
-       * upload.single("profileImage")
-       *
-       * Therefore the key MUST be "profileImage".
-       */
+      
       formData.append("profileImage", selectedFile);
 
-      await updateProfile(formData).unwrap();
+      // await updateProfile(formData).unwrap();
 
       toast.success("Photo updated successfully");
 
-      /*
-       * Keep the uploaded image as the current image.
-       * We don't need router.refresh() here.
-       */
       setSelectedFile(null);
       resetInput();
     } catch (error: any) {
@@ -185,7 +176,6 @@ export function UploadPhotoForm({
 
       toast.error(message);
 
-      // Restore previous image if upload failed
       setImageSrc(initialImage);
       setSelectedFile(null);
       resetInput();
@@ -224,7 +214,7 @@ export function UploadPhotoForm({
               <button
                 type="button"
                 onClick={handleDelete}
-                disabled={isLoading}
+                // disabled={isLoading}
                 className="text-body-sm hover:text-red disabled:opacity-50"
               >
                 Delete
@@ -233,7 +223,7 @@ export function UploadPhotoForm({
               <button
                 type="button"
                 onClick={openFilePicker}
-                disabled={isLoading}
+                // disabled={isLoading}
                 className="text-body-sm hover:text-primary disabled:opacity-50"
               >
                 Update
@@ -259,10 +249,10 @@ export function UploadPhotoForm({
             ref={inputRef}
             accept="image/png,image/jpeg,image/webp"
             hidden
-            disabled={isLoading}
+            // disabled={isLoading}
             onChange={handleImageChange}
           />
-
+{/* 
           <label
             htmlFor={inputId}
             className={`flex flex-col items-center justify-center p-4 sm:py-7.5 ${
@@ -270,6 +260,10 @@ export function UploadPhotoForm({
                 ? "cursor-not-allowed opacity-50"
                 : "cursor-pointer"
             }`}
+          > */}
+          <label
+            htmlFor={inputId}
+            className={`flex flex-col items-center justify-center p-4 sm:py-7.5 cursor-pointer`}
           >
             <div className="flex size-13.5 items-center justify-center rounded-full border border-stroke bg-white dark:border-dark-3 dark:bg-gray-dark">
               <UploadIcon />
@@ -300,7 +294,7 @@ export function UploadPhotoForm({
               dark:border-dark-3 dark:text-white
             "
             type="button"
-            disabled={isLoading}
+            // disabled={isLoading}
           >
             Cancel
           </button>
@@ -313,9 +307,10 @@ export function UploadPhotoForm({
               disabled:cursor-not-allowed disabled:opacity-50
             "
             type="submit"
-            disabled={isLoading || !selectedFile}
+            // disabled={isLoading || !selectedFile}
           >
-            {isLoading ? "Saving..." : "Save"}
+            {/* {isLoading ? "Saving..." : "Save"} */}
+            Save
           </button>
         </div>
       </form>

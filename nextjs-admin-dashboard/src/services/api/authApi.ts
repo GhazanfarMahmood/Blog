@@ -65,17 +65,10 @@ export const authApi = baseApi.injectEndpoints({
         updateProfile: builder.mutation<
             {
                 message: string; 
-                user: {
-                    id: string;
-                    name: string;
-                    email: string;
-                    aboutMe: string;
-                    profileImage: string;
-                    role: string;
-                }
+                user: AuthUser;
             },
             FormData
-        >({
+            >({
             query: (formData) => ({
                 url : "/auth/profile",
                 method : "PATCH",
@@ -84,6 +77,52 @@ export const authApi = baseApi.injectEndpoints({
             invalidatesTags: ["Auth"],
         }),
 
+        deleteProfileImage : builder.mutation<
+            {message : string},
+            void
+            >({
+            query : () => ({
+                url : "/auth/profile-image",
+                method : 'DELETE',
+            }),
+            invalidatesTags : ["Auth"],
+        }),
+
+        createUser: builder.mutation<
+            {
+                message : string;
+                user : AuthUser;
+            },
+            {
+                name : string;
+                email : string;
+                password : string; 
+                role : Role;
+                phoneNumber?: string;
+                aboutMe?: string;
+            }
+            >({
+            query : (data) => ({
+                url : "/auth/create-user",
+                method : "POST",
+                body : data,
+            }),
+            invalidatesTags : ["Users"],
+        }),
+
+        getUsers: builder.query<
+            {
+                users: AuthUser[];
+            },
+            void
+            >({
+            query: () => "/auth/users",
+            providesTags : ["Users"],
+        }),
+
+        getUserById: builder.query<AuthUser, string>({
+            query : (id) => `/auth/user/${id}`,
+        })
     }),
 });
 
@@ -93,5 +132,9 @@ export const {
     useResetPasswordMutation,
     useLogoutMutation,
     useGetMeQuery,
-    useUpdateProfileMutation
+    useUpdateProfileMutation,
+    useDeleteProfileImageMutation,
+    useCreateUserMutation,
+    useGetUsersQuery,
+    useGetUserByIdQuery
 } = authApi;

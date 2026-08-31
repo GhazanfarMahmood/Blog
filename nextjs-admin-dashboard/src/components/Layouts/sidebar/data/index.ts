@@ -69,13 +69,6 @@ export const NAV_DATA = [
         items : [],
       },
       {
-        title : "Users",
-        url : "/user",
-        icon : Icons.User,
-        permission: "users",
-        items : [],
-      },
-      {
         title : "Newsletter",
         url : "/newsletter",
         icon : Icons.EnvelopeIcon,
@@ -116,6 +109,21 @@ export const NAV_DATA = [
         icon : Icons.ToolIcon,
         permission: "tools",
         items : [],
+      },
+      {
+        title : "Users",
+        icon : Icons.User,
+        permission : "users",
+        items : [
+          {
+            title : "All Users",
+            url : "/users/all-users",
+          },
+          {
+            title : "Create User",
+            url : "/users/create-user",
+          },
+        ],
       },
       {
         title: "Forms",

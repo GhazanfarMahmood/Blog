@@ -6,6 +6,7 @@ import { generateResetToken } from "../utils/resetToken";
 import crypto from "crypto";
 import sendResetEmail from "../utils/sendResetEmail";
 import { AuthRequest } from "../middlewares/verifyToken";
+import cloudinary from "../config/cloudinary";
 
 // LOGIN USER
 export const login = async (req: Request, res: Response) => {
@@ -73,8 +74,19 @@ export const login = async (req: Request, res: Response) => {
 };
 
 // CREATE USER
-export const createUser = async (req: Request, res: Response) => {
+export const createUser = async (req: AuthRequest, res: Response) => {
   try {
+    if(!req.user) {
+      return res.status(401).json({
+        message : "Unauthorized",
+      });
+    }
+
+    if(req.user.role !== "super-admin") {
+      return res.status(403).json({
+        message : "Forbidden. Only Super Admin can create users.",
+      });
+    }
     const {
       name,
       email,
@@ -89,9 +101,19 @@ export const createUser = async (req: Request, res: Response) => {
         message: "Name, email, password and role are required",
       });
     }
+    
+    const allowedRoles = ["admin", "editor", "viewer"];
+
+    if(!allowedRoles.includes(role)) {
+      return res.status(400).json({
+        message : "Invalid role",
+      });
+    }
+
+    const normalizedEmail = email.toLowerCase().trim();
 
     const existingUser = await User.findOne({
-      email: email.toLowerCase().trim(),
+      email: normalizedEmail,
     });
 
     if (existingUser) {
@@ -99,19 +121,7 @@ export const createUser = async (req: Request, res: Response) => {
         message: "User already exists",
       });
     }
-
-    if (role === "super-admin") {
-      const superAdmin = await User.findOne({
-        role: "super-admin",
-      });
-
-      if (superAdmin) {
-        return res.status(400).json({
-          message: "Only one Super Admin is allowed",
-        });
-      }
-    }
-
+    
     const hashedPassword = await bcrypt.hash(password, 12);
 
     const user = await User.create({
@@ -140,6 +150,81 @@ export const createUser = async (req: Request, res: Response) => {
 
     return res.status(500).json({
       message: "Server error",
+    });
+  }
+};
+
+// GETTING ALL USERS
+export const getUsers = async (req: AuthRequest, res: Response) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({
+        message : "Unauthorized",
+      });
+    }
+
+    const users = await User.find()
+    .select(
+      "-password -resetPasswordToken -resetPasswordExpires"
+    )
+    .sort({ createdAt : -1});
+
+    return res.status(200).json({
+      users: users.map((user) => ({
+        id : user._id.toString(),
+        name : user.name,
+        email : user.email,
+        phoneNumber : user.phoneNumber,
+        aboutMe : user.aboutMe,
+        profileImage : user.profileImage,
+        role : user.role,
+        createdAt : user.createdAt, 
+        updatedAt : user.updatedAt
+      })),
+    });
+  } catch (error) {
+    console.error("GET USERS ERROR:", error);
+
+    return res.status(500).json({
+      message : "Server error",
+    });
+  }
+};
+
+// GETTING USERS BY ID 
+export const getUserById = async (req: AuthRequest, res: Response) => {
+  try {
+    if(!req.user) {
+      return res.status(401).json({
+        message : "Unauthorized",
+      });
+    }
+
+    const user = await User.findById(req.params.id).select(
+      "-password -resetPasswordToken -resetPasswordExpires"
+    );
+
+    if(!user) {
+      return res.status(404).json({
+        message : "User not found",
+      })
+    }
+
+    return res.status(200).json({
+      id: user._id.toString(),
+      name: user.name,
+      email: user.email,
+      phoneNumber: user.phoneNumber,
+      aboutMe: user.aboutMe,
+      profileImage: user.profileImage,
+      role: user.role,
+    });
+
+  } catch (error) {
+    console.error("GET USER ERROR:", error);
+
+    return res.status(500).json({
+      message : "Server error",
     });
   }
 };
@@ -346,7 +431,7 @@ export const updateProfile = async (
       });
     }
 
-    const { name, aboutMe, phoneNumber } = req.body;
+    const { name, aboutMe, phoneNumber, email } = req.body;
 
     if (name !== undefined) {
       const trimmedName = name.trim();
@@ -379,14 +464,41 @@ export const updateProfile = async (
       user.phoneNumber = trimmedPhoneNumber;
     }
 
+    if(email !== undefined) {
+      if(req.user.role !== "super-admin") {
+        return res.status(403).json({
+          message : "Only Super Admin can change email address",
+        });
+      }
+
+      const normalizeEmail = email.toLowerCAse().trim();
+
+      if(!normalizeEmail) {
+        return res.status(400).json({
+          message : "Email cannot be empty",
+        });
+      }
+
+      const existingUser = await User.findOne({
+        email : normalizeEmail,
+        _id : { $ne: user._id},
+      });
+
+      if(existingUser) {
+        return res.status(400).json({
+          message : "Email address is already in use",
+        });
+      }
+
+      user.email = normalizeEmail;
+    }
+
     if (req.file) {
       user.profileImage = req.file.path;
     }
 
-    // 5. Save changes
     await user.save();
 
-    // 6. Return updated user
     return res.status(200).json({
       message: "Profile updated successfully",
       user: {
@@ -404,6 +516,65 @@ export const updateProfile = async (
 
     return res.status(500).json({
       message: "Server error",
+    });
+  }
+};
+
+// DELETE PROFILE IMAGE
+export const deleteProfileImage = async (req: AuthRequest, res: Response) => {
+  try {
+    if(!req.user) {
+      return res.status(401).json({
+        message : "Unauthorized",
+      });
+    }
+
+    const user = await User.findById(req.user.id);
+
+    if(!user) {
+      return res.status(404).json({
+        message : "User not found",
+      });
+    }
+
+    if(!user.profileImage) {
+      return res.status(400).json({
+        message : "No profile image found",
+      });
+    }
+
+    const imageUrl = user.profileImage;
+
+    const uploadPath = imageUrl.split("/image/upload/")[1];
+
+    if(uploadPath) {
+      const pathWithoutVersion = uploadPath.replace(/^v\d+\//, "");
+
+      const publicId = pathWithoutVersion.replace(/\.[^/.]+$/, "");
+
+      await cloudinary.uploader.destroy(publicId);
+    }
+
+    user.profileImage = null;
+
+    await user.save();
+
+    return res.status(200).json({
+      message : "Profile image deleted successfully",
+      user: {
+        id: user._id.toString(),
+        name : user.name,
+        email : user.email,
+        aboutMe : user.aboutMe,
+        profileImage : user.profileImage,
+        role : user.role,
+      },
+    });
+  } catch (error) {
+    console.error("DELETE PROFILE IMAGE ERROR:", error);
+
+    return res.status(500).json({
+      message : "Server error",
     });
   }
 };

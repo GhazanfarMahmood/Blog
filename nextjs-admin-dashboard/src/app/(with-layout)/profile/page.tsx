@@ -42,9 +42,11 @@ export default function Page() {
               Role: {user.role}
             </p>
 
-            <p className="font-medium mb-2">
-              Contact Info: {user.phoneNumber}
-            </p>
+            {user.phoneNumber && 
+              <p className="font-medium mb-2">
+                Contact Info: {user.phoneNumber}
+              </p>
+            }
 
             <div className="mx-auto max-w-180">
               <h4 className="font-medium text-dark dark:text-white">

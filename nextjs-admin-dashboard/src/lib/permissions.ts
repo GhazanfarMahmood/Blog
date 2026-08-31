@@ -22,7 +22,6 @@ export const permissions = {
 
     users : [
         ROLES.SUPER_ADMIN,
-        ROLES.ADMIN
     ],
 
     analytic : [
@@ -106,12 +105,14 @@ export const permissions = {
         ROLES.EDITOR,
         ROLES.VIEWER,
     ],
+
     charts : [
         ROLES.SUPER_ADMIN,
         ROLES.ADMIN,
         ROLES.EDITOR,
         ROLES.VIEWER,
     ],
+
     ui_elements : [
         ROLES.SUPER_ADMIN,
         ROLES.ADMIN,
@@ -126,5 +127,8 @@ export const permissions = {
 
     settings: [
         ROLES.SUPER_ADMIN,
-    ]
+        ROLES.ADMIN, 
+        ROLES.EDITOR,
+        ROLES.VIEWER
+    ],
 } satisfies Record<string, readonly Role[]>;

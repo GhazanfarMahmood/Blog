@@ -44,6 +44,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       enum: ["super-admin", "admin", "editor", "viewer"],
       default: "viewer",
+      required: true,
     },
 
     // Password reset
