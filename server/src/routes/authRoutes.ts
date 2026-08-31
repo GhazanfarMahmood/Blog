@@ -24,6 +24,7 @@ router.post(
     "/create-user",
     protect,
     requireRole("super-admin"),
+    upload.single("profileImage"),
     createUser
 );
 

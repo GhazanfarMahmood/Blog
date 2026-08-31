@@ -1,13 +1,12 @@
 "use client";
 
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import { PersonalInfoForm } from "./_components/personal-info";
+import { CreateUserForm } from "./_components/create-user";
 import { UploadPhotoForm } from "./_components/upload-photo";
-import { useGetMeQuery } from "@/services/api/authApi";
+import { useState } from "react";
 
 export default function Page(){
-
-
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   return (
     <div className="mx-auto w-full max-w-270">
@@ -15,10 +14,15 @@ export default function Page(){
 
       <div className="grid grid-cols-5 gap-8">
         <div className="col-span-5 xl:col-span-3">
-          <PersonalInfoForm />
+          <CreateUserForm
+            selectedFile={selectedFile}
+            onUserCreated={() => setSelectedFile(null)}
+          />
         </div>
         <div className="col-span-5 xl:col-span-2">
-          <UploadPhotoForm />
+          <UploadPhotoForm 
+            onFileChange={setSelectedFile}
+          />
         </div>
       </div>
     </div>

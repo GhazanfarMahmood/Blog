@@ -93,7 +93,7 @@ export const createUser = async (req: AuthRequest, res: Response) => {
       password,
       role,
       phoneNumber,
-      aboutMe,
+      aboutMe
     } = req.body;
 
     if (!name || !email || !password || !role) {
@@ -131,6 +131,7 @@ export const createUser = async (req: AuthRequest, res: Response) => {
       role,
       aboutMe: aboutMe?.trim() || "",
       phoneNumber : phoneNumber?.trim() || "",
+      profileImage : req.file?.path ?? null,
     });
 
     return res.status(201).json({

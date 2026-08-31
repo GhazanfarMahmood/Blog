@@ -93,14 +93,7 @@ export const authApi = baseApi.injectEndpoints({
                 message : string;
                 user : AuthUser;
             },
-            {
-                name : string;
-                email : string;
-                password : string; 
-                role : Role;
-                phoneNumber?: string;
-                aboutMe?: string;
-            }
+            FormData
             >({
             query : (data) => ({
                 url : "/auth/create-user",
