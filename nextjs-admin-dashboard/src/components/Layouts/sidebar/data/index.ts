@@ -123,6 +123,10 @@ export const NAV_DATA = [
             title : "Create User",
             url : "/users/create-user",
           },
+          {
+            title : "Manage User",
+            url : "/users/manage-user",
+          }
         ],
       },
       {
