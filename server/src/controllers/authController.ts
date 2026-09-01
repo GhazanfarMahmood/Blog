@@ -579,3 +579,156 @@ export const deleteProfileImage = async (req: AuthRequest, res: Response) => {
     });
   }
 };
+
+// UPDATE USER BY SUPER ADMIN
+export const updateUser = async (
+  req: AuthRequest,
+  res: Response
+) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({
+        message: "Unauthorized",
+      });
+    }
+
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    // Super Admin cannot manage another Super Admin
+    if (user.role === "super-admin") {
+      return res.status(403).json({
+        message: "Super Admin cannot be managed from this endpoint.",
+      });
+    }
+
+    const {
+      name,
+      email,
+      phoneNumber,
+      aboutMe,
+      role,
+    } = req.body;
+
+    if (name !== undefined) {
+      const trimmedName = name.trim();
+
+      if (!trimmedName) {
+        return res.status(400).json({
+          message: "Name cannot be empty",
+        });
+      }
+
+      user.name = trimmedName;
+    }
+
+    if (email !== undefined) {
+      const normalizedEmail = email.toLowerCase().trim();
+
+      if (!normalizedEmail) {
+        return res.status(400).json({
+          message: "Email cannot be empty",
+        });
+      }
+
+      const existingUser = await User.findOne({
+        email: normalizedEmail,
+        _id: { $ne: user._id },
+      });
+
+      if (existingUser) {
+        return res.status(400).json({
+          message: "Email address is already in use",
+        });
+      }
+
+      user.email = normalizedEmail;
+    }
+
+    if (phoneNumber !== undefined) {
+      user.phoneNumber = phoneNumber.trim();
+    }
+
+    if (aboutMe !== undefined) {
+      user.aboutMe = aboutMe.trim();
+    }
+
+    if (role !== undefined) {
+      const allowedRoles = [
+        "admin",
+        "editor",
+        "viewer",
+      ];
+
+      if (!allowedRoles.includes(role)) {
+        return res.status(400).json({
+          message: "Invalid role",
+        });
+      }
+
+      user.role = role;
+    }
+
+    await user.save();
+
+    return res.status(200).json({
+      message: "User updated successfully",
+      user: {
+        id: user._id.toString(),
+        name: user.name,
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+        aboutMe: user.aboutMe,
+        profileImage: user.profileImage,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    console.error("UPDATE USER ERROR:", error);
+
+    return res.status(500).json({
+      message: "Server error",
+    });
+  }
+};
+
+// DELETE UESR BY SUPER-ADMIN
+export const deleteUser = async(
+  req : AuthRequest, 
+  res : Response
+) => {  
+  try {
+    const { id } = req.params;
+
+    if(req.user?.id === id) {
+      return res.status(400).json({
+        message : "You cannot delete your own account",
+      });
+    }
+
+    const user = await User.findById(id);
+
+    if(!user) {
+      return res.status(404).json({
+        message : "User not found.",
+      });
+    }
+
+    await User.findByIdAndDelete(id);
+
+    return res.status(200).json({
+      message : "User deleted successfully.",
+    })
+  } catch (error) {
+    console.error("Delete user error:", error);
+    
+    return res.status(500).json({
+      message : "Failed to delete user.",
+    });
+  }
+};

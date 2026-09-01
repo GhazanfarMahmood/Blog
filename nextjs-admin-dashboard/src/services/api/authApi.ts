@@ -115,8 +115,43 @@ export const authApi = baseApi.injectEndpoints({
 
         getUserById: builder.query<AuthUser, string>({
             query : (id) => `/auth/user/${id}`,
+        }),
+
+        updateUser: builder.mutation<
+            {
+                message: string;
+                user: AuthUser;
+            },
+            {
+                id: string;
+                data: {
+                name: string;
+                email: string;
+                phoneNumber: string;
+                aboutMe: string;
+                role: Role;
+                };
+            }
+            >({
+            query: ({ id, data }) => ({
+                url: `/auth/user/${id}`,
+                method: "PATCH",
+                body: data,
+            }),
+            invalidatesTags: ["Users"],
+            }),
+
+        deleteUser: builder.mutation<
+            { message: string },
+            string
+        >({
+            query: (id) => ({
+                url: `/auth/user/${id}`,
+                method: "DELETE",
+            })
         })
     }),
+    
 });
 
 export const {
@@ -129,5 +164,7 @@ export const {
     useDeleteProfileImageMutation,
     useCreateUserMutation,
     useGetUsersQuery,
-    useGetUserByIdQuery
+    useGetUserByIdQuery,
+    useUpdateUserMutation,
+    useDeleteUserMutation
 } = authApi;

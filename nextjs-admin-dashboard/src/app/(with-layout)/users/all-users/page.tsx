@@ -1,7 +1,8 @@
 "use client";
 
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import { useGetUsersQuery } from "@/services/api/authApi";
+import { useDeleteUserMutation, useGetUsersQuery } from "@/services/api/authApi";
+import Link from "next/link";
 
 export interface User {
   id: string;
@@ -22,7 +23,30 @@ export default function Page() {
     isError,
   } = useGetUsersQuery();
 
-  const users = data?.users ?? [];
+  const [deleteUser, { isLoading: isDeleting }] =
+    useDeleteUserMutation();
+    
+    const users = data?.users ?? [];
+
+    const handleDeleteUser = async (id: string, name: string) => {
+    const confirmed = window.confirm(
+      `Are you sure you want to delete ${name}?`,
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      await deleteUser(id).unwrap();
+
+      alert("User deleted successfully.");
+    } catch (error) {
+      console.error("Delete user error:", error);
+
+      alert("Failed to delete user.");
+    }
+  };
 
   return (
     <div className="mx-auto w-full max-w-270">
@@ -101,6 +125,10 @@ export default function Page() {
                   <th className="px-6 py-4 text-left text-body-sm font-medium text-dark-5 dark:text-dark-6">
                     Created
                   </th>
+
+                  <th className="px-6 py-4 text-left text-body-sm font-medium text-dark-5 dark:text-dark-6">
+                    Action
+                  </th>
                 </tr>
               </thead>
 
@@ -168,9 +196,36 @@ export default function Page() {
                     <td className="px-6 py-4 text-body-sm text-dark-5 dark:text-dark-6">
                       {new Date(user.createdAt).toLocaleDateString()}
                     </td>
+
+                    {/* Action */}
+                    <td className="px-6 py-4">
+                      {user.role !== "super-admin" ? (
+                        <div className="flex items-center gap-2">
+                          <Link
+                            href={`/users/manage-user?id=${user.id}`}
+                            className="inline-flex rounded-lg bg-primary px-4 py-2 text-body-sm font-medium text-white transition hover:bg-opacity-90"
+                          >
+                            Manage
+                          </Link>
+
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteUser(user.id, user.name)}
+                            disabled={isDeleting}
+                            className="inline-flex rounded-lg bg-red px-4 py-2 text-body-sm font-medium text-white transition hover:bg-opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                          >
+                            {isDeleting ? "Deleting..." : "Delete"}
+                          </button>
+                        </div>
+                      ) : (
+                        <span className="text-body-sm text-dark-5 dark:text-dark-6">
+                          -
+                        </span>
+                      )}
+                    </td>
                   </tr>
                 ))}
-              </tbody>
+              </tbody>  
             </table>
           </div>
         )}

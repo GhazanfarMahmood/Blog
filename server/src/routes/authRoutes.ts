@@ -1,5 +1,5 @@
 import express from "express";
-import {login, createUser, logout, forgotPassword, resetPassword, getMe, updateProfile, deleteProfileImage, getUsers, getUserById} from "../controllers/authController";
+import {login, createUser, logout, forgotPassword, resetPassword, getMe, updateProfile, deleteProfileImage, getUsers, getUserById, updateUser, deleteUser} from "../controllers/authController";
 import protect from "../middlewares/protect";
 import upload from "../middlewares/upload";
 import { requireRole } from "../middlewares/requireRole";
@@ -42,6 +42,12 @@ router.get(
     getUserById
 );
 
+router.patch(
+  "/user/:id",
+  protect,
+  requireRole("super-admin"),
+  updateUser
+);
 
 router.patch(
     "/profile",
@@ -55,6 +61,13 @@ router.delete(
     protect,
     deleteProfileImage
 );
+
+router.delete(
+    "/user/:id",
+    protect,
+    requireRole("super-admin"),
+    deleteUser,
+)
 
 
 export default router;
