@@ -149,9 +149,37 @@ export const authApi = baseApi.injectEndpoints({
                 url: `/auth/user/${id}`,
                 method: "DELETE",
             })
-        })
+        }),
+
+        setUserPassword : builder.mutation<
+            {message : string},
+            {
+                id : string,
+                password : string,
+            }
+        >({
+            query : ({id, password}) => ({
+                url : `/auth/user/${id}/password`,
+                method : "PATCH",
+                body : {password},
+            }),
+        }),
+
+        changeOwnPassword: builder.mutation<
+            {message : string},
+            {
+                currentPassword : string;
+                newPassword : string;
+            }
+            >({
+                query: (body) => ({
+                    url : "/auth/me/password",
+                    method : "PATCH",
+                    body,
+                }),
+            }),
+
     }),
-    
 });
 
 export const {
@@ -166,5 +194,7 @@ export const {
     useGetUsersQuery,
     useGetUserByIdQuery,
     useUpdateUserMutation,
-    useDeleteUserMutation
+    useDeleteUserMutation,
+    useSetUserPasswordMutation,
+    useChangeOwnPasswordMutation,
 } = authApi;

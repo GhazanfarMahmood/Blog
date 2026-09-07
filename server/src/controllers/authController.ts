@@ -732,3 +732,113 @@ export const deleteUser = async(
     });
   }
 };
+
+// SETTING USER PASSWORD BY SUPER ADMIN
+export const setUserPassword = async (
+  req: AuthRequest,
+  res: Response,
+) => {
+  try {
+    const { id } = req.params;
+    const { password } = req.body;
+
+    if(!password) {
+      return res.status(400).json({
+        message : "Password is required",
+      });
+    }
+
+    const user = await User.findById(id);
+
+    if(!user) {
+      return res.status(404).json({
+        message : "User not found",
+      });
+    }
+
+    if(user.role === 'super-admin'){
+      return res.status(403).json({
+        message : "Super Admin password cannot be change here",
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 12);
+
+    user.password = hashedPassword;
+
+    await user.save();
+
+    return res.status(200).json({
+      message : "Password updated successfully",
+    });
+  } catch (error) {
+    console.error("SET USER PASSWORD ERROR:", error);
+
+    return res.status(500).json({
+      message : "Server error",
+    });
+  }
+};
+
+// SETTING USER PASSWORD BY OWN
+export const changeOwnPassword = async(
+  req: AuthRequest,
+  res: Response,
+) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    if(!currentPassword || !newPassword) {
+      return res.status(400).json({
+        message : "Current password and new password are required."
+      });
+    }
+
+    if(newPassword.length < 8) {
+      return res.status(400).json({
+        message : "New password must be at least 8 characters.",
+      });
+    }
+
+    const user = await User.findById(req.user?.id);
+
+    if(!user) {
+      return res.status(404).json({
+        message : "User not found.",
+      });
+    }
+
+    const isCurrentPasswordCorrect = await bcrypt.compare(
+      currentPassword,
+      user.password
+    );
+
+    if(!isCurrentPasswordCorrect) {
+      return res.status(400).json({
+        message : "Current password is incorrect.",
+      });
+    }    
+
+    if(currentPassword === newPassword) {
+      return res.status(400).json({
+        message : "New password must be different from the current password.",
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 12);
+
+    user.password = hashedPassword;
+
+    await user.save();
+
+    return res.status(200).json({
+      message : "Password updated successfully.",
+    });
+  } catch (error) {
+    console.error("CHANGE OWN PASSWORD ERROR:", error);
+
+    return res.status(500).json({
+      message : "Failed to updated password.",
+    });
+  }
+};

@@ -2,10 +2,10 @@
 
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { useGetUserByIdQuery } from "@/services/api/authApi";
-import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation"
 import { ManageUserForm } from "./_components/manage-user";
+import ManageUserPassword from "./_components/manage-user-password";
 
 export default function Page(){
     const searchParams = useSearchParams();
@@ -84,6 +84,8 @@ export default function Page(){
       </div>
       
       <ManageUserForm user={user} />
+      
+      <ManageUserPassword userId={user.id} />
     </div>
   );
 }

@@ -4,6 +4,7 @@ import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { PersonalInfoForm } from "./_components/personal-info";
 import { UploadPhotoForm } from "./_components/upload-photo";
 import { useGetMeQuery } from "@/services/api/authApi";
+import ChangeOwnPassword from "./_components/change-own-password";
 
 
 export default function SettingsPage() {
@@ -39,6 +40,8 @@ export default function SettingsPage() {
           <UploadPhotoForm initialImage={user.profileImage ?? null} />
         </div>
       </div>
+
+      <ChangeOwnPassword />
     </div>
   );
 }
