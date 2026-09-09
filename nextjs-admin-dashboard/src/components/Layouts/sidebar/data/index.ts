@@ -1,4 +1,4 @@
-import { permission } from "process";
+import { permission, title } from "process";
 import * as Icons from "../icons";
 
 export const NAV_DATA = [
@@ -13,18 +13,19 @@ export const NAV_DATA = [
         items: [],
       },
       {
-        title : "Blogs",
-        icon : Icons.PostIcon,
-        url : "/blog",
-        permission : "blogs",
-        items: []
-      },
-      {
         title : "Post",
         icon : Icons.PostIcon,
-        url : "/post",
         permission: "post",
-        items : [],
+        items : [
+          {
+            title : "All Posts", 
+            url : "/post/all-posts"
+          }, 
+          {
+            title : "Create Post",
+            url : "/post/create-post"
+          }
+        ],
       },
       {
         title : "Categories",
@@ -123,10 +124,6 @@ export const NAV_DATA = [
             title : "Create User",
             url : "/users/create-user",
           },
-          {
-            title : "Manage User",
-            url : "/users/manage-user",
-          }
         ],
       },
       {

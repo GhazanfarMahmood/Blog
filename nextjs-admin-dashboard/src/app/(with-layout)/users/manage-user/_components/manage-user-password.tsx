@@ -87,59 +87,61 @@ export default function ManageUserPassword({
   };
 
   return (
-    <ShowcaseSection title="Security" className="mt-8 p-7!">
-      <form onSubmit={handleSubmit}>
-        {/* New Password + Confirm Password */}
-        <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-          <InputGroup
-            className="w-full sm:w-1/2"
-            type="password"
-            name="password"
-            label="New Password"
-            placeholder="Enter New Password"
-            value={formData.password}
-            handleChange={handleInputChange}
-            icon={<PasswordIcon />}
-            iconPosition="left"
-            height="sm"
-            disabled={isLoading}
-          />
+    <div className="mt-8">
+      <ShowcaseSection title="Security" className="p-7!">
+        <form onSubmit={handleSubmit}>
+          {/* New Password + Confirm Password */}
+          <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+            <InputGroup
+              className="w-full sm:w-1/2"
+              type="password"
+              name="password"
+              label="New Password"
+              placeholder="Enter New Password"
+              value={formData.password}
+              handleChange={handleInputChange}
+              icon={<PasswordIcon />}
+              iconPosition="left"
+              height="sm"
+              disabled={isLoading}
+            />
 
-          <InputGroup
-            className="w-full sm:w-1/2"
-            type="password"
-            name="confirmPassword"
-            label="Confirm Password"
-            placeholder="Confirm New Password"
-            value={formData.confirmPassword}
-            handleChange={handleInputChange}
-            icon={<PasswordIcon />}
-            iconPosition="left"
-            height="sm"
-            disabled={isLoading}
-          />
-        </div>
+            <InputGroup
+              className="w-full sm:w-1/2"
+              type="password"
+              name="confirmPassword"
+              label="Confirm Password"
+              placeholder="Confirm New Password"
+              value={formData.confirmPassword}
+              handleChange={handleInputChange}
+              icon={<PasswordIcon />}
+              iconPosition="left"
+              height="sm"
+              disabled={isLoading}
+            />
+          </div>
 
-        {/* Buttons */}
-        <div className="flex justify-end gap-3">
-          <button
-            type="button"
-            onClick={handleReset}
-            disabled={isLoading}
-            className="rounded-lg border border-stroke px-6 py-1.75 font-medium text-dark hover:shadow-1 disabled:cursor-not-allowed disabled:opacity-50 dark:border-dark-3 dark:text-white"
-          >
-            Cancel
-          </button>
+          {/* Buttons */}
+          <div className="flex justify-end gap-3">
+            <button
+              type="button"
+              onClick={handleReset}
+              disabled={isLoading}
+              className="rounded-lg border border-stroke px-6 py-1.75 font-medium text-dark hover:shadow-1 disabled:cursor-not-allowed disabled:opacity-50 dark:border-dark-3 dark:text-white"
+            >
+              Cancel
+            </button>
 
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="hover:bg-opacity-90 rounded-lg bg-primary px-6 py-1.75 font-medium text-white disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            {isLoading ? "Updating..." : "Update Password"}
-          </button>
-        </div>
-      </form>
-    </ShowcaseSection>
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="hover:bg-opacity-90 rounded-lg bg-primary px-6 py-1.75 font-medium text-white disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {isLoading ? "Updating..." : "Update Password"}
+            </button>
+          </div>
+        </form>
+      </ShowcaseSection>
+    </div>
   );
 }

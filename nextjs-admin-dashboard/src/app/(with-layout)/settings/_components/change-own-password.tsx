@@ -104,81 +104,83 @@ export default function ChangeOwnPassword() {
   };
 
   return (
-    <ShowcaseSection
-      title="Security"
-      className="mt-8 p-7!"
-    >
-      <form onSubmit={handleSubmit}>
-        {/* Current Password */}
-        <div className="mb-5.5">
-          <InputGroup
-            className="w-full"
-            type="password"
-            name="currentPassword"
-            label="Current Password"
-            placeholder="Enter Current Password"
-            value={formData.currentPassword}
-            handleChange={handleInputChange}
-            icon={<PasswordIcon />}
-            iconPosition="left"
-            height="sm"
-            disabled={isLoading}
-          />
-        </div>
+    <div className="mt-8">
+      <ShowcaseSection
+        title="Security"
+        className="mt-8 p-7!"
+      >
+        <form onSubmit={handleSubmit}>
+          {/* Current Password */}
+          <div className="mb-5.5">
+            <InputGroup
+              className="w-full"
+              type="password"
+              name="currentPassword"
+              label="Current Password"
+              placeholder="Enter Current Password"
+              value={formData.currentPassword}
+              handleChange={handleInputChange}
+              icon={<PasswordIcon />}
+              iconPosition="left"
+              height="sm"
+              disabled={isLoading}
+            />
+          </div>
 
-        {/* New Password + Confirm Password */}
-        <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-          <InputGroup
-            className="w-full sm:w-1/2"
-            type="password"
-            name="newPassword"
-            label="New Password"
-            placeholder="Enter New Password"
-            value={formData.newPassword}
-            handleChange={handleInputChange}
-            icon={<PasswordIcon />}
-            iconPosition="left"
-            height="sm"
-            disabled={isLoading}
-          />
+          {/* New Password + Confirm Password */}
+          <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+            <InputGroup
+              className="w-full sm:w-1/2"
+              type="password"
+              name="newPassword"
+              label="New Password"
+              placeholder="Enter New Password"
+              value={formData.newPassword}
+              handleChange={handleInputChange}
+              icon={<PasswordIcon />}
+              iconPosition="left"
+              height="sm"
+              disabled={isLoading}
+            />
 
-          <InputGroup
-            className="w-full sm:w-1/2"
-            type="password"
-            name="confirmPassword"
-            label="Confirm Password"
-            placeholder="Confirm New Password"
-            value={formData.confirmPassword}
-            handleChange={handleInputChange}
-            icon={<PasswordIcon />}
-            iconPosition="left"
-            height="sm"
-            disabled={isLoading}
-          />
-        </div>
+            <InputGroup
+              className="w-full sm:w-1/2"
+              type="password"
+              name="confirmPassword"
+              label="Confirm Password"
+              placeholder="Confirm New Password"
+              value={formData.confirmPassword}
+              handleChange={handleInputChange}
+              icon={<PasswordIcon />}
+              iconPosition="left"
+              height="sm"
+              disabled={isLoading}
+            />
+          </div>
 
-        {/* Buttons */}
-        <div className="flex justify-end gap-3">
-          <button
-            type="button"
-            onClick={handleReset}
-            disabled={isLoading}
-            className="rounded-lg border border-stroke px-6 py-1.75 font-medium text-dark hover:shadow-1 disabled:cursor-not-allowed disabled:opacity-50 dark:border-dark-3 dark:text-white"
-          >
-            Cancel
-          </button>
+          {/* Buttons */}
+          <div className="flex justify-end gap-3">
+            <button
+              type="button"
+              onClick={handleReset}
+              disabled={isLoading}
+              className="rounded-lg border border-stroke px-6 py-1.75 font-medium text-dark hover:shadow-1 disabled:cursor-not-allowed disabled:opacity-50 dark:border-dark-3 dark:text-white"
+            >
+              Cancel
+            </button>
 
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="rounded-lg bg-primary px-6 py-1.75 font-medium text-white hover:bg-opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            {isLoading
-              ? "Updating..."
-              : "Update Password"}
-          </button>
-        </div>
-      </form>
-    </ShowcaseSection>
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="rounded-lg bg-primary px-6 py-1.75 font-medium text-white hover:bg-opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {isLoading
+                ? "Updating..."
+                : "Update Password"}
+            </button>
+          </div>
+        </form>
+      </ShowcaseSection>
+    </div>
   );
 }
