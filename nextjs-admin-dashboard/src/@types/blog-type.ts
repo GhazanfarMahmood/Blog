@@ -3,29 +3,36 @@ import { CategoryType } from "./category-type"
 
 // BLOG CARD TYPE
 export type BlogContentType = {
-    author : AuthorType,
-    category : CategoryType[],
-    content : string,
-    createdAt : string,
-    excerpt : string,
-    isPublished : boolean,
-    reading : string,
-    slug : string,
-    tags : string[],
-    thumbnail : string,
-    title : string,
-    updateAt : string,
-    _id : string,
+    _id: string;
+    title: string;
+    slug: string;
+    excerpt: string;
+    content: string;
+    thumbnail: string;
+    category: CategoryType[];
+    tags: string[];
+    author: AuthorType;
+    reading: number;
+    isPublished: boolean;
+    isFeatured: boolean;
+    createdAt: string;
+    updatedAt: string;
 }
 
 // BLOG DETAIL TYPE
 export type BlogDetailType = {
-    title : string,
-    author : AuthorType,
-    category : CategoryType[],
-    excerpt : string,
-    createdAt : string,
-    reading : string,
-    thumbnail : string,
-    content : string,
+    _id: string;
+    title: string;
+    slug: string;
+    excerpt: string;
+    content: string;
+    thumbnail: string;
+    category: CategoryType[];
+    tags: string[];
+    author: AuthorType;
+    reading: number;
+    isPublished: boolean;
+    isFeatured: boolean;
+    createdAt: string;
+    updatedAt: string;
 }
