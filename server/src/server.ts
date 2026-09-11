@@ -1,7 +1,11 @@
 import express from "express";
 import dotenv from "dotenv";
+
+dotenv.config();
+
 import cors from "cors";
 import connectDB from "./config/db";
+import cookieParser from "cookie-parser";
 import commentRoutes from "./routes/commentRoutes";
 import blogRoutes from "./routes/blogRoutes";
 import categoryRoutes from "./routes/categoryRoutes";
@@ -10,8 +14,7 @@ import contactRoutes from "./routes/contactRoutes";
 import aboutRoutes from "./routes/aboutRoutes";
 import uploadRoutes from "./routes/uploadRotes";
 import newsletterRoutes from "./routes/newsletterRoutes";
-
-dotenv.config();
+import authRoutes from "./routes/authRoutes";
 
 connectDB();
 
@@ -19,8 +22,12 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors({
-    origin : "http://localhost:3000", 
+    origin : [
+        "http://localhost:3000", 
+        "http://localhost:3001"
+    ],
     credentials:  true
 }))
 
@@ -42,7 +49,9 @@ app.use("/api/about", aboutRoutes);
 
 app.use("/api/upload", uploadRoutes);
 
-app.use("/api/newsletter", newsletterRoutes)
+app.use("/api/newsletter", newsletterRoutes);
+
+app.use("/api/auth", authRoutes)
 
 app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`)

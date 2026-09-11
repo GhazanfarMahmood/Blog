@@ -49,6 +49,7 @@ const InputGroup: React.FC<InputGroupProps> = ({
           props.iconPosition === "left"
             ? "[&_svg]:left-4.5"
             : "[&_svg]:right-4.5",
+          disabled && "cursor-not-allowed"
         )}
       >
         <input
@@ -66,6 +67,7 @@ const InputGroup: React.FC<InputGroupProps> = ({
               : "px-5.5 py-3 text-dark placeholder:text-dark-6 dark:text-white",
             props.iconPosition === "left" && "pl-12.5",
             props.height === "sm" && "py-2.5",
+            disabled && "cursor-not-allowed!"
           )}
           required={required}
           disabled={disabled}
