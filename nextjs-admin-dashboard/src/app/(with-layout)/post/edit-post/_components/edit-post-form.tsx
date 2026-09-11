@@ -1,7 +1,21 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import {
+    useEffect,
+    useState,
+    type ChangeEvent,
+    type FormEvent,
+} from "react";
 import { toast } from "react-toastify";
+
+import {
+    useGetBlogByIdQuery,
+    useUpdateBlogMutation,
+} from "@/services/api/blogApi.ts";
+
+type EditPostFormProps = {
+    postId: string;
+};
 
 const initialFormData = {
     title: "",
@@ -17,12 +31,47 @@ const initialFormData = {
     isFeatured: false,
 };
 
-export default function CreatePostForm() {
+export default function EditPostForm({
+    postId,
+}: EditPostFormProps) {
     const [formData, setFormData] = useState(initialFormData);
     const [tagInput, setTagInput] = useState("");
 
+    const {
+        data,
+        isLoading,
+        isError,
+    } = useGetBlogByIdQuery(postId);
+
+    const [updateBlog, { isLoading: isUpdating }] =
+        useUpdateBlogMutation();
+
+    const blog = data?.data;
+
+    useEffect(() => {
+        if (!blog) return;
+
+        setFormData({
+            title: blog.title ?? "",
+            slug: blog.slug ?? "",
+            excerpt: blog.excerpt ?? "",
+            content: blog.content ?? "",
+            thumbnail: blog.thumbnail ?? "",
+            category: blog.category?.map(
+                (category) => category._id,
+            ) ?? [],
+            tags: blog.tags ?? [],
+            author: blog.author?._id ?? "",
+            reading: blog.reading ?? 0,
+            isPublished: blog.isPublished ?? false,
+            isFeatured: blog.isFeatured ?? false,
+        });
+    }, [blog]);
+
     const handleChange = (
-        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+        event: ChangeEvent<
+            HTMLInputElement | HTMLTextAreaElement
+        >,
     ) => {
         const { name, value } = event.target;
 
@@ -33,7 +82,7 @@ export default function CreatePostForm() {
     };
 
     const handleCategoryChange = (
-        event: React.ChangeEvent<HTMLSelectElement>,
+        event: ChangeEvent<HTMLSelectElement>,
     ) => {
         const categories = Array.from(
             event.target.selectedOptions,
@@ -67,22 +116,50 @@ export default function CreatePostForm() {
     const handleRemoveTag = (tagToRemove: string) => {
         setFormData((previous) => ({
             ...previous,
-            tags: previous.tags.filter((tag) => tag !== tagToRemove),
+            tags: previous.tags.filter(
+                (tag) => tag !== tagToRemove,
+            ),
         }));
     };
 
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (
+        event: FormEvent<HTMLFormElement>,
+    ) => {
         event.preventDefault();
 
-        console.log("Create post:", formData);
+        try {
+            const response = await updateBlog({
+                id: postId,
+                data: formData,
+            }).unwrap();
 
-        toast.success("Post created successfully");
+            toast.success(response.message);
+        } catch (error: any) {
+            toast.error(
+                error?.data?.message || "Failed to update post",
+            );
+        }
     };
 
-    const handleReset = () => {
-        setFormData(initialFormData);
-        setTagInput("");
-    };
+    if (isLoading) {
+        return (
+            <div className="rounded-lg border border-stroke bg-white p-6 dark:border-dark-3 dark:bg-gray-dark">
+                <p className="text-sm text-gray-500">
+                    Loading post...
+                </p>
+            </div>
+        );
+    }
+
+    if (isError || !blog) {
+        return (
+            <div className="rounded-lg border border-stroke bg-white p-6 dark:border-dark-3 dark:bg-gray-dark">
+                <p className="text-sm text-red-500">
+                    Failed to load post.
+                </p>
+            </div>
+        );
+    }
 
     return (
         <form onSubmit={handleSubmit}>
@@ -106,7 +183,6 @@ export default function CreatePostForm() {
                                     name="title"
                                     value={formData.title}
                                     onChange={handleChange}
-                                    placeholder="Enter post title"
                                     className="w-full rounded-md border border-stroke bg-transparent px-4 py-3 text-sm outline-none focus:border-primary dark:border-dark-3"
                                 />
                             </div>
@@ -122,7 +198,6 @@ export default function CreatePostForm() {
                                     name="slug"
                                     value={formData.slug}
                                     onChange={handleChange}
-                                    placeholder="enter-post-slug"
                                     className="w-full rounded-md border border-stroke bg-transparent px-4 py-3 text-sm outline-none focus:border-primary dark:border-dark-3"
                                 />
                             </div>
@@ -138,7 +213,6 @@ export default function CreatePostForm() {
                                     value={formData.excerpt}
                                     onChange={handleChange}
                                     rows={4}
-                                    placeholder="Write a short description..."
                                     className="w-full resize-none rounded-md border border-stroke bg-transparent px-4 py-3 text-sm outline-none focus:border-primary dark:border-dark-3"
                                 />
                             </div>
@@ -154,7 +228,6 @@ export default function CreatePostForm() {
                                     value={formData.content}
                                     onChange={handleChange}
                                     rows={15}
-                                    placeholder="Write your post content..."
                                     className="w-full resize-y rounded-md border border-stroke bg-transparent px-4 py-3 text-sm outline-none focus:border-primary dark:border-dark-3"
                                 />
                             </div>
@@ -220,7 +293,6 @@ export default function CreatePostForm() {
                             name="thumbnail"
                             value={formData.thumbnail}
                             onChange={handleChange}
-                            placeholder="Thumbnail URL"
                             className="w-full rounded-md border border-stroke bg-transparent px-4 py-3 text-sm outline-none focus:border-primary dark:border-dark-3"
                         />
                     </div>
@@ -242,7 +314,9 @@ export default function CreatePostForm() {
                             }
                             className="w-full rounded-md border border-stroke bg-transparent px-4 py-3 text-sm outline-none focus:border-primary dark:border-dark-3"
                         >
-                            <option value="">Select author</option>
+                            <option value="">
+                                Select author
+                            </option>
                         </select>
                     </div>
 
@@ -270,10 +344,6 @@ export default function CreatePostForm() {
                                 Category 3
                             </option>
                         </select>
-
-                        <p className="mt-2 text-xs text-gray-500">
-                            Hold Ctrl/Cmd to select multiple categories.
-                        </p>
                     </div>
 
                     {/* Tags */}
@@ -340,35 +410,30 @@ export default function CreatePostForm() {
 
                         <input
                             type="number"
-                            name="reading"
                             min={0}
                             value={formData.reading}
                             onChange={(event) =>
                                 setFormData((previous) => ({
                                     ...previous,
-                                    reading: Number(event.target.value),
+                                    reading: Number(
+                                        event.target.value,
+                                    ),
                                 }))
                             }
-                            placeholder="Minutes"
                             className="w-full rounded-md border border-stroke bg-transparent px-4 py-3 text-sm outline-none focus:border-primary dark:border-dark-3"
                         />
                     </div>
 
-                    {/* Actions */}
-                    <div className="flex justify-end gap-3">
-                        <button
-                            type="button"
-                            onClick={handleReset}
-                            className="rounded-md border border-stroke px-5 py-2.5 text-sm font-medium text-dark dark:border-dark-3 dark:text-white"
-                        >
-                            Reset
-                        </button>
-
+                    {/* Update */}
+                    <div className="flex justify-end">
                         <button
                             type="submit"
-                            className="rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-white"
+                            disabled={isUpdating}
+                            className="rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-50"
                         >
-                            Create Post
+                            {isUpdating
+                                ? "Updating..."
+                                : "Update Post"}
                         </button>
                     </div>
                 </div>

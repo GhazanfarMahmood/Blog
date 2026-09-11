@@ -9,8 +9,9 @@ import {
     type ColumnDef,
 } from "@tanstack/react-table";
 
-import { useGetBlogsQuery } from "@/services/api/blogApi.ts";
+import { useGetBlogsQuery, useDeleteBlogMutation, } from "@/services/api/blogApi.ts";
 import type { BlogContentType } from "@/@types/blog-type";
+import { toast } from "react-toastify";
 
 export default function Page() {
     const [page, setPage] = useState(1);
@@ -20,6 +21,26 @@ export default function Page() {
         page,
         limit,
     });
+    const [deleteBlog, { isLoading: isDeleting }] =
+    useDeleteBlogMutation();
+
+    const handleDelete = async (id: string) => {
+        const confirmed = window.confirm(
+            "Are you sure you want to delete this post?",
+        );
+
+        if (!confirmed) return;
+
+        try {
+            const response = await deleteBlog(id).unwrap();
+
+            toast.success(response.message);
+        } catch (error: any) {
+            toast.error(
+                error?.data?.message || "Failed to delete post",
+            );
+        }
+    };
 
     const columns: ColumnDef<BlogContentType>[] = [
         {
@@ -111,9 +132,11 @@ export default function Page() {
 
                     <button
                         type="button"
-                        className="rounded-md border px-3 py-1.5 text-sm text-red-500"
+                        onClick={() => handleDelete(row.original._id)}
+                        disabled={isDeleting}
+                        className="rounded-md border px-3 py-1.5 text-sm text-red-500 disabled:cursor-not-allowed disabled:opacity-50"
                     >
-                        Delete
+                        {isDeleting ? "Deleting..." : "Delete"}
                     </button>
                 </div>
             ),
