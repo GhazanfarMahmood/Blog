@@ -124,7 +124,7 @@ export default function Page() {
             cell: ({ row }) => (
                 <div className="flex items-center gap-2">
                     <Link
-                        href={`/posts/edit-post?id=${row.original._id}`}
+                        href={`/post/edit-post?id=${row.original._id}`}
                         className="rounded-md border px-3 py-1.5 text-sm"
                     >
                         Edit
@@ -182,7 +182,7 @@ export default function Page() {
                 </div>
 
                 <Link
-                    href="/posts/create-post"
+                    href="/post/create-post"
                     className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white"
                 >
                     Create Post

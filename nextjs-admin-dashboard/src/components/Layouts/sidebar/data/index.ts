@@ -28,11 +28,19 @@ export const NAV_DATA = [
         ],
       },
       {
-        title : "Categories",
+        title : "Category",
         icon : Icons.CategoryIcon,
-        url : "/categories",
         permission: "categories",
-        items : [],
+        items: [
+          {
+            title : "All Categories",
+            url : "/category/all-categories",
+          },
+          {
+            title : "Create Category",
+            url : "/category/create-category"
+          }
+        ]
       },
       {
         title: "Calendar",

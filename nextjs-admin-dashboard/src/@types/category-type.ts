@@ -22,3 +22,24 @@ export type CategoryDetailInfoType = {
     title : string, 
     description: string
 }
+
+export type CategoryAdminType = {
+  _id: string;
+  categoryName: string;
+  slug: string;
+  image: string;
+  icon?: string;
+  description: string;
+  isPublished: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type CategoryFormType = {
+  categoryName: string;
+  slug: string;
+  image: string;
+  icon?: string;
+  description: string;
+  isPublished: boolean;
+};
