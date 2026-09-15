@@ -5,6 +5,7 @@ export const categoryApi = baseApi.injectEndpoints({
     endpoints : (builder) => ({
         getCategories : builder.query<CategoryAdminType[], void>({
             query : () => "/categories",
+            providesTags : ["Categories"],
         }),
 
         getCategoryBySlug: builder.query<CategoryAdminType, string>({
@@ -33,6 +34,7 @@ export const categoryApi = baseApi.injectEndpoints({
                 method : "PATCH", 
                 body: data,
             }),
+            invalidatesTags : ["Categories"],
         }),
 
         deleteCategory: builder.mutation<
@@ -43,6 +45,16 @@ export const categoryApi = baseApi.injectEndpoints({
                 url : `/categories/${id}`,
                 method : "DELETE",
             }),
+            invalidatesTags : ["Categories"],
         }),
     }),
 });
+
+
+export const {
+    useGetCategoriesQuery,
+    useGetCategoryBySlugQuery,
+    useCreateCategoryMutation,
+    useUpdateCategoryMutation,
+    useDeleteCategoryMutation,
+} = categoryApi;

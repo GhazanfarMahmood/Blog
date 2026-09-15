@@ -50,13 +50,6 @@ export const NAV_DATA = [
         items: [],
       },
       {
-        title: "Tag",
-        url: "/tag",
-        icon: Icons.TagIcon,
-        permission: "tag",
-        items: [],
-      },
-      {
         title : "Media",
         url : "/media",
         icon : Icons.MediaIcon,
