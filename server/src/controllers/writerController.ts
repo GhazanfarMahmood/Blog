@@ -10,7 +10,8 @@ export const createWriter = async (req : Request, res: Response) => {
             return res.status(400).json({ message : "Name and location are required" });
         }
 
-        const finalSlug = slug?.toLowerCase().trim() || name.toLowerCase().replace(/\s+/g, "-");
+        const finalSlug = slug?.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") ||
+                        name.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 
         const existingWriter = await Writer.findOne({slug : finalSlug});
 
