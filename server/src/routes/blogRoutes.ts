@@ -1,10 +1,12 @@
 import express from "express";
-import { createBlog, deleteBlog, getBlogs, getBlogsByCategory, getBlogsBySearch, getBlogsBySlug, getBlogsByWriter, updateBlog, getSidebarData } from "../controllers/blogController";
+import { createBlog, deleteBlog, getBlogs, getBlogsByCategory, getBlogsBySearch, getBlogsBySlug, getBlogsByWriter, updateBlog, getSidebarData, getBlogsById } from "../controllers/blogController";
 const router = express.Router();
 
 router.get("/", getBlogs);
 
-router.get("/sidebar-data", getSidebarData)
+router.get("/id/:id", getBlogsById);
+
+router.get("/sidebar-data", getSidebarData);
 
 router.get("/search", getBlogsBySearch);
 

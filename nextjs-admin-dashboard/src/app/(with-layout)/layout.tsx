@@ -1,10 +1,12 @@
 import { Header } from "@/components/Layouts/header";
 import { Sidebar } from "@/components/Layouts/sidebar";
+import AuthInitializer from "@/provider/AuthInitializer";
 import { type PropsWithChildren } from "react";
 
 export default function WithLayout({ children }: PropsWithChildren) {
   return (
     <div className="flex min-h-screen">
+      <AuthInitializer />
       <Sidebar />
 
       <div className="w-full bg-gray-2 dark:bg-[#020d1a]">

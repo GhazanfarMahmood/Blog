@@ -10,10 +10,16 @@ import { ArrowLeftIcon, ChevronUp } from "./icons";
 import { MenuItem } from "./menu-item";
 import { useSidebarContext } from "./sidebar-context";
 
+import { can } from "@/constants/can";
+import { useAppSelector } from "@/redux/hooks";
+
+
 export function Sidebar() {
-  const pathname = usePathname();
+  const pathname = usePathname(); 
   const { setIsOpen, isOpen, isMobile, toggleSidebar } = useSidebarContext();
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
+
+  const { user } = useAppSelector((stat) => stat.auth);
 
   const toggleExpanded = (title: string) => {
     setExpandedItems((prev) => (prev.includes(title) ? [] : [title]));
@@ -41,6 +47,15 @@ export function Sidebar() {
       });
     });
   }, [pathname]);
+
+  const filteredNavData = NAV_DATA.map((section) => ({
+    ...section,
+    items: section.items.filter(
+      (item) => 
+      !item.permission || 
+      (user?.role && can(user.role, item.permission)),
+    ),
+  }));
 
   return (
     <>
@@ -87,7 +102,7 @@ export function Sidebar() {
 
           {/* Navigation */}
           <div className="custom-scrollbar mt-6 flex-1 overflow-y-auto pr-3 min-[850px]:mt-10">
-            {NAV_DATA.map((section) => (
+            {filteredNavData.map((section) => (
               <div key={section.label} className="mb-6">
                 <h2 className="mb-5 text-sm font-medium text-dark-4 dark:text-dark-6">
                   {section.label}

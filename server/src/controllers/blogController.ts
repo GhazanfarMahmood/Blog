@@ -59,7 +59,37 @@ export const getBlogs = async (req: Request, res: Response) => {
     } catch(error) {
         res.status(500).json({ message : "Server error" })
     }
-}
+};
+
+export const getBlogsById = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params as {id : string};
+
+        if(!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({
+                message : "Invalid blog ID",
+            });
+        }
+
+        const blog = await Blog.findById(id).populate("category").populate("author");
+
+        if(!blog) {
+            return res.status(404).json({
+                message : "Blog not found",
+            });
+        }
+
+        return res.status(200).json({
+            data : blog,
+        });
+    } catch (error) {
+        console.error("GET BLOG BY ID ERROR:", error);
+
+        return res.status(500).json({
+            message : "Server error",
+        });
+    }
+};
 
 export const getSidebarData = async (req: Request, res: Response) => {
     try {
@@ -85,7 +115,7 @@ export const getSidebarData = async (req: Request, res: Response) => {
     } catch (error) {
         res.status(500).json({message : "Server error"});
     }
-}
+};
 
 export const getBlogsBySearch = async (req: Request, res: Response) => {
     try {
@@ -132,7 +162,6 @@ export const getBlogsBySearch = async (req: Request, res: Response) => {
         });
     }
 };
-
 
 export const getBlogsBySlug = async (
     req: Request,
@@ -248,7 +277,6 @@ export const getBlogsByWriter = async (req: Request, res: Response) => {
         res.status(500).json({ message : "Server Error" });
     }
 }
-
 
 export const updateBlog = async (req: Request, res: Response) => {
     try {
