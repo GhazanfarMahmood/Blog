@@ -19,34 +19,75 @@ type CreateUserFormProps = {
   onUserCreated: () => void;
 };
 
-
 export function CreateUserForm({
   selectedFile,
   onUserCreated,
 }: CreateUserFormProps) {
   const [createUser, { isLoading }] = useCreateUserMutation();
+
   const [formData, setFormData] = useState({
-    name : "",
-    phoneNumber : "",
-    email : "",
-    password : "",
-    role : "",
-    aboutMe : "",
+    name: "",
+    phoneNumber: "",
+    email: "",
+    password: "",
+    role: "",
+    aboutMe: "",
+
+    isWriter: false,
+
+    designation: "",
+    location: "",
+    fbLink: "",
+    twitterLink: "",
+    instagramLink: "",
+    linkedinLink: "",
+    slug: "",
+    isFeaturedWriter: false,
   });
 
   const handleInputChange = (
     e: React.ChangeEvent<
-    HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-  >,
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
   ) => {
     const { name, value } = e.target;
+
     setFormData((prev) => ({
       ...prev,
       [name]: value,
+      ...(name === "role" && value === "viewer"
+        ? {
+            isWriter: false,
+            isFeaturedWriter: false,
+          }
+        : {}),
     }));
   };
 
- 
+  const handleWriterChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const checked = e.target.checked;
+
+    setFormData((prev) => ({
+      ...prev,
+      isWriter: checked,
+      ...(checked === false
+        ? {
+            isFeaturedWriter: false,
+          }
+        : {}),
+    }));
+  };
+
+  const handleFeaturedWriterChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setFormData((prev) => ({
+      ...prev,
+      isFeaturedWriter: e.target.checked,
+    }));
+  };
 
   const handleSubmit = async (
     e: FormEvent<HTMLFormElement>,
@@ -73,31 +114,93 @@ export function CreateUserForm({
       return;
     }
 
+    const isWriter =
+      (formData.role === "admin" ||
+        formData.role === "editor") &&
+      formData.isWriter;
+
     try {
       const payload = new FormData();
 
       payload.append("name", formData.name.trim());
+
       payload.append(
         "email",
         formData.email.trim().toLowerCase(),
       );
+
       payload.append("password", formData.password);
+
       payload.append("role", formData.role);
+
+      payload.append(
+        "isWriter",
+        String(isWriter),
+      );
+
       payload.append(
         "phoneNumber",
         formData.phoneNumber.trim(),
       );
+
       payload.append(
         "aboutMe",
         formData.aboutMe.trim(),
       );
 
-      // Image is optional
-      if (selectedFile) {
-        payload.append("profileImage", selectedFile);
+      // Writer fields
+      if (isWriter) {
+        payload.append(
+          "designation",
+          formData.designation.trim(),
+        );
+
+        payload.append(
+          "location",
+          formData.location.trim(),
+        );
+
+        payload.append(
+          "fbLink",
+          formData.fbLink.trim(),
+        );
+
+        payload.append(
+          "twitterLink",
+          formData.twitterLink.trim(),
+        );
+
+        payload.append(
+          "instagramLink",
+          formData.instagramLink.trim(),
+        );
+
+        payload.append(
+          "linkedinLink",
+          formData.linkedinLink.trim(),
+        );
+
+        payload.append(
+          "slug",
+          formData.slug.trim().toLowerCase(),
+        );
+
+        payload.append(
+          "isFeaturedWriter",
+          String(formData.isFeaturedWriter),
+        );
       }
 
-      const response = await createUser(payload).unwrap();
+      // Image is optional
+      if (selectedFile) {
+        payload.append(
+          "profileImage",
+          selectedFile,
+        );
+      }
+
+      const response =
+        await createUser(payload).unwrap();
 
       toast.success(response.message);
 
@@ -108,11 +211,25 @@ export function CreateUserForm({
         password: "",
         role: "",
         aboutMe: "",
+
+        isWriter: false,
+
+        designation: "",
+        location: "",
+        fbLink: "",
+        twitterLink: "",
+        instagramLink: "",
+        linkedinLink: "",
+        slug: "",
+        isFeaturedWriter: false,
       });
 
       onUserCreated();
     } catch (error) {
-      console.error("CREATE USER ERROR:", error);
+      console.error(
+        "CREATE USER ERROR:",
+        error,
+      );
 
       const message =
         typeof error === "object" &&
@@ -129,8 +246,18 @@ export function CreateUserForm({
     }
   };
 
+  const showWriterAccess =
+    formData.role === "admin" ||
+    formData.role === "editor";
+
+  const showWriterFields =
+    showWriterAccess && formData.isWriter;
+
   return (
-    <ShowcaseSection title="Enter Info to create User" className="p-7!">
+    <ShowcaseSection
+      title="Enter Info to create User"
+      className="p-7!"
+    >
       <form onSubmit={handleSubmit}>
         <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
           <InputGroup
@@ -176,6 +303,7 @@ export function CreateUserForm({
             value={formData.email}
             disabled={isLoading}
           />
+
           <SelectGroup
             className="w-full sm:w-1/2"
             label="Role"
@@ -202,6 +330,147 @@ export function CreateUserForm({
             ]}
           />
         </div>
+
+        {showWriterAccess && (
+          <div className="mb-5.5">
+            <label className="flex cursor-pointer items-center gap-3">
+              <input
+                type="checkbox"
+                name="isWriter"
+                checked={formData.isWriter}
+                onChange={handleWriterChange}
+                disabled={isLoading}
+                className="h-4 w-4"
+              />
+
+              <span className="text-sm font-medium">
+                Writer Access
+              </span>
+            </label>
+
+            <p className="mt-1 text-sm text-gray-5">
+              Allow this user to create, edit and delete posts
+              and manage categories.
+            </p>
+          </div>
+        )}
+
+        {showWriterFields && (
+          <>
+            <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+              <InputGroup
+                className="w-full sm:w-1/2"
+                type="text"
+                name="designation"
+                label="Designation"
+                placeholder="Enter Designation"
+                handleChange={handleInputChange}
+                icon={<UserIcon />}
+                iconPosition="left"
+                height="sm"
+                value={formData.designation}
+                disabled={isLoading}
+              />
+
+              <InputGroup
+                className="w-full sm:w-1/2"
+                type="text"
+                name="location"
+                label="Location"
+                placeholder="Enter Location"
+                handleChange={handleInputChange}
+                icon={<UserIcon />}
+                iconPosition="left"
+                height="sm"
+                value={formData.location}
+                disabled={isLoading}
+              />
+            </div>
+
+            <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+              <InputGroup
+                className="w-full sm:w-1/2"
+                type="url"
+                name="fbLink"
+                label="Facebook"
+                placeholder="Enter Facebook URL"
+                handleChange={handleInputChange}
+                height="sm"
+                value={formData.fbLink}
+                disabled={isLoading}
+              />
+
+              <InputGroup
+                className="w-full sm:w-1/2"
+                type="url"
+                name="twitterLink"
+                label="Twitter / X"
+                placeholder="Enter Twitter / X URL"
+                handleChange={handleInputChange}
+                height="sm"
+                value={formData.twitterLink}
+                disabled={isLoading}
+              />
+            </div>
+
+            <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+              <InputGroup
+                className="w-full sm:w-1/2"
+                type="url"
+                name="instagramLink"
+                label="Instagram"
+                placeholder="Enter Instagram URL"
+                handleChange={handleInputChange}
+                height="sm"
+                value={formData.instagramLink}
+                disabled={isLoading}
+              />
+
+              <InputGroup
+                className="w-full sm:w-1/2"
+                type="url"
+                name="linkedinLink"
+                label="LinkedIn"
+                placeholder="Enter LinkedIn URL"
+                handleChange={handleInputChange}
+                height="sm"
+                value={formData.linkedinLink}
+                disabled={isLoading}
+              />
+            </div>
+
+            <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+              <InputGroup
+                className="w-full sm:w-1/2"
+                type="text"
+                name="slug"
+                label="Slug"
+                placeholder="Enter Writer Slug"
+                handleChange={handleInputChange}
+                height="sm"
+                value={formData.slug}
+                disabled={isLoading}
+              />
+
+              <div className="flex w-full items-center sm:w-1/2">
+                <label className="flex cursor-pointer items-center gap-3">
+                  <input
+                    type="checkbox"
+                    name="isFeaturedWriter"
+                    checked={formData.isFeaturedWriter}
+                    onChange={handleFeaturedWriterChange}
+                    disabled={isLoading}
+                    className="h-4 w-4"
+                  />
+
+                  <span className="text-sm font-medium">
+                    Featured Writer
+                  </span>
+                </label>
+              </div>
+            </div>
+          </>
+        )}
 
         <InputGroup
           className="mb-5.5"
@@ -230,7 +499,9 @@ export function CreateUserForm({
 
         <div className="flex justify-end gap-3">
           <button
-            className={`hover:bg-opacity-90 rounded-lg bg-primary px-6 py-1.75 font-medium text-gray-2 disabled:opacity-50 ${isLoading && "cursor-not-allowed"}`}
+            className={`hover:bg-opacity-90 rounded-lg bg-primary px-6 py-1.75 font-medium text-gray-2 disabled:opacity-50 ${
+              isLoading && "cursor-not-allowed"
+            }`}
             type="submit"
             disabled={isLoading}
           >

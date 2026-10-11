@@ -9,7 +9,6 @@ import cookieParser from "cookie-parser";
 import commentRoutes from "./routes/commentRoutes";
 import blogRoutes from "./routes/blogRoutes";
 import categoryRoutes from "./routes/categoryRoutes";
-import writerRoutes from "./routes/writerRoutes";
 import contactRoutes from "./routes/contactRoutes";
 import aboutRoutes from "./routes/aboutRoutes";
 import uploadRoutes from "./routes/uploadRotes";
@@ -41,7 +40,6 @@ app.use("/api/blogs", blogRoutes);
 
 app.use("/api/categories", categoryRoutes);
 
-app.use("/api/writers", writerRoutes);
 
 app.use("/api/contacts", contactRoutes);
 

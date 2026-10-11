@@ -10,10 +10,12 @@ import InputGroup from "@/components/FormElements/InputGroup";
 import { TextAreaGroup } from "@/components/FormElements/InputGroup/text-area";
 import SelectGroup from "@/components/FormElements/InputGroup/select-group";
 import { ShowcaseSection } from "@/components/Layouts/showcase-section";
-import { AuthUser, useUpdateUserMutation } from "@/services/api/authApi";
+import {
+  AuthUser,
+  useUpdateUserMutation,
+} from "@/services/api/authApi";
 import { Role } from "@/constants/roles";
 import { useEffect, useState, type FormEvent } from "react";
-
 import { toast } from "react-toastify";
 
 type ManageUserFormProps = {
@@ -26,13 +28,19 @@ type FormDataType = {
   email: string;
   role: Role;
   aboutMe: string;
+  isWriter: boolean;
+  designation: string;
+  location: string;
+  fbLink: string;
+  twitterLink: string;
+  instagramLink: string;
+  linkedinLink: string;
+  slug: string;
+  isFeaturedWriter: boolean;
 };
 
-export function ManageUserForm({
-  user,
-}: ManageUserFormProps) {
-  const [updateUser, { isLoading }] =
-    useUpdateUserMutation();
+export function ManageUserForm({ user }: ManageUserFormProps) {
+  const [updateUser, { isLoading }] = useUpdateUserMutation();
 
   const [formData, setFormData] = useState<FormDataType>({
     name: user.name,
@@ -40,6 +48,15 @@ export function ManageUserForm({
     email: user.email,
     role: user.role,
     aboutMe: user.aboutMe ?? "",
+    isWriter: user.isWriter ?? false,
+    designation: user.designation ?? "",
+    location: user.location ?? "",
+    fbLink: user.fbLink ?? "",
+    twitterLink: user.twitterLink ?? "",
+    instagramLink: user.instagramLink ?? "",
+    linkedinLink: user.linkedinLink ?? "",
+    slug: user.slug ?? "",
+    isFeaturedWriter: user.isFeaturedWriter ?? false,
   });
 
   useEffect(() => {
@@ -49,14 +66,21 @@ export function ManageUserForm({
       email: user.email,
       role: user.role,
       aboutMe: user.aboutMe ?? "",
+      isWriter: user.isWriter ?? false,
+      designation: user.designation ?? "",
+      location: user.location ?? "",
+      fbLink: user.fbLink ?? "",
+      twitterLink: user.twitterLink ?? "",
+      instagramLink: user.instagramLink ?? "",
+      linkedinLink: user.linkedinLink ?? "",
+      slug: user.slug ?? "",
+      isFeaturedWriter: user.isFeaturedWriter ?? false,
     });
   }, [user]);
 
   const handleInputChange = (
     e: React.ChangeEvent<
-      HTMLInputElement |
-      HTMLTextAreaElement |
-      HTMLSelectElement
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >,
   ) => {
     const { name, value } = e.target;
@@ -64,6 +88,33 @@ export function ManageUserForm({
     setFormData((prev) => ({
       ...prev,
       [name]: value,
+      ...(name === "role" && value === "viewer"
+        ? {
+            isWriter: false,
+            isFeaturedWriter: false,
+          }
+        : {}),
+    }));
+  };
+
+  const handleWriterChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const checked = e.target.checked;
+
+    setFormData((prev) => ({
+      ...prev,
+      isWriter: checked,
+      ...(checked ? {} : { isFeaturedWriter: false }),
+    }));
+  };
+
+  const handleFeaturedWriterChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setFormData((prev) => ({
+      ...prev,
+      isFeaturedWriter: e.target.checked,
     }));
   };
 
@@ -74,6 +125,15 @@ export function ManageUserForm({
       email: user.email,
       role: user.role,
       aboutMe: user.aboutMe ?? "",
+      isWriter: user.isWriter ?? false,
+      designation: user.designation ?? "",
+      location: user.location ?? "",
+      fbLink: user.fbLink ?? "",
+      twitterLink: user.twitterLink ?? "",
+      instagramLink: user.instagramLink ?? "",
+      linkedinLink: user.linkedinLink ?? "",
+      slug: user.slug ?? "",
+      isFeaturedWriter: user.isFeaturedWriter ?? false,
     });
   };
 
@@ -93,6 +153,11 @@ export function ManageUserForm({
     }
 
     try {
+      const isWriter =
+        (formData.role === "admin" ||
+          formData.role === "editor") &&
+        formData.isWriter;
+
       const response = await updateUser({
         id: user.id,
         data: {
@@ -101,6 +166,22 @@ export function ManageUserForm({
           email: formData.email.trim().toLowerCase(),
           role: formData.role,
           aboutMe: formData.aboutMe.trim(),
+          isWriter,
+
+          ...(isWriter
+            ? {
+                designation: formData.designation.trim(),
+                location: formData.location.trim(),
+                fbLink: formData.fbLink.trim(),
+                twitterLink: formData.twitterLink.trim(),
+                instagramLink: formData.instagramLink.trim(),
+                linkedinLink: formData.linkedinLink.trim(),
+                slug: formData.slug.trim().toLowerCase(),
+                isFeaturedWriter: formData.isFeaturedWriter,
+              }
+            : {
+                isFeaturedWriter: false,
+              }),
         },
       }).unwrap();
 
@@ -122,6 +203,13 @@ export function ManageUserForm({
       toast.error(message);
     }
   };
+
+  const showWriterAccess =
+    formData.role === "admin" ||
+    formData.role === "editor";
+
+  const showWriterFields =
+    showWriterAccess && formData.isWriter;
 
   return (
     <ShowcaseSection
@@ -201,6 +289,152 @@ export function ManageUserForm({
             ]}
           />
         </div>
+
+        {/* Writer Access */}
+        {showWriterAccess && (
+          <div className="mb-5.5">
+            <label className="flex cursor-pointer items-center gap-3">
+              <input
+                type="checkbox"
+                name="isWriter"
+                checked={formData.isWriter}
+                onChange={handleWriterChange}
+                disabled={isLoading}
+                className="h-4 w-4"
+              />
+
+              <span className="text-sm font-medium">
+                Writer Access
+              </span>
+            </label>
+
+            <p className="mt-1 text-sm text-gray-5">
+              Allow this user to create, edit and delete posts
+              and manage categories.
+            </p>
+          </div>
+        )}
+
+        {/* Writer Profile Fields */}
+        {showWriterFields && (
+          <>
+            {/* Designation + Location */}
+            <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+              <InputGroup
+                className="w-full sm:w-1/2"
+                type="text"
+                name="designation"
+                label="Designation"
+                placeholder="Enter Designation"
+                value={formData.designation}
+                handleChange={handleInputChange}
+                height="sm"
+                disabled={isLoading}
+              />
+
+              <InputGroup
+                className="w-full sm:w-1/2"
+                type="text"
+                name="location"
+                label="Location"
+                placeholder="Enter Location"
+                value={formData.location}
+                handleChange={handleInputChange}
+                height="sm"
+                disabled={isLoading}
+              />
+            </div>
+
+            {/* Facebook + Twitter */}
+            <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+              <InputGroup
+                className="w-full sm:w-1/2"
+                type="url"
+                name="fbLink"
+                label="Facebook"
+                placeholder="Enter Facebook URL"
+                value={formData.fbLink}
+                handleChange={handleInputChange}
+                height="sm"
+                disabled={isLoading}
+              />
+
+              <InputGroup
+                className="w-full sm:w-1/2"
+                type="url"
+                name="twitterLink"
+                label="Twitter / X"
+                placeholder="Enter Twitter / X URL"
+                value={formData.twitterLink}
+                handleChange={handleInputChange}
+                height="sm"
+                disabled={isLoading}
+              />
+            </div>
+
+            {/* Instagram + LinkedIn */}
+            <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+              <InputGroup
+                className="w-full sm:w-1/2"
+                type="url"
+                name="instagramLink"
+                label="Instagram"
+                placeholder="Enter Instagram URL"
+                value={formData.instagramLink}
+                handleChange={handleInputChange}
+                height="sm"
+                disabled={isLoading}
+              />
+
+              <InputGroup
+                className="w-full sm:w-1/2"
+                type="url"
+                name="linkedinLink"
+                label="LinkedIn"
+                placeholder="Enter LinkedIn URL"
+                value={formData.linkedinLink}
+                handleChange={handleInputChange}
+                height="sm"
+                disabled={isLoading}
+              />
+            </div>
+
+            {/* Slug */}
+            <InputGroup
+              className="mb-5.5"
+              type="text"
+              name="slug"
+              label="Writer Slug"
+              placeholder="Enter writer slug"
+              value={formData.slug}
+              handleChange={handleInputChange}
+              height="sm"
+              disabled={isLoading}
+            />
+
+            {/* Featured Writer */}
+            <div className="mb-5.5">
+              <label className="flex cursor-pointer items-center gap-3">
+                <input
+                  type="checkbox"
+                  name="isFeaturedWriter"
+                  checked={formData.isFeaturedWriter}
+                  onChange={handleFeaturedWriterChange}
+                  disabled={isLoading}
+                  className="h-4 w-4"
+                />
+
+                <span className="text-sm font-medium">
+                  Featured Writer
+                </span>
+              </label>
+
+              <p className="mt-1 text-sm text-gray-5">
+                Show this writer in the featured writers section.
+              </p>
+            </div>
+          </>
+        )}
 
         {/* About Me */}
         <TextAreaGroup

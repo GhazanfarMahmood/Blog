@@ -60,8 +60,17 @@ export const login = async (req: Request, res: Response) => {
         email: user.email,
         aboutMe: user.aboutMe,
         profileImage: user.profileImage,
-        phoneNumber : user.phoneNumber,
+        phoneNumber: user.phoneNumber,
         role: user.role,
+        isWriter: user.isWriter,
+        designation: user.designation,
+        location: user.location,
+        fbLink: user.fbLink,
+        twitterLink: user.twitterLink,
+        instagramLink: user.instagramLink,
+        linkedinLink: user.linkedinLink,
+        slug: user.slug,
+        isFeaturedWriter: user.isFeaturedWriter,
       },
     });
   } catch (error) {
@@ -74,26 +83,39 @@ export const login = async (req: Request, res: Response) => {
 };
 
 // CREATE USER
-export const createUser = async (req: AuthRequest, res: Response) => {
+export const createUser = async (
+  req: AuthRequest,
+  res: Response
+) => {
   try {
-    if(!req.user) {
+    if (!req.user) {
       return res.status(401).json({
-        message : "Unauthorized",
+        message: "Unauthorized",
       });
     }
 
-    if(req.user.role !== "super-admin") {
+    if (req.user.role !== "super-admin") {
       return res.status(403).json({
-        message : "Forbidden. Only Super Admin can create users.",
+        message: "Forbidden. Only Super Admin can create users.",
       });
     }
+
     const {
       name,
       email,
       password,
       role,
       phoneNumber,
-      aboutMe
+      aboutMe,
+      isWriter,
+      designation,
+      location,
+      fbLink,
+      twitterLink,
+      instagramLink,
+      linkedinLink,
+      slug,
+      isFeaturedWriter,
     } = req.body;
 
     if (!name || !email || !password || !role) {
@@ -101,14 +123,22 @@ export const createUser = async (req: AuthRequest, res: Response) => {
         message: "Name, email, password and role are required",
       });
     }
-    
+
     const allowedRoles = ["admin", "editor", "viewer"];
 
-    if(!allowedRoles.includes(role)) {
+    if (!allowedRoles.includes(role)) {
       return res.status(400).json({
-        message : "Invalid role",
+        message: "Invalid role",
       });
     }
+
+    const writerAccess =
+      (role === "admin" || role === "editor") &&
+      String(isWriter) === "true";
+
+    const featuredWriter =
+      writerAccess &&
+      String(isFeaturedWriter) === "true";
 
     const normalizedEmail = email.toLowerCase().trim();
 
@@ -121,17 +151,87 @@ export const createUser = async (req: AuthRequest, res: Response) => {
         message: "User already exists",
       });
     }
-    
+
+    // Check slug only when user is a writer
+    let normalizedSlug: string | undefined;
+
+    if (writerAccess) {
+      const slugSource = 
+        typeof slug === "string" && slug.trim()
+          ? slug.trim()
+          : name.trim();
+
+      const baseSlug = slugSource
+      .toLowerCase()
+      .normalize('NFKD')
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+
+      if(!baseSlug) {
+        return res.status(400).json({
+          message : "Unable to generate a slug. Please provide a valid name or slug.",
+        });
+      }
+
+      normalizedSlug = baseSlug;
+
+      let suffix = 2;
+
+      while (
+        await User.exists({
+          slug : normalizedSlug,
+        })
+      ) {
+        normalizedSlug = `${baseSlug}-${suffix}`;
+        suffix++;
+      }
+    }
+
     const hashedPassword = await bcrypt.hash(password, 12);
 
     const user = await User.create({
       name: name.trim(),
-      email: email.toLowerCase().trim(),
+      email: normalizedEmail,
       password: hashedPassword,
       role,
+
+      phoneNumber: phoneNumber?.trim() || "",
       aboutMe: aboutMe?.trim() || "",
-      phoneNumber : phoneNumber?.trim() || "",
-      profileImage : req.file?.path ?? null,
+
+      isWriter: writerAccess,
+
+      designation: writerAccess
+        ? designation?.trim() || ""
+        : "",
+
+      location: writerAccess
+        ? location?.trim() || ""
+        : "",
+
+      fbLink: writerAccess
+        ? fbLink?.trim() || ""
+        : "",
+
+      twitterLink: writerAccess
+        ? twitterLink?.trim() || ""
+        : "",
+
+      instagramLink: writerAccess
+        ? instagramLink?.trim() || ""
+        : "",
+
+      linkedinLink: writerAccess
+        ? linkedinLink?.trim() || ""
+        : "",
+
+      slug: writerAccess
+        ? normalizedSlug 
+        : undefined,
+
+      isFeaturedWriter: featuredWriter,
+
+      profileImage: req.file?.path ?? null,
     });
 
     return res.status(201).json({
@@ -143,7 +243,16 @@ export const createUser = async (req: AuthRequest, res: Response) => {
         aboutMe: user.aboutMe,
         profileImage: user.profileImage,
         role: user.role,
-        phoneNumber: user.phoneNumber
+        phoneNumber: user.phoneNumber,
+        isWriter: user.isWriter,
+        designation: user.designation,
+        location: user.location,
+        fbLink: user.fbLink,
+        twitterLink: user.twitterLink,
+        instagramLink: user.instagramLink,
+        linkedinLink: user.linkedinLink,
+        slug: user.slug,
+        isFeaturedWriter: user.isFeaturedWriter,
       },
     });
   } catch (error) {
@@ -156,48 +265,65 @@ export const createUser = async (req: AuthRequest, res: Response) => {
 };
 
 // GETTING ALL USERS
-export const getUsers = async (req: AuthRequest, res: Response) => {
+export const getUsers = async (
+  req: AuthRequest,
+  res: Response
+) => {
   try {
     if (!req.user) {
       return res.status(401).json({
-        message : "Unauthorized",
+        message: "Unauthorized",
       });
     }
 
     const users = await User.find()
-    .select(
-      "-password -resetPasswordToken -resetPasswordExpires"
-    )
-    .sort({ createdAt : -1});
+      .select(
+        "-password -resetPasswordToken -resetPasswordExpires"
+      )
+      .sort({ createdAt: -1 });
 
     return res.status(200).json({
       users: users.map((user) => ({
-        id : user._id.toString(),
-        name : user.name,
-        email : user.email,
-        phoneNumber : user.phoneNumber,
-        aboutMe : user.aboutMe,
-        profileImage : user.profileImage,
-        role : user.role,
-        createdAt : user.createdAt, 
-        updatedAt : user.updatedAt
+        id: user._id.toString(),
+        name: user.name,
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+        aboutMe: user.aboutMe,
+        profileImage: user.profileImage,
+        role: user.role,
+        isWriter: user.isWriter,
+
+        designation: user.designation,
+        location: user.location,
+        fbLink: user.fbLink,
+        twitterLink: user.twitterLink,
+        instagramLink: user.instagramLink,
+        linkedinLink: user.linkedinLink,
+        slug: user.slug,
+        isFeaturedWriter: user.isFeaturedWriter,
+
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
       })),
     });
   } catch (error) {
     console.error("GET USERS ERROR:", error);
 
     return res.status(500).json({
-      message : "Server error",
+      message: "Server error",
     });
   }
 };
 
-// GETTING USERS BY ID 
-export const getUserById = async (req: AuthRequest, res: Response) => {
+// GETTING USER BY ID
+export const getUserById = async (
+  req: AuthRequest,
+  res: Response
+) => {
   try {
-    if(!req.user) {
+    if (!req.user) {
       return res.status(401).json({
-        message : "Unauthorized",
+        message: "Unauthorized",
       });
     }
 
@@ -205,10 +331,10 @@ export const getUserById = async (req: AuthRequest, res: Response) => {
       "-password -resetPasswordToken -resetPasswordExpires"
     );
 
-    if(!user) {
+    if (!user) {
       return res.status(404).json({
-        message : "User not found",
-      })
+        message: "User not found",
+      });
     }
 
     return res.status(200).json({
@@ -219,13 +345,22 @@ export const getUserById = async (req: AuthRequest, res: Response) => {
       aboutMe: user.aboutMe,
       profileImage: user.profileImage,
       role: user.role,
-    });
+      isWriter: user.isWriter,
 
+      designation: user.designation,
+      location: user.location,
+      fbLink: user.fbLink,
+      twitterLink: user.twitterLink,
+      instagramLink: user.instagramLink,
+      linkedinLink: user.linkedinLink,
+      slug: user.slug,
+      isFeaturedWriter: user.isFeaturedWriter,
+    });
   } catch (error) {
     console.error("GET USER ERROR:", error);
 
     return res.status(500).json({
-      message : "Server error",
+      message: "Server error",
     });
   }
 };
@@ -399,7 +534,17 @@ export const getMe = async (
       aboutMe: user.aboutMe,
       profileImage: user.profileImage,
       role: user.role,
-      phoneNumber: user.phoneNumber
+      phoneNumber: user.phoneNumber,
+      isWriter: user.isWriter,
+
+      designation: user.designation,
+      location: user.location,
+      fbLink: user.fbLink,
+      twitterLink: user.twitterLink,
+      instagramLink: user.instagramLink,
+      linkedinLink: user.linkedinLink,
+      slug: user.slug,
+      isFeaturedWriter: user.isFeaturedWriter,
     });
   } catch (error) {
     console.error("GET ME ERROR:", error);
@@ -416,14 +561,12 @@ export const updateProfile = async (
   res: Response
 ) => {
   try {
-    // 1. Make sure authentication middleware added req.user
     if (!req.user) {
       return res.status(401).json({
         message: "Unauthorized",
       });
     }
 
-    // 2. Find current user
     const user = await User.findById(req.user.id);
 
     if (!user) {
@@ -432,7 +575,20 @@ export const updateProfile = async (
       });
     }
 
-    const { name, aboutMe, phoneNumber, email } = req.body;
+    const {
+      name,
+      aboutMe,
+      phoneNumber,
+      email,
+
+      designation,
+      location,
+      fbLink,
+      twitterLink,
+      instagramLink,
+      linkedinLink,
+      slug,
+    } = req.body;
 
     if (name !== undefined) {
       const trimmedName = name.trim();
@@ -452,46 +608,97 @@ export const updateProfile = async (
 
     if (phoneNumber !== undefined) {
       const trimmedPhoneNumber = phoneNumber.trim();
-      
-      if(
-        trimmedPhoneNumber && 
+
+      if (
+        trimmedPhoneNumber &&
         !/^[0-9+\-\s()]+$/.test(trimmedPhoneNumber)
       ) {
         return res.status(400).json({
-          message : "Invalid phone number",
+          message: "Invalid phone number",
         });
       }
 
       user.phoneNumber = trimmedPhoneNumber;
     }
 
-    if(email !== undefined) {
-      if(req.user.role !== "super-admin") {
+    if (email !== undefined) {
+      if (req.user.role !== "super-admin") {
         return res.status(403).json({
-          message : "Only Super Admin can change email address",
+          message:
+            "Only Super Admin can change email address",
         });
       }
 
-      const normalizeEmail = email.toLowerCAse().trim();
+      const normalizedEmail = email.toLowerCase().trim();
 
-      if(!normalizeEmail) {
+      if (!normalizedEmail) {
         return res.status(400).json({
-          message : "Email cannot be empty",
+          message: "Email cannot be empty",
         });
       }
 
       const existingUser = await User.findOne({
-        email : normalizeEmail,
-        _id : { $ne: user._id},
+        email: normalizedEmail,
+        _id: { $ne: user._id },
       });
 
-      if(existingUser) {
+      if (existingUser) {
         return res.status(400).json({
-          message : "Email address is already in use",
+          message: "Email address is already in use",
         });
       }
 
-      user.email = normalizeEmail;
+      user.email = normalizedEmail;
+    }
+
+    // Writer profile fields
+    if (user.isWriter) {
+      if (designation !== undefined) {
+        user.designation = designation.trim();
+      }
+
+      if (location !== undefined) {
+        user.location = location.trim();
+      }
+
+      if (fbLink !== undefined) {
+        user.fbLink = fbLink.trim();
+      }
+
+      if (twitterLink !== undefined) {
+        user.twitterLink = twitterLink.trim();
+      }
+
+      if (instagramLink !== undefined) {
+        user.instagramLink = instagramLink.trim();
+      }
+
+      if (linkedinLink !== undefined) {
+        user.linkedinLink = linkedinLink.trim();
+      }
+
+      if (slug !== undefined) {
+        const normalizedSlug = slug.toLowerCase().trim();
+
+        if (!normalizedSlug) {
+          return res.status(400).json({
+            message: "Slug cannot be empty",
+          });
+        }
+
+        const existingSlug = await User.findOne({
+          slug: normalizedSlug,
+          _id: { $ne: user._id },
+        });
+
+        if (existingSlug) {
+          return res.status(400).json({
+            message: "Slug is already in use",
+          });
+        }
+
+        user.slug = normalizedSlug;
+      }
     }
 
     if (req.file) {
@@ -510,6 +717,16 @@ export const updateProfile = async (
         profileImage: user.profileImage,
         role: user.role,
         phoneNumber: user.phoneNumber,
+        isWriter: user.isWriter,
+
+        designation: user.designation,
+        location: user.location,
+        fbLink: user.fbLink,
+        twitterLink: user.twitterLink,
+        instagramLink: user.instagramLink,
+        linkedinLink: user.linkedinLink,
+        slug: user.slug,
+        isFeaturedWriter: user.isFeaturedWriter,
       },
     });
   } catch (error) {
@@ -522,36 +739,47 @@ export const updateProfile = async (
 };
 
 // DELETE PROFILE IMAGE
-export const deleteProfileImage = async (req: AuthRequest, res: Response) => {
+export const deleteProfileImage = async (
+  req: AuthRequest,
+  res: Response
+) => {
   try {
-    if(!req.user) {
+    if (!req.user) {
       return res.status(401).json({
-        message : "Unauthorized",
+        message: "Unauthorized",
       });
     }
 
     const user = await User.findById(req.user.id);
 
-    if(!user) {
+    if (!user) {
       return res.status(404).json({
-        message : "User not found",
+        message: "User not found",
       });
     }
 
-    if(!user.profileImage) {
+    if (!user.profileImage) {
       return res.status(400).json({
-        message : "No profile image found",
+        message: "No profile image found",
       });
     }
 
     const imageUrl = user.profileImage;
 
-    const uploadPath = imageUrl.split("/image/upload/")[1];
+    const uploadPath = imageUrl.split(
+      "/image/upload/"
+    )[1];
 
-    if(uploadPath) {
-      const pathWithoutVersion = uploadPath.replace(/^v\d+\//, "");
+    if (uploadPath) {
+      const pathWithoutVersion = uploadPath.replace(
+        /^v\d+\//,
+        ""
+      );
 
-      const publicId = pathWithoutVersion.replace(/\.[^/.]+$/, "");
+      const publicId = pathWithoutVersion.replace(
+        /\.[^/.]+$/,
+        ""
+      );
 
       await cloudinary.uploader.destroy(publicId);
     }
@@ -561,21 +789,34 @@ export const deleteProfileImage = async (req: AuthRequest, res: Response) => {
     await user.save();
 
     return res.status(200).json({
-      message : "Profile image deleted successfully",
+      message: "Profile image deleted successfully",
       user: {
         id: user._id.toString(),
-        name : user.name,
-        email : user.email,
-        aboutMe : user.aboutMe,
-        profileImage : user.profileImage,
-        role : user.role,
+        name: user.name,
+        email: user.email,
+        aboutMe: user.aboutMe,
+        profileImage: user.profileImage,
+        role: user.role,
+        isWriter: user.isWriter,
+
+        designation: user.designation,
+        location: user.location,
+        fbLink: user.fbLink,
+        twitterLink: user.twitterLink,
+        instagramLink: user.instagramLink,
+        linkedinLink: user.linkedinLink,
+        slug: user.slug,
+        isFeaturedWriter: user.isFeaturedWriter,
       },
     });
   } catch (error) {
-    console.error("DELETE PROFILE IMAGE ERROR:", error);
+    console.error(
+      "DELETE PROFILE IMAGE ERROR:",
+      error
+    );
 
     return res.status(500).json({
-      message : "Server error",
+      message: "Server error",
     });
   }
 };
@@ -603,7 +844,8 @@ export const updateUser = async (
     // Super Admin cannot manage another Super Admin
     if (user.role === "super-admin") {
       return res.status(403).json({
-        message: "Super Admin cannot be managed from this endpoint.",
+        message:
+          "Super Admin cannot be managed from this endpoint.",
       });
     }
 
@@ -613,6 +855,16 @@ export const updateUser = async (
       phoneNumber,
       aboutMe,
       role,
+      isWriter,
+
+      designation,
+      location,
+      fbLink,
+      twitterLink,
+      instagramLink,
+      linkedinLink,
+      slug,
+      isFeaturedWriter,
     } = req.body;
 
     if (name !== undefined) {
@@ -674,6 +926,77 @@ export const updateUser = async (
       user.role = role;
     }
 
+    // Update writer access
+    if (isWriter !== undefined) {
+      user.isWriter =
+        (user.role === "admin" ||
+          user.role === "editor") &&
+        String(isWriter) === "true";
+    }
+
+    // If role becomes viewer, writer access must be removed
+    if (user.role === "viewer") {
+      user.isWriter = false;
+    }
+
+    // Writer-specific fields
+    if (user.isWriter) {
+      if (designation !== undefined) {
+        user.designation = designation.trim();
+      }
+
+      if (location !== undefined) {
+        user.location = location.trim();
+      }
+
+      if (fbLink !== undefined) {
+        user.fbLink = fbLink.trim();
+      }
+
+      if (twitterLink !== undefined) {
+        user.twitterLink = twitterLink.trim();
+      }
+
+      if (instagramLink !== undefined) {
+        user.instagramLink = instagramLink.trim();
+      }
+
+      if (linkedinLink !== undefined) {
+        user.linkedinLink = linkedinLink.trim();
+      }
+
+      if (slug !== undefined) {
+        const normalizedSlug = slug.toLowerCase().trim();
+
+        if (!normalizedSlug) {
+          return res.status(400).json({
+            message: "Slug cannot be empty",
+          });
+        }
+
+        const existingSlug = await User.findOne({
+          slug: normalizedSlug,
+          _id: { $ne: user._id },
+        });
+
+        if (existingSlug) {
+          return res.status(400).json({
+            message: "Slug is already in use",
+          });
+        }
+
+        user.slug = normalizedSlug;
+      }
+
+      if (isFeaturedWriter !== undefined) {
+        user.isFeaturedWriter =
+          String(isFeaturedWriter) === "true";
+      }
+    } else {
+      // A non-writer cannot be a featured writer
+      user.isFeaturedWriter = false;
+    }
+
     await user.save();
 
     return res.status(200).json({
@@ -686,6 +1009,16 @@ export const updateUser = async (
         aboutMe: user.aboutMe,
         profileImage: user.profileImage,
         role: user.role,
+        isWriter: user.isWriter,
+
+        designation: user.designation,
+        location: user.location,
+        fbLink: user.fbLink,
+        twitterLink: user.twitterLink,
+        instagramLink: user.instagramLink,
+        linkedinLink: user.linkedinLink,
+        slug: user.slug,
+        isFeaturedWriter: user.isFeaturedWriter,
       },
     });
   } catch (error) {
@@ -697,148 +1030,168 @@ export const updateUser = async (
   }
 };
 
-// DELETE UESR BY SUPER-ADMIN
-export const deleteUser = async(
-  req : AuthRequest, 
-  res : Response
-) => {  
+// DELETE USER BY SUPER ADMIN
+export const deleteUser = async (
+  req: AuthRequest,
+  res: Response
+) => {
   try {
     const { id } = req.params;
 
-    if(req.user?.id === id) {
+    if (req.user?.id === id) {
       return res.status(400).json({
-        message : "You cannot delete your own account",
+        message: "You cannot delete your own account",
       });
     }
 
     const user = await User.findById(id);
 
-    if(!user) {
+    if (!user) {
       return res.status(404).json({
-        message : "User not found.",
+        message: "User not found.",
       });
     }
 
     await User.findByIdAndDelete(id);
 
     return res.status(200).json({
-      message : "User deleted successfully.",
-    })
+      message: "User deleted successfully.",
+    });
   } catch (error) {
-    console.error("Delete user error:", error);
-    
+    console.error("DELETE USER ERROR:", error);
+
     return res.status(500).json({
-      message : "Failed to delete user.",
+      message: "Failed to delete user.",
     });
   }
 };
 
-// SETTING USER PASSWORD BY SUPER ADMIN
+// SET USER PASSWORD BY SUPER ADMIN
 export const setUserPassword = async (
   req: AuthRequest,
-  res: Response,
+  res: Response
 ) => {
   try {
     const { id } = req.params;
     const { password } = req.body;
 
-    if(!password) {
+    if (!password) {
       return res.status(400).json({
-        message : "Password is required",
+        message: "Password is required",
       });
     }
 
     const user = await User.findById(id);
 
-    if(!user) {
+    if (!user) {
       return res.status(404).json({
-        message : "User not found",
+        message: "User not found",
       });
     }
 
-    if(user.role === 'super-admin'){
+    if (user.role === "super-admin") {
       return res.status(403).json({
-        message : "Super Admin password cannot be change here",
+        message:
+          "Super Admin password cannot be change here",
       });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 12);
+    const hashedPassword = await bcrypt.hash(
+      password,
+      12
+    );
 
     user.password = hashedPassword;
 
     await user.save();
 
     return res.status(200).json({
-      message : "Password updated successfully",
+      message: "Password updated successfully",
     });
   } catch (error) {
-    console.error("SET USER PASSWORD ERROR:", error);
+    console.error(
+      "SET USER PASSWORD ERROR:",
+      error
+    );
 
     return res.status(500).json({
-      message : "Server error",
+      message: "Server error",
     });
   }
 };
 
-// SETTING USER PASSWORD BY OWN
-export const changeOwnPassword = async(
+// SET USER PASSWORD BY OWN
+export const changeOwnPassword = async (
   req: AuthRequest,
-  res: Response,
+  res: Response
 ) => {
   try {
-    const { currentPassword, newPassword } = req.body;
+    const {
+      currentPassword,
+      newPassword,
+    } = req.body;
 
-    if(!currentPassword || !newPassword) {
+    if (!currentPassword || !newPassword) {
       return res.status(400).json({
-        message : "Current password and new password are required."
+        message:
+          "Current password and new password are required.",
       });
     }
 
-    if(newPassword.length < 8) {
+    if (newPassword.length < 8) {
       return res.status(400).json({
-        message : "New password must be at least 8 characters.",
+        message:
+          "New password must be at least 8 characters.",
       });
     }
 
     const user = await User.findById(req.user?.id);
 
-    if(!user) {
+    if (!user) {
       return res.status(404).json({
-        message : "User not found.",
+        message: "User not found.",
       });
     }
 
-    const isCurrentPasswordCorrect = await bcrypt.compare(
-      currentPassword,
-      user.password
+    const isCurrentPasswordCorrect =
+      await bcrypt.compare(
+        currentPassword,
+        user.password
+      );
+
+    if (!isCurrentPasswordCorrect) {
+      return res.status(400).json({
+        message: "Current password is incorrect.",
+      });
+    }
+
+    if (currentPassword === newPassword) {
+      return res.status(400).json({
+        message:
+          "New password must be different from the current password.",
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(
+      newPassword,
+      12
     );
-
-    if(!isCurrentPasswordCorrect) {
-      return res.status(400).json({
-        message : "Current password is incorrect.",
-      });
-    }    
-
-    if(currentPassword === newPassword) {
-      return res.status(400).json({
-        message : "New password must be different from the current password.",
-      });
-    }
-
-    const hashedPassword = await bcrypt.hash(newPassword, 12);
 
     user.password = hashedPassword;
 
     await user.save();
 
     return res.status(200).json({
-      message : "Password updated successfully.",
+      message: "Password updated successfully.",
     });
   } catch (error) {
-    console.error("CHANGE OWN PASSWORD ERROR:", error);
+    console.error(
+      "CHANGE OWN PASSWORD ERROR:",
+      error
+    );
 
     return res.status(500).json({
-      message : "Failed to updated password.",
+      message: "Failed to updated password.",
     });
   }
 };

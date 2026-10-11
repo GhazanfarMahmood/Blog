@@ -43,6 +43,13 @@ export const NAV_DATA = [
         ]
       },
       {
+        title : "Writer",
+        url : "/writer",
+        icon : Icons.ToolIcon,
+        permission: "writers",
+        items: [],
+      },
+      {
         title: "Calendar",
         url: "/calendar",
         icon: Icons.Calendar,
@@ -82,13 +89,6 @@ export const NAV_DATA = [
         url : "/analytic",
         icon : Icons.AnalyticIcon,
         permission: "analytic",
-        items : [],
-      },
-      {
-        writers : "Writers",
-        url : "/writer",
-        icon : Icons.ToolIcon,
-        permission : "writers",
         items : [],
       },
       {

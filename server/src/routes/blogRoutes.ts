@@ -1,5 +1,19 @@
 import express from "express";
-import { createBlog, deleteBlog, getBlogs, getBlogsByCategory, getBlogsBySearch, getBlogsBySlug, getBlogsByWriter, updateBlog, getSidebarData, getBlogsById } from "../controllers/blogController";
+import { 
+    createBlog, 
+    deleteBlog, 
+    getBlogs, 
+    getBlogsByCategory, 
+    getBlogsBySearch, 
+    getBlogsBySlug, 
+    getBlogsByWriter, 
+    getWriterBySlug,
+    updateBlog, 
+    getSidebarData, 
+    getBlogsById,  
+    getWriters 
+} from "../controllers/blogController";
+
 const router = express.Router();
 
 router.get("/", getBlogs);
@@ -10,11 +24,15 @@ router.get("/sidebar-data", getSidebarData);
 
 router.get("/search", getBlogsBySearch);
 
+router.get("/writer", getWriters);
+
+router.get("/writer/:slug", getWriterBySlug);
+
 router.get("/category/:slug", getBlogsByCategory);
 
-router.get("/:slug", getBlogsBySlug);
+router.get("/writer/:slug/blogs", getBlogsByWriter);
 
-router.get("/writer/:slug", getBlogsByWriter);
+router.get("/:slug", getBlogsBySlug);
 
 router.post("/", createBlog);
 

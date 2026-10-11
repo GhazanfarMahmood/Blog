@@ -32,7 +32,7 @@ export const blogApi = createApi({
         }),
 
         getBlogsByWriter : builder.query<PaginatedBlogType, {slug: string, page : number, limit : number}>({
-            query : ({slug, page, limit}) => ({url : `/blogs/writer/${slug}`, params: {page, limit}})
+            query : ({slug, page, limit}) => ({url : `/blogs/writer/${slug}/blogs`, params: {page, limit}})
         }),
 
         getBlogsBySearch : builder.query<PaginatedBlogType, {query: string, page: number, limit: number}>({

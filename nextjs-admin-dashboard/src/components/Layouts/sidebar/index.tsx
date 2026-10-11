@@ -53,7 +53,7 @@ export function Sidebar() {
     items: section.items.filter(
       (item) => 
       !item.permission || 
-      (user?.role && can(user.role, item.permission)),
+      (user?.role && can(user, item.permission)),
     ),
   }));
 

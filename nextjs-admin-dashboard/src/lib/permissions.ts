@@ -9,9 +9,7 @@ export const permissions = {
     ],
 
     post : [
-        ROLES.SUPER_ADMIN,
-        ROLES.ADMIN,
-        ROLES.EDITOR,
+        ROLES.SUPER_ADMIN
     ],
 
     calendar : [
@@ -31,22 +29,12 @@ export const permissions = {
         ROLES.VIEWER
     ],
 
-    blogs : [
-        ROLES.SUPER_ADMIN,
-        ROLES.ADMIN,
-        ROLES.EDITOR
-    ],
-
     categories: [
         ROLES.SUPER_ADMIN,
-        ROLES.ADMIN, 
-        ROLES.EDITOR
     ],
 
     writers: [
         ROLES.SUPER_ADMIN,
-        ROLES.ADMIN,
-        ROLES.EDITOR
     ],
 
     comments: [

@@ -9,6 +9,15 @@ export interface AuthUser {
     aboutMe: string;
     profileImage: string | null;
     role: Role;
+    isWriter?: boolean;
+    designation?: string;
+    location?: string;
+    fbLink?: string;
+    twitterLink?: string;
+    instagramLink?: string;
+    linkedinLink?: string;
+    slug?: string;
+    isFeaturedWriter?: boolean;
 }
 
 export const authApi = baseApi.injectEndpoints({
@@ -130,16 +139,25 @@ export const authApi = baseApi.injectEndpoints({
                 phoneNumber: string;
                 aboutMe: string;
                 role: Role;
+                isWriter: boolean;
+                designation: string;
+                location: string;
+                fbLink: string;
+                twitterLink: string;
+                instagramLink: string;
+                linkedinLink: string;
+                slug: string;
+                isFeaturedWriter: boolean;
                 };
             }
-            >({
+        >({
             query: ({ id, data }) => ({
                 url: `/auth/user/${id}`,
                 method: "PATCH",
                 body: data,
             }),
             invalidatesTags: ["Users"],
-            }),
+        }),
 
         deleteUser: builder.mutation<
             { message: string },

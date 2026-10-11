@@ -80,7 +80,7 @@ export default function BlogDetailPage(
                 <div 
                     className="hidden lg:block"
                 >
-                    <SideLink reading={blog?.reading} />
+                    <SideLink reading={blog?.reading} fbLink={blog?.author.fbLink} linkedinLink={blog?.author.linkedinLink} twitterLink={blog?.author.twitterLink} />
                 </div>
                 <div>
                     <div
@@ -138,7 +138,7 @@ export default function BlogDetailPage(
                         <div
                             className="w-full order-3 block lg:hidden"
                         >
-                            <SideLink reading={blog?.reading} />
+                            <SideLink reading={blog?.reading} fbLink={blog?.author.fbLink} linkedinLink={blog?.author.linkedinLink} twitterLink={blog?.author.twitterLink} />
                         </div>
                     </div>
                     <div
@@ -154,13 +154,13 @@ export default function BlogDetailPage(
                     <AuthorDetail
                         name={blog?.author.name}
                         designation={blog?.author.designation}
-                        writerImg={blog?.author.writerImg}
-                        excerpt={blog?.author.excerpt}
+                        writerImg={blog?.author.profileImage}
+                        excerpt={blog?.author.aboutMe}
                         location={blog?.author.location}
                         fbLink={blog?.author.fbLink}
                         twitterLink={blog?.author.twitterLink}
                         instagramLink={blog?.author.instagramLink}
-                        LinkedinLink={blog?.author.LinkedinLink}
+                        LinkedinLink={blog?.author.linkedinLink}
                         slug={blog?.author.slug}
                     />
                     </div>

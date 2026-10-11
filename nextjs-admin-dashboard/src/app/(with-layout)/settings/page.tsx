@@ -6,7 +6,6 @@ import { UploadPhotoForm } from "./_components/upload-photo";
 import { useGetMeQuery } from "@/services/api/authApi";
 import ChangeOwnPassword from "./_components/change-own-password";
 
-
 export default function SettingsPage() {
   const {
     data: user,
@@ -14,11 +13,11 @@ export default function SettingsPage() {
     isError,
   } = useGetMeQuery();
 
-  if(isLoading) {
-    return <div>Loading....</div>
+  if (isLoading) {
+    return <div>Loading....</div>;
   }
 
-  if(isError || !user) {
+  if (isError || !user) {
     return <div>Unable to load profile.</div>;
   }
 
@@ -29,15 +28,27 @@ export default function SettingsPage() {
       <div className="grid grid-cols-5 gap-8">
         <div className="col-span-5 xl:col-span-3">
           <PersonalInfoForm
-            name={user?.name}
-            email={user?.email}
-            bio={user?.aboutMe ?? ""}
-            phoneNumber={user?.phoneNumber ?? ""}
+            name={user.name}
+            email={user.email}
+            bio={user.aboutMe ?? ""}
+            phoneNumber={user.phoneNumber ?? ""}
             role={user.role}
+            isWriter={user.isWriter ?? false}
+            designation={user.designation ?? ""}
+            location={user.location ?? ""}
+            fbLink={user.fbLink ?? ""}
+            twitterLink={user.twitterLink ?? ""}
+            instagramLink={user.instagramLink ?? ""}
+            linkedinLink={user.linkedinLink ?? ""}
+            slug={user.slug ?? ""}
+            isFeaturedWriter={user.isFeaturedWriter ?? false}
           />
         </div>
+
         <div className="col-span-5 xl:col-span-2">
-          <UploadPhotoForm initialImage={user.profileImage ?? null} />
+          <UploadPhotoForm
+            initialImage={user.profileImage ?? null}
+          />
         </div>
       </div>
 
