@@ -72,7 +72,7 @@ export const NAV_DATA = [
       },
       {
         title : "Comments",
-        url : "/comment",
+        url : "/comments",
         icon : Icons.CommentIcon,
         permission: "comments",
         items : [],

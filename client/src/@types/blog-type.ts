@@ -28,4 +28,5 @@ export type BlogDetailType = {
     reading : string,
     thumbnail : string,
     content : string,
+    _id : string,
 }

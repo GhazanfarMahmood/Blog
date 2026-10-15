@@ -32,6 +32,8 @@ export default function BlogDetailPage(
 
     const {data, isLoading, error} = useGetSideBarDataQuery();
 
+    console.log(blog);
+
     return <>
         <div 
             className="container"
@@ -147,7 +149,7 @@ export default function BlogDetailPage(
                         <ArticleNavigation title={previousBlog.title} slug={previousBlog.slug} type={"previous"} />
                         <ArticleNavigation title={nextBlog.title} slug={nextBlog.slug} type={"next"} />
                     </div>
-                    <BlogComment />
+                    <BlogComment blogId={blog._id} />
                 </div>
                 <div>
                     <div className="h-fit pb-[25px]">

@@ -39,8 +39,6 @@ export const permissions = {
 
     comments: [
         ROLES.SUPER_ADMIN,
-        ROLES.ADMIN,
-        ROLES.EDITOR
     ],
 
     media : [
