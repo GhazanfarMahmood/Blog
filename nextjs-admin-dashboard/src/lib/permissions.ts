@@ -108,7 +108,6 @@ export const permissions = {
 
     newsletter : [
         ROLES.SUPER_ADMIN,
-        ROLES.ADMIN
     ],
 
     settings: [

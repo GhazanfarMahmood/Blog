@@ -7,6 +7,17 @@ const newsletterSchema = new mongoose.Schema({
         unique : true,
         trim : true,
         lowercase: true,
+        maxlength: 254,
+    },
+
+    isSubscribed : {
+        type: Boolean,
+        default : true,
+    },
+
+    unsubscribedAt: {
+        type : Date,
+        default: null,
     }
 }, {timestamps : true});
 
