@@ -116,4 +116,8 @@ export const permissions = {
         ROLES.EDITOR,
         ROLES.VIEWER
     ],
+
+    contact : [
+        ROLES.SUPER_ADMIN
+    ],
 } satisfies Record<string, readonly Role[]>;

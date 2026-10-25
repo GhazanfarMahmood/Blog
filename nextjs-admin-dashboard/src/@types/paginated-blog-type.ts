@@ -9,4 +9,5 @@ export type PaginatedBlogType = {
     totalPages : number,
     hasNextPage : boolean,
     hasPrevPage : boolean,
+    totalBlogs: number;
 }

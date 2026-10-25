@@ -7,6 +7,7 @@ import {
   approveComment,
   unapproveComment,
   deleteComment,
+  getPendingCommentsCount,
 } from "../controllers/commentController";
 
 import protect from "../middlewares/protect";
@@ -48,6 +49,13 @@ router.delete(
   protect,
   requireRole("super-admin", "admin"),
   deleteComment
+);
+
+router.get(
+  "/admin/pending-count",
+  protect,
+  requireRole("super-admin", "admin"),
+  getPendingCommentsCount
 );
 
 export default router;

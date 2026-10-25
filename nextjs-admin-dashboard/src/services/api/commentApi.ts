@@ -32,6 +32,15 @@ export const commentApi = baseApi.injectEndpoints({
             }),
             invalidatesTags : ["Comments"],
         }),
+        
+        getPendingCommentsCount: builder.query<
+        { success: boolean; total: number },
+        void
+        >({
+        query: () => "/comments/admin/pending-count",
+        providesTags: ["Comments"],
+        }),
+
     }),
 });
 
@@ -40,4 +49,5 @@ export const {
     useApproveCommentMutation,
     useUnapproveCommentMutation,
     useDeleteCommentMutation,
+    useGetPendingCommentsCountQuery,
 } = commentApi;

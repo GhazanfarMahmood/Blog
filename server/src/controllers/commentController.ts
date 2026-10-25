@@ -254,3 +254,26 @@ export const deleteComment = async (
         })
     }
 }
+
+export const getPendingCommentsCount = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const total = await Comment.countDocuments({
+      isApproved: false,
+    });
+
+    return res.status(200).json({
+      success: true,
+      total,
+    });
+  } catch (error) {
+    console.error("GET PENDING COMMENTS COUNT ERROR:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};

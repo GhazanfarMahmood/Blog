@@ -41,7 +41,7 @@ app.use("/api/blogs", blogRoutes);
 app.use("/api/categories", categoryRoutes);
 
 
-app.use("/api/contacts", contactRoutes);
+app.use("/api/contact", contactRoutes);
 
 app.use("/api/about", aboutRoutes);
 

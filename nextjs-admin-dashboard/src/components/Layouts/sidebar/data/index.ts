@@ -85,6 +85,13 @@ export const NAV_DATA = [
         items : [],
       },
       {
+        title : "Contact Us",
+        url : "/contact",
+        icon : Icons.User,
+        permission : "contact",
+        items : [],
+      },
+      {
         title : "Analytic",
         url : "/analytic",
         icon : Icons.AnalyticIcon,
