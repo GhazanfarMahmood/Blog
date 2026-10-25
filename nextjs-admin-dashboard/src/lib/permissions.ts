@@ -120,4 +120,8 @@ export const permissions = {
     contact : [
         ROLES.SUPER_ADMIN
     ],
+
+    about : [
+        ROLES.SUPER_ADMIN
+    ],
 } satisfies Record<string, readonly Role[]>;

@@ -1,14 +1,41 @@
-import express from "express"
-import { createAbout, deleteAbout, getAbout, updateAbout } from "../controllers/aboutController";
+
+import express from "express";
+
+import {
+  createAbout,
+  getAbout,
+  updateAbout,
+  deleteAbout,
+} from "../controllers/aboutController";
+
+import protect from "../middlewares/protect";
+import { requireRole } from "../middlewares/requireRole";
 
 const router = express.Router();
 
+// PUBLIC ROUTE
 router.get("/", getAbout);
 
-router.post("/", createAbout);
+// ADMIN ROUTES
+router.post(
+  "/",
+  protect,
+  requireRole("super-admin", "admin"),
+  createAbout
+);
 
-router.put("/:id", updateAbout);
+router.put(
+  "/:id",
+  protect,
+  requireRole("super-admin", "admin"),
+  updateAbout
+);
 
-router.delete("/:id", deleteAbout);
+router.delete(
+  "/:id",
+  protect,
+  requireRole("super-admin"),
+  deleteAbout
+);
 
 export default router;

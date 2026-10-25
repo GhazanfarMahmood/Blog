@@ -92,6 +92,13 @@ export const NAV_DATA = [
         items : [],
       },
       {
+        title : "About Us",
+        url : "/about",
+        icon : Icons.MediaIcon,
+        permission : "about",
+        items : [],
+      },
+      {
         title : "Analytic",
         url : "/analytic",
         icon : Icons.AnalyticIcon,
