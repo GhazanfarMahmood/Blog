@@ -6,22 +6,27 @@ export const createCategory = async (req: Request, res: Response) =>{
     try {
         const {categoryName, slug, image, icon, description} = req.body;
 
-        if(!categoryName || !slug || !image || !description) {
-            return res.status(400).json({message : "All fields are required"});
+        if(!categoryName || !image || !description) {
+            return res.status(400).json({message : "Category name, image and description are required"});
         }
 
+        const finalSlug = slug?.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") ||
+                        categoryName.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+
+                        
         const existingCategory = await Category.findOne({
-            $or : [{categoryName}, {slug}],
+            $or : [
+                { categoryName : categoryName.trim() }, 
+                { slug : finalSlug },
+            ],
         });
 
         if(existingCategory){
             return res.status(409).json({message : "Category already exists"});
         }
 
-        const finalSlug = slug?.toLowerCase().trim() || categoryName.toLowerCase().replace(/\s+/g, "-")
-
         const newCategory = await Category.create({
-            categoryName,
+            categoryName : categoryName.trim(),
             slug  : finalSlug,
             image, 
             icon,

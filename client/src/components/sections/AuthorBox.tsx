@@ -12,6 +12,9 @@ import { FaLocationDot } from "react-icons/fa6";
 // TYPE
 import { AuthorBoxType } from "@/@types/author-type";
 
+// IMAGE
+import placeHolderProfile from "@/assets/icons/profile-placeholder.jpg"
+
 export default function AuthorBox(
     {writer} : AuthorBoxType 
 ){
@@ -22,9 +25,12 @@ export default function AuthorBox(
         <div
             className="flex flex-wrap items-center justify-start gap-6"
         >
-            {writer && (
-                <Image src={writer.writerImg} alt={writer.name} width={130} height={130}
-                    className="flex-none rounded-full"
+            {!writer?.profileImage ? 
+            <Image src={placeHolderProfile} alt={"dummy image"} width={130} height={130}
+                    className="flex-none w-[130px] h-[130px] object-cover rounded-full"
+            /> : (
+                <Image src={writer.profileImage} alt={writer.name} width={130} height={130}
+                    className="flex-none w-[130px] h-[130px] object-cover rounded-full"
                 />
             )}
             <div>
@@ -65,9 +71,9 @@ export default function AuthorBox(
                             </Link>
                         </li>
                     }
-                    {writer?.LinkedinLink &&
+                    {writer?.linkedinLink &&
                         <li>
-                            <Link href={writer?.LinkedinLink} aria-label="linkedin-icon">
+                            <Link href={writer?.linkedinLink} aria-label="linkedin-icon">
                                 <Image src={linkedin_icon} alt="linkedin_icon" width={28} height={28} />
                             </Link>
                         </li>
@@ -78,7 +84,7 @@ export default function AuthorBox(
         <p
             className="max-w-[520px] text-para text-balance mt-5"
         >
-            {writer?.excerpt}
+            {writer?.aboutMe}
         </p>
         <div
             className="flex items-center justify-start gap-2 mt-4"

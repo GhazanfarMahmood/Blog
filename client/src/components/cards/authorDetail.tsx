@@ -10,6 +10,8 @@ import insta_icon from "@/assets/icons/insta.svg";
 import linkedin_icon from "@/assets/icons/linkedin.svg";
 import { AuthorDetailType } from "@/@types/author-type";
 
+import placeHolderProfile from "@/assets/icons/profile-placeholder.jpg"
+
 export default function AuthorDetail(
     {name, designation, writerImg, excerpt, slug, location, fbLink, twitterLink, instagramLink, LinkedinLink} : AuthorDetailType){
     return <div 
@@ -23,13 +25,23 @@ export default function AuthorDetail(
         <div 
             className="flex items-center justify-start gap-2.5 flex-nowrap"
         >
+            {!writerImg ? 
+            <Image 
+                src={placeHolderProfile} 
+                alt={name} 
+                width={50} 
+                height={50}
+                className="rounded-full w-[50px] h-[50px] object-cover"
+            />
+            :
             <Image 
                 src={writerImg} 
                 alt={name} 
                 width={50} 
                 height={50}
-                className="rounded-full"
+                className="rounded-full w-[50px] h-[50px] object-cover"
             />
+            }
             <span
                 className="flex flex-col"
             >

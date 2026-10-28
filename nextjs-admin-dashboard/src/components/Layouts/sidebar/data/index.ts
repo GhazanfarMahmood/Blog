@@ -1,3 +1,4 @@
+import { permission, title } from "process";
 import * as Icons from "../icons";
 
 export const NAV_DATA = [
@@ -7,28 +8,150 @@ export const NAV_DATA = [
       {
         title: "Dashboard",
         icon: Icons.HomeIcon,
+        url : "/",
+        permission: "dashboard",
+        items: [],
+      },
+      {
+        title : "Post",
+        icon : Icons.PostIcon,
+        permission: "post",
+        items : [
+          {
+            title : "All Posts", 
+            url : "/post/all-posts"
+          }, 
+          {
+            title : "Create Post",
+            url : "/post/create-post"
+          }
+        ],
+      },
+      {
+        title : "Category",
+        icon : Icons.CategoryIcon,
+        permission: "categories",
         items: [
           {
-            title: "eCommerce",
-            url: "/",
+            title : "All Categories",
+            url : "/category/all-categories",
           },
-        ],
+          {
+            title : "Create Category",
+            url : "/category/create-category"
+          }
+        ]
+      },
+      {
+        title : "Writer",
+        url : "/writer",
+        icon : Icons.ToolIcon,
+        permission: "writers",
+        items: [],
       },
       {
         title: "Calendar",
         url: "/calendar",
         icon: Icons.Calendar,
+        permission: "calendar",
         items: [],
+      },
+      {
+        title : "Media",
+        url : "/media",
+        icon : Icons.MediaIcon,
+        permission: "media",
+        items : [],
       },
       {
         title: "Profile",
         url: "/profile",
         icon: Icons.User,
+        permission: "profile",
         items: [],
+      },
+      {
+        title : "Comments",
+        url : "/comments",
+        icon : Icons.CommentIcon,
+        permission: "comments",
+        items : [],
+      },
+      {
+        title : "Newsletter",
+        url : "/newsletter",
+        icon : Icons.EnvelopeIcon,
+        permission: "newsletter",
+        items : [],
+      },
+      {
+        title : "Contact Us",
+        url : "/contact",
+        icon : Icons.User,
+        permission : "contact",
+        items : [],
+      },
+      {
+        title : "About Us",
+        url : "/about",
+        icon : Icons.MediaIcon,
+        permission : "about",
+        items : [],
+      },
+      {
+        title : "Home Content",
+        url : "/home-content",
+        icon : Icons.ToolIcon,
+        permission : "home",
+        items : [],
+      },
+      {
+        title : "Analytic",
+        url : "/analytic",
+        icon : Icons.AnalyticIcon,
+        permission: "analytic",
+        items : [],
+      },
+      {
+        title : "Settings",
+        url : "/settings",
+        icon : Icons.SettingIcons,
+        permission: "settings",
+        items : [],
+      },
+      {
+        title: "Appearance",
+        url : "/appearance",
+        icon : Icons.AppearanceIcon,
+        permission: "appearance",
+        items : [],
+      },
+      {
+        title: "Tools",
+        url : "/tool",
+        icon : Icons.ToolIcon,
+        permission: "tools",
+        items : [],
+      },
+      {
+        title : "Users",
+        icon : Icons.User,
+        permission : "users",
+        items : [
+          {
+            title : "All Users",
+            url : "/users/all-users",
+          },
+          {
+            title : "Create User",
+            url : "/users/create-user",
+          },
+        ],
       },
       {
         title: "Forms",
         icon: Icons.Alphabet,
+        permission: "forms",
         items: [
           {
             title: "Form Elements",
@@ -44,20 +167,11 @@ export const NAV_DATA = [
         title: "Tables",
         url: "/tables",
         icon: Icons.Table,
+        permission: "tables",
         items: [
           {
             title: "Tables",
             url: "/tables",
-          },
-        ],
-      },
-      {
-        title: "Pages",
-        icon: Icons.Alphabet,
-        items: [
-          {
-            title: "Settings",
-            url: "/pages/settings",
           },
         ],
       },
@@ -69,6 +183,7 @@ export const NAV_DATA = [
       {
         title: "Charts",
         icon: Icons.PieChart,
+        permission: "charts",
         items: [
           {
             title: "Basic Chart",
@@ -79,6 +194,7 @@ export const NAV_DATA = [
       {
         title: "UI Elements",
         icon: Icons.FourCircle,
+        permission: "ui_elements",
         items: [
           {
             title: "Alerts",

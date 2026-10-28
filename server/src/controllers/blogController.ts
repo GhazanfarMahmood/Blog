@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import Blog from "../models/Blog";
 import Category from "../models/Category";
-import Writer from "../models/Writer";
 import mongoose from "mongoose";
 import { getPagination } from "../utils/pagination";
+import User from "../models/User";
 
 export const createBlog = async (req: Request, res: Response) => {
     try {
@@ -45,7 +45,6 @@ export const getBlogs = async (req: Request, res: Response) => {
 
         const totalBlogs = await Blog.countDocuments();
 
-
         const totalPages = Math.ceil(totalBlogs / limit);
 
         res.status(200).json({
@@ -59,17 +58,52 @@ export const getBlogs = async (req: Request, res: Response) => {
     } catch(error) {
         res.status(500).json({ message : "Server error" })
     }
-}
+};
+
+export const getBlogsById = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params as {id : string};
+
+        if(!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({
+                message : "Invalid blog ID",
+            });
+        }
+
+        const blog = await Blog.findById(id).populate("category").populate("author");
+
+        if(!blog) {
+            return res.status(404).json({
+                message : "Blog not found",
+            });
+        }
+
+        return res.status(200).json({
+            data : blog,
+        });
+    } catch (error) {
+        console.error("GET BLOG BY ID ERROR:", error);
+
+        return res.status(500).json({
+            message : "Server error",
+        });
+    }
+};
 
 export const getSidebarData = async (req: Request, res: Response) => {
     try {
-        const featuredWriters = await Writer.find({isFeatured: true});
+        const featuredWriters = await User.find({
+            isWriter: true, 
+            isFeaturedWriter: true
+        })
+        .select("name designation profileImage slug aboutMe location fbLink twitterLink instagramLink linkedinLink")
+        .sort({ createdAt : -1 });
 
         const featuredBlogs = await Blog.find({isFeatured: true})
         .limit(5)
         .populate("category")
         .populate("author")
-        .sort({createdAT : -1});
+        .sort({createdAt : -1});
         
         const latestBlogs = await Blog.find()
         .limit(3)
@@ -85,7 +119,7 @@ export const getSidebarData = async (req: Request, res: Response) => {
     } catch (error) {
         res.status(500).json({message : "Server error"});
     }
-}
+};
 
 export const getBlogsBySearch = async (req: Request, res: Response) => {
     try {
@@ -132,7 +166,6 @@ export const getBlogsBySearch = async (req: Request, res: Response) => {
         });
     }
 };
-
 
 export const getBlogsBySlug = async (
     req: Request,
@@ -211,15 +244,65 @@ export const getBlogsByCategory = async (req: Request, res: Response) => {
     }
 };
 
+export const getWriters = async (req: Request, res: Response) => {
+    try {
+        const writers = await User.find({
+            isWriter : true,
+        })
+        .select(
+            "name designation profileImage slug aboutMe location fbLink twitterLink instagramLink linkedinLink isFeaturedLink"
+        )
+        .sort({ createdAt : -1 });
+
+        return res.status(200).json(writers);
+    } catch (error) {
+        console.error("GET WRITERS ERROR:", error);
+        
+        return res.status(500).json({
+            message : "Server error",
+        });
+    }
+}; 
+
+export const getWriterBySlug = async (req: Request, res: Response) => {
+    try {
+        const { slug } = req.params;
+        
+        const writer = await User.findOne({
+            slug, 
+            isWriter : true,
+        }).select(
+            "name slug designation profileImage aboutMe location fbLink twitterLink instagramLink linkedinLink isFeaturedWriter createdAt"
+        );
+
+        if(!writer) {
+            return res.status(404).json({
+                message : "Writer not found",
+            });
+        }
+
+        return res.status(200).json(writer);
+    } catch (error) {
+        console.error("GET WRITER BY SLUG ERROR:", error);
+
+        return res.status(500).json({
+            message : "Server error",
+        });
+    }
+};
+
 export const getBlogsByWriter = async (req: Request, res: Response) => {
     try {
         const {page, limit, skip} = getPagination(req.query.page, req.query.limit);  
         const { slug } = req.params;
 
-        const writer = await Writer.findOne({ slug });
+        const writer = await User.findOne({ slug, isWriter : true, })
+        .select(
+            "name designation profileImage slug aboutMe location fbLink twitterLink instagramLink linkedinLink isFeaturedLink"
+        );
 
         if(!writer) {
-            return res.status(404).json({message : "Writer not found"});
+            return res.status(404).json({message : "User not found"});
         }
 
         const blogs = await Blog.find({ author : writer._id })
@@ -235,6 +318,7 @@ export const getBlogsByWriter = async (req: Request, res: Response) => {
         const totalPages = Math.ceil(totalBlogs / limit);
 
         res.status(200).json({
+            writer,
             blogs,
             currentPage : page,
             totalPages,
@@ -247,8 +331,7 @@ export const getBlogsByWriter = async (req: Request, res: Response) => {
     } catch (error) {
         res.status(500).json({ message : "Server Error" });
     }
-}
-
+};
 
 export const updateBlog = async (req: Request, res: Response) => {
     try {
@@ -275,7 +358,7 @@ export const updateBlog = async (req: Request, res: Response) => {
     }catch (error) {
         res.status(500).json({ message : "Server error"});
     }
-}
+};
 
 export const deleteBlog = async (req: Request, res: Response) => {
     try {

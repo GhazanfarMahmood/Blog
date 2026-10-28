@@ -11,7 +11,7 @@ const blogSchema = new mongoose.Schema({
         default : [],
     },
     reading : {type: Number, required: true},
-    author: {type: mongoose.Schema.Types.ObjectId, ref: "Writer", required: true},
+    author: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: true},
     excerpt : {type: String, required: true},
     content: {type: String, required: true},
     slug : {type: String, required: true, trim: true},

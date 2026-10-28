@@ -20,6 +20,9 @@ export default function WriterContent(){
     const {data: writer, isLoading: writerLoading, error: writerError} = useGetWriterBySlugQuery(slug);
     const {data: writerBlog, isLoading: blogLoading, error: blogError} = useGetBlogsByWriterQuery({slug, limit : 12, page});
 
+    console.log(writer);
+    // console.log(writerBlog);
+
     if(writerLoading || blogLoading) {
         return <p>Loading...</p>
     }

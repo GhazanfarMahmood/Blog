@@ -77,13 +77,13 @@ export default function MainContent() {
                             <AuthorDetail
                                 name={item.name}
                                 designation={item.designation}
-                                writerImg={item.writerImg}
-                                excerpt={item.excerpt}
+                                writerImg={item.profileImage}
+                                excerpt={item.aboutMe}
                                 location={item.location}
                                 fbLink={item.fbLink}
                                 twitterLink={item.twitterLink}
                                 instagramLink={item.instagramLink}
-                                LinkedinLink={item.LinkedinLink}
+                                LinkedinLink={item.linkedinLink}
                                 slug={item.slug}
                             />
                            </div>
@@ -111,13 +111,13 @@ export default function MainContent() {
                                         <AuthorDetail   
                                             name={item.name}
                                             designation={item.designation}
-                                            writerImg={item.writerImg}
-                                            excerpt={item.excerpt}
+                                            writerImg={item.profileImage}
+                                            excerpt={item.aboutMe}
                                             location={item.location}
                                             fbLink={item.fbLink}
                                             twitterLink={item.twitterLink}
                                             instagramLink={item.instagramLink}
-                                            LinkedinLink={item.LinkedinLink} 
+                                            LinkedinLink={item.linkedinLink} 
                                             slug={item.slug}
                                         />
                                     </SwiperSlide>

@@ -12,7 +12,7 @@ export const writerApi = createApi({
     endpoints : (builder) => ({
 
         getWriterBySlug : builder.query<AuthorType, string>({
-            query: (slug) => `/writers/${slug}`
+            query: (slug) => `blogs/writer/${slug}`
         })
     })
 })

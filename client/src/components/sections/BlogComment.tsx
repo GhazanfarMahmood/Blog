@@ -1,109 +1,88 @@
+"use client";
+
 // NEXT IMAGE
 import Image from "next/image";
 
 // IMAGES OF AUTHOR
 import comment_img1 from "@/assets/icons/comment-img1.jpeg";
-import author_profile from "@/assets/images/author-img.webp";
-import comment_img2 from "@/assets/icons/comment-img2.jpeg";
 
 // COMPONENT
 import CommentForm from "../forms/CommentForm";
-import { useGetCommentQuery } from "@/services/api/commentApi";
+import { useGetCommentsByBlogQuery } from "@/services/api/commentApi";
 
-export default function BlogComment(){
-     const {data, isLoading, error} = useGetCommentQuery();
-    
-        if(isLoading) {
-            return <h1>Loading...</h1>
-        }
-    
-        if(error) {
-            return <h1>Something went wrong.</h1>
-        }
-        
-    return <>
-        <button aria-label="view-comments"
-            className="text-secondary font-extrabold -tracking-[0.03em] leading-[1.2] pb-[3.2px] mt-12 cursor-pointer btn-underline transition-all duration-[0.25s] ease-in dark:text-dark"
-        >View Comments (3)</button>
-        <div
-            className="mt-8"
-        >
-            <div
-                className="blog-comment"
-            >
-                <div>
-                    <div>
-                        <span
-                            className="flex items-center justify-start gap-[6px]"
-                        >
-                            <Image src={comment_img1} alt="comment-img" width={30} height={30}
-                                className="flex-none rounded-full"
-                            />
-                            <span
-                                className="text-para leading-[1.3] font-extrabold text-sm"
-                            >Elliot Alderson</span>
-                            <span
-                                className="text-primary text-sm leading-[1.3] pb-[1.4px]"
-                            >on October 9, 2024</span>
-                        </span>
-                        <p
-                            className="text-primary leading-[1.55] mt-1.5"
-                        >I can’t believe how much value you packed into this post. It’s a must-read for anyone in the field.</p>
-                        <button aria-label="reply-comment"
-                            className="text-secondary font-extrabold leading-[1.2] -tracking-[0.03em] mt-3 cursor-pointer transition-all duration-[0.25s] ease-in btn-underline pb-[3.2px] dark:text-dark"
-                        >Rely</button>
-                    </div>
-                    <div
-                        className="pl-8 mt-6"
-                    >
-                        <span
-                            className="flex items-center justify-start gap-[6px]"
-                        >
-                            <Image src={author_profile} alt="comment-img" width={30} height={30}
-                                className="flex-none rounded-full"
-                            />
-                            <span
-                                className="text-para leading-[1.3] font-extrabold text-sm"
-                            >Ethan Caldwell</span>
-                            <span
-                                className="text-primary text-sm leading-[1.3] pb-[1.4px]"
-                            >on October 9, 2024</span>
-                        </span>
-                        <p
-                            className="text-primary leading-[1.55] mt-1.5"
-                        >
-                            I’m glad the post provided so much value! Thanks for your encouraging words.
-                        </p>
-                        <button aria-label="reply-comment"
-                            className="text-secondary font-extrabold leading-[1.2] -tracking-[0.03em] mt-3 cursor-pointer transition-all duration-[0.25s] ease-in btn-underline pb-[3.2px] dark:text-dark"
-                        >
-                            Rely
-                        </button>
-                    </div>
-                </div>
-                <div>
-                    <span
-                        className="flex items-center justify-start gap-[6px]"
-                    >
-                        <Image src={comment_img2} alt="comment-img" width={30} height={30}
-                            className="flex-none rounded-full"
-                        />
-                        <span
-                            className="text-para leading-[1.3] font-extrabold text-sm"
-                        >Joanna Wellick</span>
-                        <span
-                            className="text-primary text-sm leading-[1.3] pb-[1.4px]"
-                        >on October 9, 2024</span>
+interface BlogCommentProps {
+  blogId: string;
+}
+
+export default function BlogComment({ blogId }: BlogCommentProps) {
+  const {
+    data: comments = [],
+    isLoading,
+    error,
+  } = useGetCommentsByBlogQuery(blogId, {
+    skip: !blogId,
+  });
+
+  console.log(comments);
+
+  if (isLoading) {
+    return <h1>Loading...</h1>;
+  }
+
+  if (error) {
+    return <h1>Something went wrong.</h1>;
+  }
+
+  return (
+    <>
+      <button
+        aria-label="view-comments"
+        className="text-secondary font-extrabold -tracking-[0.03em] leading-[1.2] pb-[3.2px] mt-12 cursor-pointer btn-underline transition-all duration-[0.25s] ease-in dark:text-dark"
+      >
+        View Comments ({comments.length})
+      </button>
+
+      <div className="mt-8">
+        <div className="blog-comment">
+          {comments.length > 0 ? (
+            comments.map((comment) => (
+              <div key={comment._id}>
+                <span className="flex items-center justify-start gap-[6px]">
+                    <span className="w-[30px] h-[30px] flex-none rounded-full bg-secondary text-light dark:text-dark flex items-center justify-center text-sm font-bold uppercase">
+                        {comment.name?.trim().charAt(0).toUpperCase() || "A"}
                     </span>
-                    <p
-                        className="text-primary leading-[1.55] mt-1.5"
-                    >Your passion for the subject really shines through in this post. Keep it up!</p>
-                    <button aria-label="reply-comment"
-                        className="text-secondary font-extrabold leading-[1.2] -tracking-[0.03em] mt-3 cursor-pointer transition-all duration-[0.25s] ease-in btn-underline pb-[3.2px] dark:text-dark"
-                    >Rely</button>
-                </div>
-            </div>
-                <CommentForm />
+
+                  <span className="text-para leading-[1.3] font-extrabold text-sm">
+                    {comment.name}
+                  </span>
+
+                  <span className="text-primary text-sm leading-[1.3] pb-[1.4px]">
+                    on{" "}
+                    {new Date(comment.createdAt).toLocaleDateString(
+                      "en-US",
+                      {
+                        month: "long",
+                        day: "numeric",
+                        year: "numeric",
+                      },
+                    )}
+                  </span>
+                </span>
+
+                <p className="text-primary leading-[1.55] mt-1.5">
+                  {comment.message}
+                </p>
+              </div>
+            ))
+          ) : (
+            <p className="text-primary">
+              No comments yet. Be the first to comment!
+            </p>
+          )}
         </div>
+
+        <CommentForm blogId={blogId} />
+      </div>
     </>
+  );
 }

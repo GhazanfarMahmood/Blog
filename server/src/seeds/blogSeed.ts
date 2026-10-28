@@ -6,7 +6,7 @@ dotenv.config();
 import mongoose from 'mongoose';
 import Blog from '../models/Blog';
 import Category from '../models/Category';
-import Writer from "../models/Writer";
+import User from "../models/User";
 
 function createRandomBlog(categories : any[], writers: any[]){
     const title = faker.book.title();   
@@ -54,7 +54,9 @@ async function seedBlogs(){
         await mongoose.connect(process.env.MONGO_URI);
 
         const categories = await Category.find();
-        const writers = await Writer.find();
+        const writers = await User.find({
+            isWriter : true,
+        });
 
         if(categories.length === 0 || writers.length === 0) {
             throw new Error (
