@@ -50,20 +50,6 @@ export const NAV_DATA = [
         items: [],
       },
       {
-        title: "Calendar",
-        url: "/calendar",
-        icon: Icons.Calendar,
-        permission: "calendar",
-        items: [],
-      },
-      {
-        title : "Media",
-        url : "/media",
-        icon : Icons.MediaIcon,
-        permission: "media",
-        items : [],
-      },
-      {
         title: "Profile",
         url: "/profile",
         icon: Icons.User,
@@ -106,31 +92,10 @@ export const NAV_DATA = [
         items : [],
       },
       {
-        title : "Analytic",
-        url : "/analytic",
-        icon : Icons.AnalyticIcon,
-        permission: "analytic",
-        items : [],
-      },
-      {
         title : "Settings",
         url : "/settings",
         icon : Icons.SettingIcons,
         permission: "settings",
-        items : [],
-      },
-      {
-        title: "Appearance",
-        url : "/appearance",
-        icon : Icons.AppearanceIcon,
-        permission: "appearance",
-        items : [],
-      },
-      {
-        title: "Tools",
-        url : "/tool",
-        icon : Icons.ToolIcon,
-        permission: "tools",
         items : [],
       },
       {
@@ -145,64 +110,6 @@ export const NAV_DATA = [
           {
             title : "Create User",
             url : "/users/create-user",
-          },
-        ],
-      },
-      {
-        title: "Forms",
-        icon: Icons.Alphabet,
-        permission: "forms",
-        items: [
-          {
-            title: "Form Elements",
-            url: "/forms/form-elements",
-          },
-          {
-            title: "Form Layout",
-            url: "/forms/form-layout",
-          },
-        ],
-      },
-      {
-        title: "Tables",
-        url: "/tables",
-        icon: Icons.Table,
-        permission: "tables",
-        items: [
-          {
-            title: "Tables",
-            url: "/tables",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    label: "OTHERS",
-    items: [
-      {
-        title: "Charts",
-        icon: Icons.PieChart,
-        permission: "charts",
-        items: [
-          {
-            title: "Basic Chart",
-            url: "/charts/basic-chart",
-          },
-        ],
-      },
-      {
-        title: "UI Elements",
-        icon: Icons.FourCircle,
-        permission: "ui_elements",
-        items: [
-          {
-            title: "Alerts",
-            url: "/ui-elements/alerts",
-          },
-          {
-            title: "Buttons",
-            url: "/ui-elements/buttons",
           },
         ],
       },
