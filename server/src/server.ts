@@ -14,6 +14,7 @@ import aboutRoutes from "./routes/aboutRoutes";
 import uploadRoutes from "./routes/uploadRotes";
 import newsletterRoutes from "./routes/newsletterRoutes";
 import authRoutes from "./routes/authRoutes";
+import homeRoutes from "./routes/homeRoutes";
 
 connectDB();
 
@@ -49,7 +50,9 @@ app.use("/api/upload", uploadRoutes);
 
 app.use("/api/newsletter", newsletterRoutes);
 
-app.use("/api/auth", authRoutes)
+app.use("/api/auth", authRoutes);
+
+app.use("/api/home", homeRoutes);
 
 app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`)

@@ -124,4 +124,11 @@ export const permissions = {
     about : [
         ROLES.SUPER_ADMIN
     ],
+
+    home : [
+        ROLES.SUPER_ADMIN,
+        ROLES.ADMIN,
+        ROLES.EDITOR,
+    ],
+    
 } satisfies Record<string, readonly Role[]>;

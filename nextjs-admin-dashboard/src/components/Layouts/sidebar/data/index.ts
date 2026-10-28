@@ -99,6 +99,13 @@ export const NAV_DATA = [
         items : [],
       },
       {
+        title : "Home Content",
+        url : "/home-content",
+        icon : Icons.ToolIcon,
+        permission : "home",
+        items : [],
+      },
+      {
         title : "Analytic",
         url : "/analytic",
         icon : Icons.AnalyticIcon,
