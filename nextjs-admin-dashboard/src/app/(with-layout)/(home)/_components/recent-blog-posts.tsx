@@ -58,7 +58,7 @@ export function RecentBlogPosts() {
           {blogs.map((blog: any) => (
             <Link
               key={blog._id}
-              href={`/posts/${blog._id}/edit`}
+              href={`/post/edit-post?id=${blog._id}`}
               className="flex items-center justify-between gap-4 rounded-lg p-3 transition hover:bg-gray-1 dark:hover:bg-dark-2"
             >
               <div className="min-w-0 flex-1">

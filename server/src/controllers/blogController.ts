@@ -5,31 +5,137 @@ import mongoose from "mongoose";
 import { getPagination } from "../utils/pagination";
 import User from "../models/User";
 
-export const createBlog = async (req: Request, res: Response) => {
-    try {
-        const {title, slug, content, thumbnail, category, tags, author} = req.body;
+const parseStringArray = (value: unknown): string[] => {
+  if (Array.isArray(value)) {
+    return value.map(String).filter(Boolean);
+  }
 
-        if(!title || !slug || !content || !thumbnail || !category || !tags || !author) {
-            return res.status(400).json({ message : "All fields are required" });
+  if (typeof value === "string") {
+    if (!value.trim()) return [];
+
+    // Supports JSON arrays, e.g. '["tech", "news"]'
+    if (value.trim().startsWith("[")) {
+      try {
+        const parsed = JSON.parse(value);
+        if (Array.isArray(parsed)) {
+          return parsed.map(String).filter(Boolean);
         }
+      } catch {
+        return [];
+      }
+    }
 
-        const newBlog = await Blog.create({
-            title, 
-            slug, 
-            content, 
-            thumbnail,
-            category,
-            tags, 
-            author
+    return [value];
+  }
+
+  return [];
+};
+
+export const createBlog = async (req: Request, res: Response) => {
+  try {
+    const {
+      title,
+      slug,
+      excerpt,
+      content,
+      author,
+      reading,
+      isPublished,
+      isFeatured,
+    } = req.body;
+
+    const category = parseStringArray(req.body.category);
+    const tags = parseStringArray(req.body.tags);
+
+    const thumbnail = req.file?.path;
+
+    if (
+        !title?.trim() ||
+        !slug?.trim() ||
+        !excerpt?.trim() ||
+        !content?.trim() ||
+        !thumbnail ||
+        category.length === 0 ||
+        !author ||
+        reading === undefined ||
+        reading === null ||
+        reading === "" ||
+        !Number.isFinite(Number(reading)) ||
+        Number(reading) <= 0
+    ) {
+        return res.status(400).json({
+            message: "Please provide all required blog fields",
         });
+    }
 
-        res.status(201).json({
-            message : "Blog created successfully",
-            data : newBlog
+    if (
+      !mongoose.Types.ObjectId.isValid(author) ||
+      category.some((id) => !mongoose.Types.ObjectId.isValid(id))
+    ) {
+      return res.status(400).json({
+        message: "Invalid author or category ID",
+      });
+    }
+
+    const writer = await User.findById(author);
+
+    if (!writer || !writer.isWriter) {
+      return res.status(400).json({
+        message: "Selected author is not a valid writer",
+      });
+    }
+
+    const validCategories = await Category.countDocuments({
+      _id: { $in: category },
+    });
+
+    if (validCategories !== new Set(category).size) {
+      return res.status(400).json({
+        message: "One or more categories do not exist",
+      });
+    }
+
+    const newBlog = await Blog.create({
+      title: title.trim(),
+      slug: slug.trim(),
+      excerpt: excerpt.trim(),
+      content,
+      thumbnail,
+      category: [...new Set(category)],
+      tags,
+      author,
+      reading: Number(reading),
+      isPublished: isPublished === "true",
+      isFeatured: isFeatured === "true",
+    });
+
+    return res.status(201).json({
+      message: "Blog created successfully",
+      data: newBlog,
+    });
+    } catch (error) {
+    console.error("CREATE BLOG ERROR:", error);
+
+    if (error instanceof mongoose.Error.ValidationError) {
+        return res.status(400).json({
+        message: "Blog validation failed",
+        errors: Object.values(error.errors).map(
+            (item) => item.message
+        ),
         });
+    }
 
-    } catch(error) {
-        res.status(500).json({ message : "Server error" });
+    if (error instanceof mongoose.Error.CastError) {
+        return res.status(400).json({
+        message: "Invalid data provided",
+        error: error.message,
+        });
+    }
+
+    return res.status(500).json({
+        message: "Failed to create blog",
+        error: error instanceof Error ? error.message : "Unknown error",
+    });
     }
 };
 
@@ -334,30 +440,131 @@ export const getBlogsByWriter = async (req: Request, res: Response) => {
 };
 
 export const updateBlog = async (req: Request, res: Response) => {
-    try {
-        const id = req.params.id as string;
-        
-        if(!mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(400).json({ message: "Invalid blog ID"})
-        }
+  try {
+    const id = req.params.id as string;
 
-        const updatedBlog = await Blog.findByIdAndUpdate(
-            id, 
-            req.body,
-            { new : true}
-        );
-
-        if(!updatedBlog) {
-            return res.status(404).json({ message : "Blog not found" });
-        }
-
-        res.status(200).json({
-            message: "Blog updated successfully",
-            data : updatedBlog,
-        });
-    }catch (error) {
-        res.status(500).json({ message : "Server error"});
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        message: "Invalid blog ID",
+      });
     }
+
+    const blog = await Blog.findById(id);
+
+    if (!blog) {
+      return res.status(404).json({
+        message: "Blog not found",
+      });
+    }
+
+    const {
+      title,
+      slug,
+      excerpt,
+      content,
+      author,
+      reading,
+      isPublished,
+      isFeatured,
+    } = req.body;
+
+    if (title !== undefined) blog.title = title.trim();
+    if (slug !== undefined) blog.slug = slug.trim();
+    if (excerpt !== undefined) blog.excerpt = excerpt.trim();
+    if (content !== undefined) blog.content = content;
+
+    if (req.body.category !== undefined) {
+      const category = parseStringArray(req.body.category);
+
+      if (
+        category.length === 0 ||
+        category.some((categoryId) =>
+          !mongoose.Types.ObjectId.isValid(categoryId)
+        )
+      ) {
+        return res.status(400).json({
+          message: "Invalid categories",
+        });
+      }
+
+      const validCategories = await Category.countDocuments({
+        _id: { $in: category },
+      });
+
+      if (validCategories !== new Set(category).size) {
+        return res.status(400).json({
+          message: "One or more categories do not exist",
+        });
+      }
+
+      blog.category = category.map(
+        (categoryId) => new mongoose.Types.ObjectId(categoryId)
+      );
+    }
+
+    if (req.body.tags !== undefined) {
+      blog.tags = parseStringArray(req.body.tags);
+    }
+
+    if (author !== undefined) {
+      if (!mongoose.Types.ObjectId.isValid(author)) {
+        return res.status(400).json({
+          message: "Invalid author ID",
+        });
+      }
+
+      const writer = await User.findById(author);
+
+      if (!writer || !writer.isWriter) {
+        return res.status(400).json({
+          message: "Selected author is not a valid writer",
+        });
+      }
+
+      blog.author = new mongoose.Types.ObjectId(author);
+    }
+
+    if (reading !== undefined) {
+      blog.reading = Number(reading);
+    }
+
+    if (isPublished !== undefined) {
+      blog.isPublished = isPublished === "true";
+    }
+
+    // Preserve the existing thumbnail unless a new image is uploaded
+    if (req.file) {
+      blog.thumbnail = req.file.path;
+    }
+    if (reading !== undefined) {
+        const readingValue = Number(reading);
+
+        if (!Number.isFinite(readingValue) || readingValue <= 0) {
+            return res.status(400).json({
+            message: "Reading time must be a positive number",
+            });
+        }
+
+        blog.reading = readingValue;
+    }
+
+    if (isFeatured !== undefined) {
+        blog.isFeatured = isFeatured === "true";
+    }
+
+    await blog.save();
+
+    return res.status(200).json({
+      message: "Blog updated successfully",
+      data: blog,
+    });
+  } catch (error) {
+    console.error("UPDATE BLOG ERROR:", error);
+
+    return res.status(500).json({
+      message: "Failed to update blog",
+    });
+  }
 };
 
 export const deleteBlog = async (req: Request, res: Response) => {

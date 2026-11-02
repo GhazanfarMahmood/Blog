@@ -11,7 +11,11 @@ import { toast } from "react-toastify";
 import {
     useGetBlogByIdQuery,
     useUpdateBlogMutation,
-} from "@/services/api/blogApi.ts";
+} from "@/services/api/blogApi";
+
+import { useGetUsersQuery } from "@/services/api/authApi";
+import { useGetCategoriesQuery } from "@/services/api/categoryApi"; 
+import { buildBlogFormData } from "@/lib/build-blog-form-data";
 
 type EditPostFormProps = {
     postId: string;
@@ -36,12 +40,31 @@ export default function EditPostForm({
 }: EditPostFormProps) {
     const [formData, setFormData] = useState(initialFormData);
     const [tagInput, setTagInput] = useState("");
+    const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
     const {
         data,
         isLoading,
         isError,
     } = useGetBlogByIdQuery(postId);
+
+    const {
+        data: usersData,
+        isLoading: isUsersLoading,
+        isError: isUsersError,
+    } = useGetUsersQuery();
+
+    const {
+        data: categoriesData,
+        isLoading: isCategoriesLoading,
+        isError: isCategoriesError,
+    } = useGetCategoriesQuery();
+
+    const authors = usersData?.users.filter(
+        (user) => user.isWriter === true
+    ) ?? [];
+
+    const categories = categoriesData ?? [];
 
     const [updateBlog, { isLoading: isUpdating }] =
         useUpdateBlogMutation();
@@ -123,21 +146,37 @@ export default function EditPostForm({
     };
 
     const handleSubmit = async (
-        event: FormEvent<HTMLFormElement>,
-    ) => {
+        event: React.FormEvent<HTMLFormElement>
+        ) => {
         event.preventDefault();
 
+        if (selectedImage && selectedImage.size > 5 * 1024 * 1024) {
+            toast.error("Thumbnail must be 5 MB or smaller");
+            return;
+        }
+
         try {
-            const response = await updateBlog({
-                id: postId,
-                data: formData,
+            const payload = buildBlogFormData(formData, selectedImage);
+
+            await updateBlog({
+            id: postId,
+            data: payload,
             }).unwrap();
 
-            toast.success(response.message);
-        } catch (error: any) {
-            toast.error(
-                error?.data?.message || "Failed to update post",
-            );
+            toast.success("Blog updated successfully");
+            setSelectedImage(null);
+        } catch (error: unknown) {
+            const message =
+            typeof error === "object" &&
+            error !== null &&
+            "data" in error &&
+            typeof error.data === "object" &&
+            error.data !== null &&
+            "message" in error.data
+                ? String(error.data.message)
+                : "Failed to update blog";
+
+            toast.error(message);
         }
     };
 
@@ -288,13 +327,42 @@ export default function EditPostForm({
                             Thumbnail
                         </h2>
 
-                        <input
-                            type="text"
-                            name="thumbnail"
-                            value={formData.thumbnail}
-                            onChange={handleChange}
-                            className="w-full rounded-md border border-stroke bg-transparent px-4 py-3 text-sm outline-none focus:border-primary dark:border-dark-3"
-                        />
+                        <div>
+                            <label
+                                htmlFor="edit-thumbnail"
+                                className="mb-2 block text-sm font-medium"
+                            >
+                                Blog Thumbnail
+                            </label>
+
+                            {formData.thumbnail && (
+                                <img
+                                src={formData.thumbnail}
+                                alt="Current blog thumbnail"
+                                className="mb-3 h-40 w-auto rounded-md object-cover"
+                                />
+                            )}
+
+                            <input
+                                id="edit-thumbnail"
+                                type="file"
+                                accept="image/jpeg,image/png,image/webp"
+                                onChange={(event) => {
+                                setSelectedImage(event.target.files?.[0] ?? null);
+                                }}
+                                className="w-full rounded-md border p-3"
+                            />
+
+                            {selectedImage && (
+                                <p className="mt-2 text-sm text-gray-500">
+                                New thumbnail: {selectedImage.name}
+                                </p>
+                            )}
+
+                            <p className="mt-2 text-xs text-gray-500">
+                                Leave this empty to keep the existing thumbnail.
+                            </p>
+                        </div>
                     </div>
 
                     {/* Author */}
@@ -308,16 +376,29 @@ export default function EditPostForm({
                             value={formData.author}
                             onChange={(event) =>
                                 setFormData((previous) => ({
-                                    ...previous,
-                                    author: event.target.value,
+                                ...previous,
+                                author: event.target.value,
                                 }))
                             }
+                            disabled={isUsersLoading || isUsersError}
                             className="w-full rounded-md border border-stroke bg-transparent px-4 py-3 text-sm outline-none focus:border-primary dark:border-dark-3"
                         >
                             <option value="">
-                                Select author
+                                {isUsersLoading ? "Loading authors..." : "Select author"}
                             </option>
+
+                            {authors.map((author) => (
+                                <option key={author.id} value={author.id}>
+                                {author.name}
+                                </option>
+                            ))}
                         </select>
+
+                        {isUsersError && (
+                            <p className="mt-2 text-sm text-red-500">
+                                Failed to load authors.
+                            </p>
+                        )}
                     </div>
 
                     {/* Categories */}
@@ -330,20 +411,31 @@ export default function EditPostForm({
                             multiple
                             value={formData.category}
                             onChange={handleCategoryChange}
+                            disabled={isCategoriesLoading || isCategoriesError}
                             className="min-h-32 w-full rounded-md border border-stroke bg-transparent px-4 py-3 text-sm outline-none focus:border-primary dark:border-dark-3"
                         >
-                            <option value="category-1">
-                                Category 1
-                            </option>
-
-                            <option value="category-2">
-                                Category 2
-                            </option>
-
-                            <option value="category-3">
-                                Category 3
-                            </option>
+                            {categories.map((category) => (
+                                <option key={category._id} value={category._id}>
+                                {category.categoryName}
+                                </option>
+                            ))}
                         </select>
+
+                        {isCategoriesLoading && (
+                            <p className="mt-2 text-sm text-gray-500">
+                                Loading categories...
+                            </p>
+                        )}
+
+                        {isCategoriesError && (
+                            <p className="mt-2 text-sm text-red-500">
+                                Failed to load categories.
+                            </p>
+                        )}
+
+                        <p className="mt-2 text-xs text-gray-500">
+                            Hold Ctrl/Cmd to select multiple categories.
+                        </p>
                     </div>
 
                     {/* Tags */}

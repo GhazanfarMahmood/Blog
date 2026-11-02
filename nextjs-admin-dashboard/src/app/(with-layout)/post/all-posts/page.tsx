@@ -9,7 +9,7 @@ import {
     type ColumnDef,
 } from "@tanstack/react-table";
 
-import { useGetBlogsQuery, useDeleteBlogMutation, } from "@/services/api/blogApi.ts";
+import { useGetBlogsQuery, useDeleteBlogMutation, } from "@/services/api/blogApi";
 import type { BlogContentType } from "@/@types/blog-type";
 import { toast } from "react-toastify";
 
@@ -81,7 +81,7 @@ export default function Page() {
                             key={category._id}
                             className="rounded bg-gray-100 px-2 py-1 text-xs dark:bg-gray-800"
                         >
-                            {category.name}
+                            {category.categoryName}
                         </span>
                     ))}
                 </div> 

@@ -58,16 +58,6 @@ export const authApi = baseApi.injectEndpoints({
         getMe: builder.query<AuthUser, void>({
             query: () => "/auth/me",
 
-            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-                try {
-                    const { data } = await queryFulfilled;
-
-                    dispatch(setUser(data));
-                } catch {
-                    dispatch(clearUser());
-                }
-            },
-
             providesTags : ["Auth"],
         }),
 

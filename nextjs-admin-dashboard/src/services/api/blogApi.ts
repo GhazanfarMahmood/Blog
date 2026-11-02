@@ -19,23 +19,28 @@ export const blogApi = baseApi.injectEndpoints({
             query: (id) => `/blogs/id/${id}`,
         }),
 
-        createBlog : builder.mutation<BlogDetailType, BlogFormType>({
-            query : (data) => ({
-                url : "/blogs",
-                method : "POST", 
-                body : data,
+        createBlog: builder.mutation<
+            { message: string; data: BlogDetailType },
+            FormData
+        >({
+            query: (data) => ({
+                url: "/blogs",
+                method: "POST",
+                body: data,
             }),
+            invalidatesTags: ["Blogs"],
         }),
 
-        updateBlog : builder.mutation<
-            { message : string; data : BlogDetailType},
-            {id : string; data: BlogFormType}
+        updateBlog: builder.mutation<
+            { message: string; data: BlogDetailType },
+            { id: string; data: FormData }
         >({
-            query: ({ id, data}) => ({
-                url : `/blogs/${id}`,
-                method : "PATCH",
-                body : data,
+            query: ({ id, data }) => ({
+                url: `/blogs/${id}`,
+                method: "PATCH",
+                body: data,
             }),
+            invalidatesTags: ["Blogs"],
         }),
 
         deleteBlog: builder.mutation<

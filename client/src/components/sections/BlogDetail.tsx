@@ -32,7 +32,7 @@ export default function BlogDetailPage(
 
     const {data, isLoading, error} = useGetSideBarDataQuery();
 
-    console.log(blog);
+    console.log(previousBlog, nextBlog);
 
     return <>
         <div 
@@ -146,8 +146,8 @@ export default function BlogDetailPage(
                     <div
                         className="flex flex-col sm:flex-row justify-center gap-6 mt-6"
                     >
-                        <ArticleNavigation title={previousBlog.title} slug={previousBlog.slug} type={"previous"} />
-                        <ArticleNavigation title={nextBlog.title} slug={nextBlog.slug} type={"next"} />
+                        <ArticleNavigation title={previousBlog?.title} slug={previousBlog?.slug} type={"previous"} />
+                        <ArticleNavigation title={nextBlog?.title} slug={nextBlog?.slug} type={"next"} />
                     </div>
                     <BlogComment blogId={blog._id} />
                 </div>
