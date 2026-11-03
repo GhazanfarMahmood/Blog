@@ -273,45 +273,81 @@ export const getBlogsBySearch = async (req: Request, res: Response) => {
     }
 };
 
-export const getBlogsBySlug = async (
-    req: Request,
-    res: Response
-) => {
-    try {
-        const { slug } = req.params;
+export const getBlogsBySlug = async (req: Request, res: Response) => {
+  try {
+    const { slug } = req.params;
 
-        const blog = await Blog.findOne({ slug })
-            .populate("category")
-            .populate("author");
+    const blog = await Blog.findOne({ slug })
+      .populate("category")
+      .populate("author");
 
-        if (!blog) {
-            return res.status(404).json({
-                message: "Blog not found",
-            });
-        }
-
-        const previousBlog = await Blog.findOne({
-            _id: { $lt: blog._id },
-        })
-            .select("title slug")
-            .sort({ _id: -1 });
-
-        const nextBlog = await Blog.findOne({
-            _id: { $gt: blog._id },
-        })
-            .select("title slug")
-            .sort({ _id: 1 });
-
-        res.status(200).json({
-            blog,
-            previousBlog,
-            nextBlog,
-        });
-    } catch (error) {
-        res.status(500).json({
-            message: "Server error",
-        });
+    if (!blog) {
+      return res.status(404).json({ message: "Blog not found" });
     }
+
+    // Only published blogs should appear in public article navigation.
+    const publishedFilter = { isPublished: true };
+
+    // Find the closest newer article.
+    let previousBlog = await Blog.findOne({
+      ...publishedFilter,
+      $or: [
+        { createdAt: { $gt: blog.createdAt } },
+        {
+          createdAt: blog.createdAt,
+          _id: { $gt: blog._id },
+        },
+      ],
+    })
+      .select("title slug createdAt")
+      .sort({ createdAt: 1, _id: 1 });
+
+    // If there is no newer article, wrap around to the oldest article.
+    if (!previousBlog) {
+      previousBlog = await Blog.findOne({
+        ...publishedFilter,
+        _id: { $ne: blog._id },
+      })
+        .select("title slug createdAt")
+        .sort({ createdAt: 1, _id: 1 });
+    }
+
+    // Find the closest older article.
+    let nextBlog = await Blog.findOne({
+      ...publishedFilter,
+      $or: [
+        { createdAt: { $lt: blog.createdAt } },
+        {
+          createdAt: blog.createdAt,
+          _id: { $lt: blog._id },
+        },
+      ],
+    })
+      .select("title slug createdAt")
+      .sort({ createdAt: -1, _id: -1 });
+
+    // If there is no older article, wrap around to the newest article.
+    if (!nextBlog) {
+      nextBlog = await Blog.findOne({
+        ...publishedFilter,
+        _id: { $ne: blog._id },
+      })
+        .select("title slug createdAt")
+        .sort({ createdAt: -1, _id: -1 });
+    }
+
+    return res.status(200).json({
+      blog,
+      previousBlog,
+      nextBlog,
+    });
+  } catch (error) {
+    console.error("GET BLOG BY SLUG ERROR:", error);
+
+    return res.status(500).json({
+      message: "Server error",
+    });
+  }
 };
 
 export const getBlogsByCategory = async (req: Request, res: Response) => {

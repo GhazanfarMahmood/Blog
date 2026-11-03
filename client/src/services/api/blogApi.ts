@@ -42,4 +42,4 @@ export const blogApi = createApi({
     }),
 });
 
-export const { useGetBlogsQuery, useGetSideBarDataQuery, useGetBlogsBySlugQuery, useGetBlogsByCategoryQuery, useGetBlogsByWriterQuery, useGetBlogsBySearchQuery }  = blogApi;
+export const { useGetBlogsQuery, useGetSideBarDataQuery, useGetBlogsBySlugQuery, useGetBlogsByCategoryQuery, useGetBlogsByWriterQuery, useGetBlogsBySearchQuery }  = blogApi;``

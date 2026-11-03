@@ -25,7 +25,9 @@ export default function EditCategoryForm() {
 
     const [categoryName, setCategoryName] = useState("");
     const [slug, setSlug] = useState("");
-    const [image, setImage] = useState("");
+    const [existingImage, setExistingImage] = useState("");
+    const [selectedImage, setSelectedImage] = useState<File | null>(null);
+    const [imagePreview, setImagePreview] = useState("");
     const [icon, setIcon] = useState("");
     const [description, setDescription] = useState("");
     const [isPublished, setIsPublished] = useState(true);
@@ -33,9 +35,9 @@ export default function EditCategoryForm() {
     const generateSlug = (value: string) => {
         return value
             .toLowerCase()
-            .trim()
-            .replace(/[^a-z0-9]+/g, "-")
-            .replace(/^-+|-+$/g, "");
+            .replace(/[^a-z0-9-]+/g, "-")
+            .replace(/-+/g, "-")
+            .replace(/^-+/g, "");
     };
 
     const category = categories.find(
@@ -47,11 +49,24 @@ export default function EditCategoryForm() {
 
         setCategoryName(category.categoryName);
         setSlug(category.slug);
-        setImage(category.image);
+        setExistingImage(category.image);
+        setSelectedImage(null);
         setIcon(category.icon || "");
         setDescription(category.description);
         setIsPublished(category.isPublished);
     }, [category]);
+
+    useEffect(() => {
+        if (!selectedImage) {
+            setImagePreview(existingImage);
+            return;
+        }
+
+        const previewUrl = URL.createObjectURL(selectedImage);
+        setImagePreview(previewUrl);
+
+        return () => URL.revokeObjectURL(previewUrl);
+    }, [selectedImage, existingImage]);
 
     const handleSubmit = async (
         event: FormEvent<HTMLFormElement>
@@ -63,24 +78,27 @@ export default function EditCategoryForm() {
             return;
         }
 
-        if (!categoryName.trim() || !image.trim() || !description.trim()) {
-            toast.error(
-                "Category name, image and description are required."
-            );
+        if (!categoryName.trim() || !description.trim()) {
+            toast.error("Category name and description are required.");
             return;
         }
 
         try {
+            const formData = new FormData();
+
+            formData.append("categoryName", categoryName.trim());
+            formData.append("slug", slug.trim());
+            formData.append("icon", icon.trim());
+            formData.append("description", description.trim());
+            formData.append("isPublished", String(isPublished));
+
+            if (selectedImage) {
+                formData.append("image", selectedImage);
+            }
+
             const response = await updateCategory({
                 id: categoryId,
-                data: {
-                    categoryName: categoryName.trim(),
-                    slug: slug.trim(),
-                    image: image.trim(),
-                    icon: icon.trim(),
-                    description: description.trim(),
-                    isPublished,
-                },
+                data: formData,
             }).unwrap();
 
             toast.success(response.message);
@@ -151,18 +169,29 @@ export default function EditCategoryForm() {
                 {/* Image */}
                 <div>
                     <label className="mb-2 block text-sm font-medium text-dark dark:text-white">
-                        Image
+                        Category Image
                     </label>
 
                     <input
-                        type="url"
-                        value={image}
+                        type="file"
+                        accept="image/png,image/jpeg,image/webp"
                         onChange={(event) =>
-                            setImage(event.target.value)
+                        setSelectedImage(event.target.files?.[0] || null)
                         }
-                        placeholder="https://example.com/image.jpg"
-                        className="w-full rounded-lg border border-stroke bg-transparent px-4 py-3 text-sm outline-none transition focus:border-primary dark:border-dark-3 dark:text-white"
+                        className="w-full rounded-lg border border-stroke bg-transparent px-4 py-3 text-sm outline-none dark:border-dark-3 dark:text-white"
                     />
+
+                    {imagePreview && (
+                        <img
+                        src={imagePreview}
+                        alt="Category preview"
+                        className="mt-4 h-40 w-40 rounded-lg object-cover"
+                        />
+                    )}
+
+                    <p className="mt-2 text-xs text-dark-5">
+                        Select a new image only if you want to replace the existing one.
+                    </p>
                 </div>
 
                 {/* Icon */}

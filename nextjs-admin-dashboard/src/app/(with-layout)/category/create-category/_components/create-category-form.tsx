@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
@@ -14,7 +14,8 @@ export default function CreateCategoryForm() {
 
     const [categoryName, setCategoryName] = useState("");
     const [slug, setSlug] = useState("");
-    const [image, setImage] = useState("");
+    const [selectedImage, setSelectedImage] = useState<File | null>(null);
+    const [imagePreview, setImagePreview] = useState("");
     const [icon, setIcon] = useState("");
     const [description, setDescription] = useState("");
     const [isPublished, setIsPublished] = useState(true);
@@ -22,10 +23,22 @@ export default function CreateCategoryForm() {
     const generateSlug = (value: string) => {
         return value
             .toLowerCase()
-            .trim()
-            .replace(/[^a-z0-9]+/g, "-")
-            .replace(/^-+|-+$/g, "");
+            .replace(/[^a-z0-9-]+/g, "-")
+            .replace(/-+/g, "-")
+            .replace(/^-+/g, "");
     };
+
+    useEffect(() => {
+        if (!selectedImage) {
+            setImagePreview("");
+            return;
+        }
+
+        const previewUrl = URL.createObjectURL(selectedImage);
+        setImagePreview(previewUrl);
+
+        return () => URL.revokeObjectURL(previewUrl);
+    }, [selectedImage]);
 
     const handleCategoryNameChange = (value: string) => {
         setCategoryName(value);
@@ -38,30 +51,31 @@ export default function CreateCategoryForm() {
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        if (!categoryName.trim() || !image.trim() || !description.trim()) {
-            toast.error(
-                "Category name, image and description are required."
-            );
+        if (
+            !categoryName.trim() ||
+            !selectedImage ||
+            !description.trim()
+        ) {
+            toast.error("Category name, image and description are required.");
             return;
         }
 
         try {
-            const response = await createCategory({
-                categoryName: categoryName.trim(),
-                slug: slug.trim(),
-                image: image.trim(),
-                icon: icon.trim(),
-                description: description.trim(),
-                isPublished,
-            }).unwrap();
+            const formData = new FormData();
+
+            formData.append("categoryName", categoryName.trim());
+            formData.append("slug", slug.trim());
+            formData.append("image", selectedImage);
+            formData.append("icon", icon.trim());
+            formData.append("description", description.trim());
+            formData.append("isPublished", String(isPublished));
+
+            const response = await createCategory(formData).unwrap();
 
             toast.success(response.message);
-
             router.push("/category/all-categories");
         } catch (error: any) {
-            toast.error(
-                error?.data?.message || "Failed to create category."
-            );
+            toast.error(error?.data?.message || "Failed to create category.");
         }
     };
 
@@ -111,18 +125,25 @@ export default function CreateCategoryForm() {
                 {/* Image */}
                 <div>
                     <label className="mb-2 block text-sm font-medium text-dark dark:text-white">
-                        Image
+                        Category Image
                     </label>
 
                     <input
-                        type="url"
-                        value={image}
+                        type="file"
+                        accept="image/png,image/jpeg,image/webp"
                         onChange={(event) =>
-                            setImage(event.target.value)
+                        setSelectedImage(event.target.files?.[0] || null)
                         }
-                        placeholder="https://example.com/image.jpg"
-                        className="w-full rounded-lg border border-stroke bg-transparent px-4 py-3 text-sm outline-none transition focus:border-primary dark:border-dark-3 dark:text-white"
+                        className="w-full rounded-lg border border-stroke bg-transparent px-4 py-3 text-sm outline-none dark:border-dark-3 dark:text-white"
                     />
+
+                    {imagePreview && (
+                        <img
+                        src={imagePreview}
+                        alt="Category preview"
+                        className="mt-4 h-40 w-40 rounded-lg object-cover"
+                        />
+                    )}
                 </div>
 
                 {/* Icon */}

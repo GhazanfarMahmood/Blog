@@ -38,7 +38,7 @@ export type CategoryAdminType = {
 export type CategoryFormType = {
   categoryName: string;
   slug: string;
-  image: string;
+  image: File | null;
   icon?: string;
   description: string;
   isPublished: boolean;
