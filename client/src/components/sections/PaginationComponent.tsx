@@ -34,7 +34,7 @@ export default function PaginationComponent({setPage, currentPage, totalPages, h
             {pages.map((page, index) => {
                 if(page === "...") {
                     return <span 
-                        key={index}
+                        key={page}
                     >
                         ...
                     </span>
@@ -42,7 +42,7 @@ export default function PaginationComponent({setPage, currentPage, totalPages, h
 
                 return (
                     <button 
-                        key={index}
+                        key={page}
                         className={page === currentPage ? "bg-light rounded-lg shadow-search-field mx-3 dark:outline-1 dark:outline-br dark:bg-[#222]" : ""}
                         onClick={() => setPage(Number(page))}
                     >

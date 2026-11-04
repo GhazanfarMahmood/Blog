@@ -1,15 +1,26 @@
-import { ParsedQs } from "qs";
 import { QueryParamType } from "../@types/query-param-type";
 
 export const getPagination = (
-    pageQuery : QueryParamType,
-    limitQuery: QueryParamType,
-    defaultLimit = 10
+  pageQuery: QueryParamType,
+  limitQuery: QueryParamType,
+  defaultLimit = 10
 ) => {
-    const page = Math.max(1, Number(pageQuery) || 1);
-    const limit = Math.max(1, Number(limitQuery) || defaultLimit);
+  const parsedPage = Number(pageQuery);
+  const parsedLimit = Number(limitQuery);
 
-    return {
-        page, limit, skip: (page - 1) * limit,
-    }
-}
+  const page =
+    Number.isInteger(parsedPage) && parsedPage > 0
+      ? parsedPage
+      : 1;
+
+  const limit =
+    Number.isInteger(parsedLimit) && parsedLimit > 0
+      ? Math.min(parsedLimit, 100)
+      : defaultLimit;
+
+  return {
+    page,
+    limit,
+    skip: (page - 1) * limit,
+  };
+};

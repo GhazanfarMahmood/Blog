@@ -142,14 +142,17 @@ export const createBlog = async (req: Request, res: Response) => {
 export const getBlogs = async (req: Request, res: Response) => {
     try {
         const {page, limit, skip} = getPagination(req.query.page, req.query.limit);  
-        const blogs = await Blog.find()
-        .sort({ createdAt : -1})
+
+        const publishedFilter = { isPublished : true };
+
+        const blogs = await Blog.find(publishedFilter)
+        .sort({ createdAt : -1, _id : -1})
         .skip(skip)
         .limit(limit)
         .populate("category")
         .populate("author");
 
-        const totalBlogs = await Blog.countDocuments();
+        const totalBlogs = await Blog.countDocuments(publishedFilter);
 
         const totalPages = Math.ceil(totalBlogs / limit);
 
@@ -167,33 +170,38 @@ export const getBlogs = async (req: Request, res: Response) => {
 };
 
 export const getBlogsById = async (req: Request, res: Response) => {
-    try {
-        const { id } = req.params as {id : string};
+  try {
+    const { id } = req.params as { id: string };
 
-        if(!mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(400).json({
-                message : "Invalid blog ID",
-            });
-        }
-
-        const blog = await Blog.findById(id).populate("category").populate("author");
-
-        if(!blog) {
-            return res.status(404).json({
-                message : "Blog not found",
-            });
-        }
-
-        return res.status(200).json({
-            data : blog,
-        });
-    } catch (error) {
-        console.error("GET BLOG BY ID ERROR:", error);
-
-        return res.status(500).json({
-            message : "Server error",
-        });
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        message: "Invalid blog ID",
+      });
     }
+
+    const blog = await Blog.findOne({
+      _id: id,
+      isPublished: true,
+    })
+      .populate("category")
+      .populate("author");
+
+    if (!blog) {
+      return res.status(404).json({
+        message: "Blog not found",
+      });
+    }
+
+    return res.status(200).json({
+      data: blog,
+    });
+  } catch (error) {
+    console.error("GET BLOG BY ID ERROR:", error);
+
+    return res.status(500).json({
+      message: "Server error",
+    });
+  }
 };
 
 export const getSidebarData = async (req: Request, res: Response) => {
@@ -205,13 +213,18 @@ export const getSidebarData = async (req: Request, res: Response) => {
         .select("name designation profileImage slug aboutMe location fbLink twitterLink instagramLink linkedinLink")
         .sort({ createdAt : -1 });
 
-        const featuredBlogs = await Blog.find({isFeatured: true})
+        const publishedFilter = { isPublished : true };
+
+        const featuredBlogs = await Blog.find({
+          ...publishedFilter,
+          isFeatured: true,
+        })
         .limit(5)
         .populate("category")
         .populate("author")
         .sort({createdAt : -1});
         
-        const latestBlogs = await Blog.find()
+        const latestBlogs = await Blog.find(publishedFilter)
         .limit(3)
         .populate("category")
         .populate("author")
@@ -238,22 +251,34 @@ export const getBlogsBySearch = async (req: Request, res: Response) => {
             });
         }
 
+        const escapeRegex = (value: string) =>
+          value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+        const safeQuery = escapeRegex(q.trim());
+
         const searchQuery = {
             $or: [
-                { title: { $regex: q, $options: "i" } },
-                { excerpt: { $regex: q, $options: "i" } },
-                { tags: { $in: [new RegExp(q, "i")] } }
+                { title: { $regex: safeQuery, $options: "i" } },
+                { excerpt: { $regex: safeQuery, $options: "i" } },
+                { tags: { $in: [new RegExp(safeQuery, "i")] } }
             ]
         };
 
-        const blogs = await Blog.find(searchQuery)
+        const publishedFilter = { isPublished : true };
+
+        const filter = {
+          ...searchQuery,
+          ...publishedFilter,
+        };
+
+        const blogs = await Blog.find(filter)
             .populate("category")
             .populate("author")
-            .sort({ createdAt: -1 })
+            .sort({ createdAt: -1, _id: -1 })
             .skip(skip)
             .limit(limit);
 
-        const totalBlogs = await Blog.countDocuments(searchQuery);
+        const totalBlogs = await Blog.countDocuments(filter);
 
         const totalPages = Math.ceil(totalBlogs / limit);
 
@@ -277,7 +302,12 @@ export const getBlogsBySlug = async (req: Request, res: Response) => {
   try {
     const { slug } = req.params;
 
-    const blog = await Blog.findOne({ slug })
+    const publishedFilter = { isPublished : true };
+
+    const blog = await Blog.findOne({ 
+      slug,
+      ...publishedFilter
+    })
       .populate("category")
       .populate("author");
 
@@ -286,7 +316,6 @@ export const getBlogsBySlug = async (req: Request, res: Response) => {
     }
 
     // Only published blogs should appear in public article navigation.
-    const publishedFilter = { isPublished: true };
 
     // Find the closest newer article.
     let previousBlog = await Blog.findOne({
@@ -360,17 +389,24 @@ export const getBlogsByCategory = async (req: Request, res: Response) => {
         if(!category) {
             return res.status(404).json({ message : "Category not found"});
         } 
+
+        const publishedFilter = { isPublished : true };
+
+        const filter = {
+          category: category._id,
+          ...publishedFilter,
+        };
+
         
-        const blogs = await Blog.find({ category : category._id })
+        const blogs = await Blog.find(filter)
         .populate("category")
         .populate("author")
-        .sort({ createdAt : -1})
+        .sort({ createdAt : -1, _id : -1})
         .skip(skip)
         .limit(limit);
 
-        const totalBlogs = await Blog.countDocuments({
-            category: category._id
-        });
+        const totalBlogs = await Blog.countDocuments(filter);
+        
         const totalPages = Math.ceil(totalBlogs / limit);
 
         res.status(200).json({
@@ -447,10 +483,15 @@ export const getBlogsByWriter = async (req: Request, res: Response) => {
             return res.status(404).json({message : "User not found"});
         }
 
-        const blogs = await Blog.find({ author : writer._id })
+        const filter = {
+          author: writer._id,
+          isPublished: true,
+        };
+
+        const blogs = await Blog.find(filter)
         .populate("category")
         .populate("author")
-        .sort({ createdAt: -1 })
+        .sort({ createdAt: -1, _id : -1 })
         .skip(skip)
         .limit(limit);
 

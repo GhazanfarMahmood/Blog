@@ -10,18 +10,20 @@ import PaginationComponent from "./PaginationComponent";
 import { useGetBlogsByWriterQuery } from "@/services/api/blogApi";
 import { useGetWriterBySlugQuery } from "@/services/api/writerApi";
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function WriterContent(){
     const [page, setPage] = useState(1);
     const params = useParams();
     const slug = params.slug as string;
 
+    useEffect(() => {
+        setPage(1);
+    }, [slug]);
+
     const {data: writer, isLoading: writerLoading, error: writerError} = useGetWriterBySlugQuery(slug);
     const {data: writerBlog, isLoading: blogLoading, error: blogError} = useGetBlogsByWriterQuery({slug, limit : 12, page});
 
-    console.log(writer);
-    // console.log(writerBlog);
 
     if(writerLoading || blogLoading) {
         return <p>Loading...</p>

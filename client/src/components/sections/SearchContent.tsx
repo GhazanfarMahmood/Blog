@@ -9,12 +9,18 @@ import PaginationComponent from "./PaginationComponent";
 // HOOKS
 import { useGetBlogsBySearchQuery } from "@/services/api/blogApi";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function SearchContent(){
     const [page, setPage] = useState(1);
     const searchParams = useSearchParams();
     const query = searchParams.get("q") || "";
+
+    useEffect(() => {
+        setPage(1);
+    }, [query]);
+
+
     const {data, isLoading, error} = useGetBlogsBySearchQuery({query, page, limit: 12});
 
     if(isLoading) {

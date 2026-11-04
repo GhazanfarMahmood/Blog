@@ -2,7 +2,7 @@
 
 // HOOK
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useGetCategoryBySlugQuery } from "@/services/api/categoryApi";
 import { useGetBlogsByCategoryQuery } from "@/services/api/blogApi";
 
@@ -15,6 +15,10 @@ export default function CategoryDetailContent(){
     const [page, setPage] = useState(1);
     const params = useParams();
     const slug = params.slugs as string;
+
+    useEffect(() => {
+        setPage(1);
+    }, [slug]);
 
     const {data : category} = useGetCategoryBySlugQuery(slug);
     const {data : blogData, isLoading} = useGetBlogsByCategoryQuery({slug, limit : 12, page});

@@ -22,7 +22,7 @@ import 'swiper/css/pagination';
 
 export default function MainContent() {
     const [page, setPage] = useState(1);
-    const {data: blogData, isLoading : blogLoading, error: blogError} = useGetBlogsQuery({page, limit: 10});
+    const {data: blogData, isLoading : blogLoading, isFetching : blogFetching, error: blogError} = useGetBlogsQuery({page, limit: 10});
     const {data: sideBarData, isLoading: sideBarLoading, error: sideBarError} = useGetSideBarDataQuery();
 
     if(blogLoading || sideBarLoading) {
