@@ -18,158 +18,301 @@ import { useGetSideBarDataQuery } from "@/services/api/blogApi";
 // BLOG DETAIL TYPE
 import { ExtendBlogType } from "@/@types/extend-blog-type";
 
+// CUSTOM SKELETON
+import Skeleton from "@/components/ui/Skeleton";
 
-export default function BlogDetailPage(
-    {
-        blog, previousBlog, nextBlog
-    }: ExtendBlogType
-){
-    const dateFormatter = new Date(blog.createdAt).toLocaleDateString("en-US", {
-        day : "numeric",
-        month : "long",
-        year : "numeric",
-    })
+// FEATURED POSTS SKELETON
+function FeatureCardSkeleton() {
+    return (
+        <div className="max-w-[450px] lg:max-w-none relative px-3 mx-auto lg:mx-0">
 
-    const {data, isLoading, error} = useGetSideBarDataQuery();
+            <Skeleton width="110px" height="14px" className="mb-5" />
 
-    console.log(previousBlog, nextBlog);
+            <div className="relative h-[300px] w-full overflow-hidden rounded-2xl">
 
-    return <>
-        <div 
-            className="container"
-        >
-            <div 
-                className="flex items-center justify-center gap-1.5 mb-2.5"
-            >
-                <Link aria-label={`${blog?.author.name}-authorName`} href={`/writer/${blog?.author.slug}`}
-                    className="text-[15px] font-semibold leading-[1.2] -tracking-[0.02em] text-secondary capitalize transition-all duration-[0.25s] ease-in hover:text-primary dark:text-dark dark:hover:text-para" 
-                >
-                    {blog?.author.name}
-                </Link>
-                <span 
-                    className="text-[15px] font-semibold leading-[1.2] -tracking-[0.02em] text-para capitalize"
-                >
-                    on {dateFormatter}
-                </span>
-            </div>
-            <h2
-                className="max-w-[720px] text-primary text-[42px] md:text-[44px] lg:text-[52px] font-bold leading-[1.2] -tracking-[0.04em] text-center mx-auto mb-2.5"
-            >
-                {blog?.title}
-            </h2>
-            <p
-                className="max-w-[640px] text-lg text-center text-primary text-balance leading-[1.55] mx-auto opacity-70"
-            >
-                {blog?.excerpt}
-            </p>
-            <div className="flex items-center justify-center flex-wrap gap-2 mt-6 mb-[27px]">
-                {blog?.category && blog?.category.map((item) => {
-                return <Link aria-label="category-link" href={`/category/${item.slug}`} key={item._id}
-                        className="block w-fit text-[11px] font-extrabold leading-[1.2] uppercase tracking-[0.1em] text-nowrap text-primary bg-light dark:bg-transparent p-[5px_10px] rounded-md dark:border dark:border-br shadow-links dark:shadow-none transition-all duration-[0.25s] ease-in hover:text-para hover:shadow-link-hover hover:opacity-70 dark:hover:text-primary"    
-                    >
-                        {item.categoryName}
-                    </Link>
-                })}
-            </div>
-            <div>
-                <Image src={blog?.thumbnail} alt="blog-detail-img" width={1248} height={500}
-                    className="w-full h-[500px] object-cover rounded-2xl"
-                />
-            </div>
-            <div 
-                className="grid grid-cols-1 lg:grid-cols-[minmax(80px,80px)_minmax(481px,746px)_minmax(340px,382px)] gap-5 xl:gap-10 mt-16 mb-16 md:mb-24 lg:mb-28"
-            >
-                <div 
-                    className="hidden lg:block"
-                >
-                    <SideLink reading={blog?.reading} fbLink={blog?.author.fbLink} linkedinLink={blog?.author.linkedinLink} twitterLink={blog?.author.twitterLink} />
+                <Skeleton width="100%" height="300px" rounded="2xl" />
+
+                <div className="absolute top-6 left-7 flex gap-2">
+                    <Skeleton width="75px" height="24px" />
+                    <Skeleton width="75px" height="24px" />
                 </div>
-                <div>
-                    <div
-                        className="[&_p]:text-lg [&_p]:leading-[1.55] [&_p]:text-primary [&_p]:mb-7
-                        [&_strong]:text-lg [&_strong]:text-primary [&_strong]:font-extrabold [&_strong]:leading-[1.55]
-                        [&_a]:text-lg [&_a]:text-secondary [&_a]:font-extrabold [&_a]:leading-[1.55] [&_a]:underline dark:[&_a]:text-dark
-                        [&_ul]:pl-7 [&_ul]:mt-3.5 [&_ul]:mb-7 [&_ul]:marker:text-secondary dark:[&_ul]:marker:text-dark
-                        [&_li]:text-lg [&_li]:text-primary [&_li]:leading-[1.55] [&_li]:list-disc [&_li]:mb-2
-                        [&_small]:block [&_small]:text-sm [&_small]:text-para [&_small]:mt-2.5
-                        [&_img]:w-full [&_img]:h-full [&_img]:object-cover [&_img]:rounded-2xl
-                        [&_h3]:text-[33px] md:[&_h3]:text-[42px] [&_h3]:text-primary [&_h3]:font-bold [&_h3]:leading-[1.2] [&_h3]:-tracking-[0.04rem] [&_h3]:mt-7 [&_h3]:mb-3.5
-                        [&_h4]:text-[24px] md:[&_h4]:text-[33px] [&_h4]:text-primary [&_h4]:font-bold [&_h4]:leading-[1.2] [&_h4]:-tracking-[0.04rem] [&_h4]:mt-7 [&_h4]:mb-3.5
-                        [&_blockquote]:text-light [&_blockquote]:bg-primary [&_blockquote]:p-8 [&_blockquote]:rounded-2xl [&_blockquote]:my-7 [&_blockquote]:relative 
-                        [&_blockquote>p]:text-light [&_blockquote>p]:text-2xl [&_blockquote>p]:font-bold [&_blockquote>p]:leading-[1.2] [&_blockquote>p]:-tracking-[0.04em] [&_blockquote>p]:mt-[30px] 
-                        dark:[&_blockquote>p]:text-dark
-                        [&_blockquote]:after:font-bold [&_blockquote]:after:leading-[1.2]
-                        [&_blockquote]:after:text-[52px] [&_blockquote]:after:absolute [&_blockquote]:after:top-[19px] [&_blockquote]:after:left-[31px] [&_blockquote]:after:inline-block [&_blockquote]:after:content-['“'] dark:[&_blockquote]:bg-heading
-                        dark:[&_blockquote]:text-dark
-                        [&_blockquote>span]:block [&_blockquote>span]:font-bold [&_blockquote>span]:text-light [&_blockquote>span]:opacity-70 [&_blockquote>span]:text-xs [&_blockquote>span]:uppercase [&_blockquote>span]:leading-[1.2] [&_blockquote>span]:tracking-widest
-                        dark:[&_blockquote>span]:text-dark
-                        "
-                    >
-                        <p
-                            className="whitespace-pre-line"
-                        >
-                            {blog?.content}
-                        </p>
-                    </div>
-                    <div
-                        className="flex items-center justify-between flex-wrap lg:flex-nowrap gap-4 mt-12 pb-6 border-b border-b-br"
-                    >
-                        <div 
-                            className="flex items-center justify-center gap-1.5 mb-2.5"
-                        >
-                            <Link aria-label={`${blog?.author.name}-authorName`} href={`/writer/${blog?.author.slug}`}
-                                className="text-[15px] font-semibold leading-[1.2] -tracking-[0.02em] text-secondary capitalize transition-all duration-[0.25s] ease-in hover:text-primary dark:text-dark dark:hover:text-para" 
-                            >
-                                {blog?.author.name}
-                            </Link>
-                            <span 
-                                className="text-[15px] font-semibold leading-[1.2] -tracking-[0.02em] text-para capitalize"
-                            >
-                                on {dateFormatter}
-                            </span>
-                        </div>
-                         <div className="flex items-center justify-center flex-wrap gap-2 mt-6 mb-[27px]">
-                            {blog?.category && blog?.category.map((item) => {
-                            return <Link aria-label="category-link" href={`/category/${item.slug}`} key={item._id}
-                                    className="block w-fit text-[11px] font-extrabold leading-[1.2] uppercase tracking-[0.1em] text-nowrap text-primary bg-light dark:bg-transparent p-[5px_10px] rounded-md dark:border dark:border-br shadow-links dark:shadow-none transition-all duration-[0.25s] ease-in hover:text-para hover:shadow-link-hover hover:opacity-70 dark:hover:text-primary"    
-                                >
-                                    {item.categoryName}
-                                </Link>
-                            })}
-                        </div>
-                        <div
-                            className="w-full order-3 block lg:hidden"
-                        >
-                            <SideLink reading={blog?.reading} fbLink={blog?.author.fbLink} linkedinLink={blog?.author.linkedinLink} twitterLink={blog?.author.twitterLink} />
-                        </div>
-                    </div>
-                    <div
-                        className="flex flex-col sm:flex-row justify-center gap-6 mt-6"
-                    >
-                        <ArticleNavigation title={previousBlog?.title} slug={previousBlog?.slug} type={"previous"} />
-                        <ArticleNavigation title={nextBlog?.title} slug={nextBlog?.slug} type={"next"} />
-                    </div>
-                    <BlogComment blogId={blog._id} />
+
+                <div className="absolute bottom-7 left-7 right-7 flex flex-col gap-3">
+                    <Skeleton width="120px" height="15px" />
+                    <Skeleton width="90%" height="25px" />
+                    <Skeleton width="70%" height="25px" />
                 </div>
-                <div>
-                    <div className="h-fit pb-[25px]">
-                    <AuthorDetail
-                        name={blog?.author.name}
-                        designation={blog?.author.designation}
-                        writerImg={blog?.author.profileImage}
-                        excerpt={blog?.author.aboutMe}
-                        location={blog?.author.location}
-                        fbLink={blog?.author.fbLink}
-                        twitterLink={blog?.author.twitterLink}
-                        instagramLink={blog?.author.instagramLink}
-                        LinkedinLink={blog?.author.linkedinLink}
-                        slug={blog?.author.slug}
-                    />
-                    </div>
-                    <FeatureCard featuredBlogs={data?.featuredBlogs} />
-                    <Creating latestBlogs={data?.latestBlogs} />
-                </div>
-             </div>  
+
+            </div>
+
         </div>
-    </>
+    );
+}
+
+// LATEST BLOGS SKELETON
+function CreatingSkeleton() {
+    return (
+        <div className="max-w-[450px] lg:max-w-none bg-light p-8 rounded-2xl border border-br dark:bg-[#222] mx-auto lg:mx-0 mt-4">
+
+            <Skeleton width="100px" height="14px" />
+
+            <ul className="flex flex-col gap-5 mt-5">
+                {Array.from({ length: 3 }).map((_, index) => (
+                    <li key={index} className="w-full">
+
+                        <Skeleton width="90%" height="20px" />
+
+                        <div className="flex flex-col gap-2 mt-3">
+                            <Skeleton width="100%" height="14px" />
+                            <Skeleton width="85%" height="14px" />
+                        </div>
+
+                    </li>
+                ))}
+            </ul>
+
+        </div>
+    );
+}
+
+export default function BlogDetailPage({
+    blog,
+    previousBlog,
+    nextBlog,
+}: ExtendBlogType) {
+
+    const dateFormatter = new Date(blog.createdAt).toLocaleDateString("en-US", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+    });
+
+    const {
+        data,
+        isLoading,
+        error,
+    } = useGetSideBarDataQuery();
+
+    return (
+        <>
+            <div className="container">
+
+                {/* BLOG HEADER */}
+                <div className="flex items-center justify-center gap-1.5 mb-2.5">
+
+                    <Link
+                        aria-label={`${blog.author.name}-authorName`}
+                        href={`/writer/${blog.author.slug}`}
+                        className="text-[15px] font-semibold leading-[1.2] -tracking-[0.02em] text-secondary capitalize transition-all duration-[0.25s] ease-in hover:text-primary dark:text-dark dark:hover:text-para"
+                    >
+                        {blog.author.name}
+                    </Link>
+
+                    <span className="text-[15px] font-semibold leading-[1.2] -tracking-[0.02em] text-para capitalize">
+                        on {dateFormatter}
+                    </span>
+
+                </div>
+
+                <h2 className="max-w-[720px] text-primary text-[42px] md:text-[44px] lg:text-[52px] font-bold leading-[1.2] -tracking-[0.04em] text-center mx-auto mb-2.5">
+                    {blog.title}
+                </h2>
+
+                <p className="max-w-[640px] text-lg text-center text-primary text-balance leading-[1.55] mx-auto opacity-70">
+                    {blog.excerpt}
+                </p>
+
+                {/* BLOG CATEGORIES */}
+                <div className="flex items-center justify-center flex-wrap gap-2 mt-6 mb-[27px]">
+
+                    {blog.category?.map((item) => (
+                        <Link
+                            aria-label="category-link"
+                            href={`/category/${item.slug}`}
+                            key={item._id}
+                            className="block w-fit text-[11px] font-extrabold leading-[1.2] uppercase tracking-[0.1em] text-nowrap text-primary bg-light dark:bg-transparent p-[5px_10px] rounded-md dark:border dark:border-br shadow-links dark:shadow-none transition-all duration-[0.25s] ease-in hover:text-para hover:shadow-link-hover hover:opacity-70 dark:hover:text-primary"
+                        >
+                            {item.categoryName}
+                        </Link>
+                    ))}
+
+                </div>
+
+                {/* BLOG THUMBNAIL */}
+                <div>
+                    <Image
+                        src={blog.thumbnail}
+                        alt="blog-detail-img"
+                        width={1248}
+                        height={500}
+                        className="w-full h-[500px] object-cover rounded-2xl"
+                    />
+                </div>
+
+                {/* BLOG BODY */}
+                <div className="grid grid-cols-1 lg:grid-cols-[minmax(80px,80px)_minmax(481px,746px)_minmax(340px,382px)] gap-5 xl:gap-10 mt-16 mb-16 md:mb-24 lg:mb-28">
+
+                    {/* SOCIAL LINKS */}
+                    <div className="hidden lg:block">
+                        <SideLink
+                            reading={blog.reading}
+                            fbLink={blog.author.fbLink}
+                            linkedinLink={blog.author.linkedinLink}
+                            twitterLink={blog.author.twitterLink}
+                        />
+                    </div>
+
+                    {/* ARTICLE CONTENT */}
+                    <div>
+
+                        <div className="[&_p]:text-lg [&_p]:leading-[1.55] [&_p]:text-primary [&_p]:mb-7
+                            [&_strong]:text-lg [&_strong]:text-primary [&_strong]:font-extrabold [&_strong]:leading-[1.55]
+                            [&_a]:text-lg [&_a]:text-secondary [&_a]:font-extrabold [&_a]:leading-[1.55] [&_a]:underline dark:[&_a]:text-dark
+                            [&_ul]:pl-7 [&_ul]:mt-3.5 [&_ul]:mb-7 [&_ul]:marker:text-secondary dark:[&_ul]:marker:text-dark
+                            [&_li]:text-lg [&_li]:text-primary [&_li]:leading-[1.55] [&_li]:list-disc [&_li]:mb-2
+                            [&_small]:block [&_small]:text-sm [&_small]:text-para [&_small]:mt-2.5
+                            [&_img]:w-full [&_img]:h-full [&_img]:object-cover [&_img]:rounded-2xl
+                            [&_h3]:text-[33px] md:[&_h3]:text-[42px] [&_h3]:text-primary [&_h3]:font-bold [&_h3]:leading-[1.2] [&_h3]:-tracking-[0.04rem] [&_h3]:mt-7 [&_h3]:mb-3.5
+                            [&_h4]:text-[24px] md:[&_h4]:text-[33px] [&_h4]:text-primary [&_h4]:font-bold [&_h4]:leading-[1.2] [&_h4]:-tracking-[0.04rem] [&_h4]:mt-7 [&_h4]:mb-3.5
+                            [&_blockquote]:text-light [&_blockquote]:bg-primary [&_blockquote]:p-8 [&_blockquote]:rounded-2xl [&_blockquote]:my-7 [&_blockquote]:relative
+                            [&_blockquote>p]:text-light [&_blockquote>p]:text-2xl [&_blockquote>p]:font-bold [&_blockquote>p]:leading-[1.2] [&_blockquote>p]:-tracking-[0.04em] [&_blockquote>p]:mt-[30px]
+                            dark:[&_blockquote>p]:text-dark
+                            [&_blockquote]:after:font-bold [&_blockquote]:after:leading-[1.2]
+                            [&_blockquote]:after:text-[52px] [&_blockquote]:after:absolute [&_blockquote]:after:top-[19px] [&_blockquote]:after:left-[31px] [&_blockquote]:after:inline-block [&_blockquote]:after:content-['“'] dark:[&_blockquote]:bg-heading
+                            dark:[&_blockquote]:text-dark
+                            [&_blockquote>span]:block [&_blockquote>span]:font-bold [&_blockquote>span]:text-light [&_blockquote>span]:opacity-70 [&_blockquote>span]:text-xs [&_blockquote>span]:uppercase [&_blockquote>span]:leading-[1.2] [&_blockquote>span]:tracking-widest
+                            dark:[&_blockquote>span]:text-dark"
+                        >
+                            <p className="whitespace-pre-line">
+                                {blog.content}
+                            </p>
+                        </div>
+
+                        {/* ARTICLE FOOTER */}
+                        <div className="flex items-center justify-between flex-wrap lg:flex-nowrap gap-4 mt-12 pb-6 border-b border-b-br">
+
+                            <div className="flex items-center justify-center gap-1.5 mb-2.5">
+
+                                <Link
+                                    aria-label={`${blog.author.name}-authorName`}
+                                    href={`/writer/${blog.author.slug}`}
+                                    className="text-[15px] font-semibold leading-[1.2] -tracking-[0.02em] text-secondary capitalize transition-all duration-[0.25s] ease-in hover:text-primary dark:text-dark dark:hover:text-para"
+                                >
+                                    {blog.author.name}
+                                </Link>
+
+                                <span className="text-[15px] font-semibold leading-[1.2] -tracking-[0.02em] text-para capitalize">
+                                    on {dateFormatter}
+                                </span>
+
+                            </div>
+
+                            <div className="flex items-center justify-center flex-wrap gap-2 mt-6 mb-[27px]">
+
+                                {blog.category?.map((item) => (
+                                    <Link
+                                        aria-label="category-link"
+                                        href={`/category/${item.slug}`}
+                                        key={item._id}
+                                        className="block w-fit text-[11px] font-extrabold leading-[1.2] uppercase tracking-[0.1em] text-nowrap text-primary bg-light dark:bg-transparent p-[5px_10px] rounded-md dark:border dark:border-br shadow-links dark:shadow-none transition-all duration-[0.25s] ease-in hover:text-para hover:shadow-link-hover hover:opacity-70 dark:hover:text-primary"
+                                    >
+                                        {item.categoryName}
+                                    </Link>
+                                ))}
+
+                            </div>
+
+                            <div className="w-full order-3 block lg:hidden">
+                                <SideLink
+                                    reading={blog.reading}
+                                    fbLink={blog.author.fbLink}
+                                    linkedinLink={blog.author.linkedinLink}
+                                    twitterLink={blog.author.twitterLink}
+                                />
+                            </div>
+
+                        </div>
+
+                        {/* PREVIOUS / NEXT ARTICLES */}
+                        {(previousBlog || nextBlog) && (
+                            <div className="flex flex-col sm:flex-row justify-center gap-6 mt-6">
+
+                                {previousBlog && (
+                                    <ArticleNavigation
+                                        title={previousBlog.title}
+                                        slug={previousBlog.slug}
+                                        type="previous"
+                                    />
+                                )}
+
+                                {nextBlog && (
+                                    <ArticleNavigation
+                                        title={nextBlog.title}
+                                        slug={nextBlog.slug}
+                                        type="next"
+                                    />
+                                )}
+
+                            </div>
+                        )}
+
+                        {/* COMMENTS */}
+                        <BlogComment blogId={blog._id} />
+
+                    </div>
+
+                    {/* RIGHT SIDEBAR */}
+                    <div>
+
+                        {/* AUTHOR DETAILS */}
+                        <div className="h-fit pb-[25px]">
+                            <AuthorDetail
+                                name={blog.author.name}
+                                designation={blog.author.designation}
+                                writerImg={blog.author.profileImage}
+                                excerpt={blog.author.aboutMe}
+                                location={blog.author.location}
+                                fbLink={blog.author.fbLink}
+                                twitterLink={blog.author.twitterLink}
+                                instagramLink={blog.author.instagramLink}
+                                LinkedinLink={blog.author.linkedinLink}
+                                slug={blog.author.slug}
+                            />
+                        </div>
+
+                        {/* SIDEBAR LOADING */}
+                        {isLoading ? (
+
+                            <>
+                                <FeatureCardSkeleton />
+                                <CreatingSkeleton />
+                            </>
+
+                        ) : error ? (
+
+                            <p className="text-center text-para">
+                                Unable to load sidebar content. Please try again later.
+                            </p>
+
+                        ) : data ? (
+
+                            <>
+                                <FeatureCard
+                                    featuredBlogs={data.featuredBlogs}
+                                />
+
+                                <Creating
+                                    latestBlogs={data.latestBlogs}
+                                />
+                            </>
+
+                        ) : null}
+
+                    </div>
+
+                </div>
+
+            </div>
+        </>
+    );
 }
