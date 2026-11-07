@@ -1,3 +1,4 @@
+import { permission, title } from "process";
 import * as Icons from "../icons";
 
 export const NAV_DATA = [
@@ -7,86 +8,108 @@ export const NAV_DATA = [
       {
         title: "Dashboard",
         icon: Icons.HomeIcon,
-        items: [
+        url : "/",
+        permission: "dashboard",
+        items: [],
+      },
+      {
+        title : "Post",
+        icon : Icons.PostIcon,
+        permission: "post",
+        items : [
           {
-            title: "eCommerce",
-            url: "/",
-          },
+            title : "All Posts", 
+            url : "/post/all-posts"
+          }, 
+          {
+            title : "Create Post",
+            url : "/post/create-post"
+          }
         ],
       },
       {
-        title: "Calendar",
-        url: "/calendar",
-        icon: Icons.Calendar,
+        title : "Category",
+        icon : Icons.CategoryIcon,
+        permission: "categories",
+        items: [
+          {
+            title : "All Categories",
+            url : "/category/all-categories",
+          },
+          {
+            title : "Create Category",
+            url : "/category/create-category"
+          }
+        ]
+      },
+      {
+        title : "Writer",
+        url : "/writer",
+        icon : Icons.ToolIcon,
+        permission: "writers",
         items: [],
       },
       {
         title: "Profile",
         url: "/profile",
         icon: Icons.User,
+        permission: "profile",
         items: [],
       },
       {
-        title: "Forms",
-        icon: Icons.Alphabet,
-        items: [
-          {
-            title: "Form Elements",
-            url: "/forms/form-elements",
-          },
-          {
-            title: "Form Layout",
-            url: "/forms/form-layout",
-          },
-        ],
+        title : "Comments",
+        url : "/comments",
+        icon : Icons.CommentIcon,
+        permission: "comments",
+        items : [],
       },
       {
-        title: "Tables",
-        url: "/tables",
-        icon: Icons.Table,
-        items: [
-          {
-            title: "Tables",
-            url: "/tables",
-          },
-        ],
+        title : "Newsletter",
+        url : "/newsletter",
+        icon : Icons.EnvelopeIcon,
+        permission: "newsletter",
+        items : [],
       },
       {
-        title: "Pages",
-        icon: Icons.Alphabet,
-        items: [
-          {
-            title: "Settings",
-            url: "/pages/settings",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    label: "OTHERS",
-    items: [
-      {
-        title: "Charts",
-        icon: Icons.PieChart,
-        items: [
-          {
-            title: "Basic Chart",
-            url: "/charts/basic-chart",
-          },
-        ],
+        title : "Contact Us",
+        url : "/contact",
+        icon : Icons.User,
+        permission : "contact",
+        items : [],
       },
       {
-        title: "UI Elements",
-        icon: Icons.FourCircle,
-        items: [
+        title : "About Us",
+        url : "/about",
+        icon : Icons.MediaIcon,
+        permission : "about",
+        items : [],
+      },
+      {
+        title : "Home Content",
+        url : "/home-content",
+        icon : Icons.ToolIcon,
+        permission : "home",
+        items : [],
+      },
+      {
+        title : "Settings",
+        url : "/settings",
+        icon : Icons.SettingIcons,
+        permission: "settings",
+        items : [],
+      },
+      {
+        title : "Users",
+        icon : Icons.User,
+        permission : "users",
+        items : [
           {
-            title: "Alerts",
-            url: "/ui-elements/alerts",
+            title : "All Users",
+            url : "/users/all-users",
           },
           {
-            title: "Buttons",
-            url: "/ui-elements/buttons",
+            title : "Create User",
+            url : "/users/create-user",
           },
         ],
       },

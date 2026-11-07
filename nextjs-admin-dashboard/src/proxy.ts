@@ -1,68 +1,78 @@
-import { auth } from "@/lib/auth";
-// import type { AppRole } from "@/lib/auth/modules/authorization/permissions";
+
 import { NextRequest, NextResponse } from "next/server";
+import { jwtVerify } from "jose";
 
-const AUTH_ONLY_PATHS = ["/auth/sign-in", "/auth/sign-up"];
-const SESSION_COOKIE_NAME =
-  process.env.NODE_ENV === "development"
-    ? "better-auth.session_token"
-    : "__Secure-better-auth.session_token";
-// const ROLE_PROTECTED: { prefix: string; requiredRole: AppRole }[] = [
-//   { prefix: "/dashboard/settings", requiredRole: "admin" },
-//   { prefix: "/dashboard/users", requiredRole: "admin" },
-// ];
+const publicRoutes = [
+  "/auth/login",
+  "/auth/forgot-password",
+  "/auth/reset-password",
+];
 
-export async function proxy(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-  const callbackUrl = `${pathname}${request.nextUrl.search}`;
-  const isAuthOnly = AUTH_ONLY_PATHS.some((path) => pathname.startsWith(path));
-  const sessionCookie = request.cookies.get(SESSION_COOKIE_NAME)?.value;
+async function verifyToken(token: string): Promise<boolean> {
+  try {
+    const secret = process.env.JWT_SECRET;
 
-  if (!sessionCookie) {
-    if (!isAuthOnly) {
-      const url = request.nextUrl.clone();
-      url.searchParams.set("callbackUrl", callbackUrl);
-      url.pathname = "/auth/sign-in";
-      return NextResponse.redirect(url);
+    if (!secret) {
+      throw new Error("JWT_SECRET is not configured.");
     }
 
-    return NextResponse.next();
-  }
+    const secretKey = new TextEncoder().encode(secret);
 
-  try {
-    const session = await auth.api.getSession({
-      headers: request.headers,
+    await jwtVerify(token, secretKey, {
+      algorithms: ["HS256"],
     });
 
-    if (!session?.session && !isAuthOnly) {
-      const url = request.nextUrl.clone();
-      url.searchParams.set("callbackUrl", callbackUrl);
-      url.pathname = "/auth/sign-in";
-      return NextResponse.redirect(url);
-    }
-
-    // const sessionRole = (session?.user as { role?: string } | undefined)?.role;
-
-    // if (roleProtectedRoute && sessionRole !== roleProtectedRoute.requiredRole) {
-    //   return NextResponse.redirect(new URL("/", request.url));
-    // }
-
-    if (isAuthOnly && session?.session) {
-      return NextResponse.redirect(new URL("/", request.url));
-    }
+    return true;
   } catch (error) {
-    console.error(error);
-    if (!isAuthOnly) {
-      const url = request.nextUrl.clone();
-      url.searchParams.set("callbackUrl", callbackUrl);
-      url.pathname = "/auth/sign-in";
-      return NextResponse.redirect(url);
+    console.error("JWT verification failed:", error);
+    return false;
+  }
+}
+
+export async function proxy(request: NextRequest) {
+  const token = request.cookies.get("token")?.value;
+  const { pathname } = request.nextUrl;
+
+  const isPublicRoute = publicRoutes.some(
+    (route) =>
+      pathname === route || pathname.startsWith(`${route}/`)
+  );
+
+  // No token: allow public pages, redirect protected pages.
+  if (!token) {
+    if (isPublicRoute) {
+      return NextResponse.next();
     }
+
+    return NextResponse.redirect(
+      new URL("/auth/login", request.url)
+    );
+  }
+
+  // Verify JWT signature and expiration.
+  const isValidToken = await verifyToken(token);
+
+  // Invalid or expired token.
+  if (!isValidToken) {
+    const response = NextResponse.redirect(
+      new URL("/auth/login", request.url)
+    );
+
+    response.cookies.delete("token");
+
+    return response;
+  }
+
+  // Authenticated users should not revisit authentication pages.
+  if (isPublicRoute) {
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)"],
+  matcher: [
+    "/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)",
+  ],
 };

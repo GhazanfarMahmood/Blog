@@ -32,14 +32,17 @@ export const blogApi = createApi({
         }),
 
         getBlogsByWriter : builder.query<PaginatedBlogType, {slug: string, page : number, limit : number}>({
-            query : ({slug, page, limit}) => ({url : `/blogs/writer/${slug}`, params: {page, limit}})
+            query : ({slug, page, limit}) => ({url : `/blogs/writer/${slug}/blogs`, params: {page, limit}})
         }),
 
         getBlogsBySearch : builder.query<PaginatedBlogType, {query: string, page: number, limit: number}>({
-            query: ({query, page, limit}) => `/blogs/search?q=${query}&page=${page}&limit=${limit}`
+            query: ({ query, page, limit }) => ({
+                url: "/blogs/search",
+                params: { q: query, page, limit },
+            }),
         })
 
     }),
 });
 
-export const { useGetBlogsQuery, useGetSideBarDataQuery, useGetBlogsBySlugQuery, useGetBlogsByCategoryQuery, useGetBlogsByWriterQuery, useGetBlogsBySearchQuery }  = blogApi;
+export const { useGetBlogsQuery, useGetSideBarDataQuery, useGetBlogsBySlugQuery, useGetBlogsByCategoryQuery, useGetBlogsByWriterQuery, useGetBlogsBySearchQuery }  = blogApi;``

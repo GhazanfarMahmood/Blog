@@ -1,17 +1,16 @@
-import { StaticImport } from "next/dist/shared/lib/get-img-props"
 
 export type AuthorType = {
     _id : string,
     name : string,
-    writerImg : string,
+    profileImage : string,
     designation : string | null,
     slug : string,
-    excerpt : string | null,
+    aboutMe : string | null,
     location : string,
     fbLink : string | null, 
     twitterLink : string | null,
     instagramLink : string | null,
-    LinkedinLink : string | null,
+    linkedinLink : string | null,
     createdAt : string,
     isFeatured: boolean;
     updatedAt: string;
@@ -35,13 +34,13 @@ export interface WriterType {
   _id: string;
   name: string;
   designation: string | null;
-  writerImg: string;
-  excerpt: string | null;
+  profileImage: string;
+  aboutMe: string | null;
   location: string;
   fbLink: string | null;
   instagramLink: string | null;
   twitterLink: string | null;
-  LinkedinLink: string | null;
+  linkedinLink: string | null;
   slug: string;
   isFeatured: boolean;
   createdAt: string;
