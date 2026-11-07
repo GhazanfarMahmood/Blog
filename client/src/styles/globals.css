@@ -4,7 +4,7 @@
 :root {forced-color-adjust: none;}
 
 /* what is purpose of below code */
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
   --light : #fff;
@@ -24,6 +24,7 @@
 
   --link-bg : #f2f2f6;
   --bg-clock : #29294b26;
+  --skeleton-bg: #e5e5eb;
   --shadow-search-field : 0px 5px 25px 0px rgba(114,114,255,.12);
   --shadow-hover : 0px 5px 25px 0px rgba(114,114,255,0.2);
   --shadow-btn-hover : 0px 5px 20px 0px rgba(114,114,255,0.4);
@@ -41,6 +42,7 @@
   --link-bg : #3d3d3d;
   --para : #cdcdcd;
   --br : #2e2e2e;
+  --skeleton-bg: #383838;
   --linear-bg : 180deg, #434343 0%, #0f0f0f 100%;
   --linear-body : 180deg,#1c1c1c 0%,#1c1c1c 100%;
 
