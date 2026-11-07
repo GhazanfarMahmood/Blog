@@ -60,14 +60,14 @@ export default function AuthorBox(
                     {writer?.instagramLink && 
                         <li>
                             <Link href={writer?.instagramLink} aria-label="twitter-icon">
-                                <Image src={twitter_icon} alt="twitter_icon" width={28} height={28} />
+                                <Image src={insta_icon} alt="twitter_icon" width={28} height={28} />
                             </Link>
                         </li>
                     }
                     {writer?.twitterLink && 
                         <li>
                             <Link href={writer?.twitterLink} aria-label="instagram-icon">
-                                <Image src={insta_icon} alt="instagram_icon" width={28} height={28} />
+                                <Image src={twitter_icon} alt="instagram_icon" width={28} height={28} />
                             </Link>
                         </li>
                     }
