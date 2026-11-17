@@ -9,6 +9,10 @@ export interface AuthUser {
     aboutMe: string;
     profileImage: string | null;
     role: Role;
+
+    phoneNumber?: string;
+    createdAt?: string;
+
     isWriter?: boolean;
     designation?: string;
     location?: string;

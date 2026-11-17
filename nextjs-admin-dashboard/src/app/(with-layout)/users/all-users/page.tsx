@@ -194,7 +194,7 @@ export default function Page() {
 
                     {/* Created */}
                     <td className="px-6 py-4 text-body-sm text-dark-5 dark:text-dark-6">
-                      {new Date(user.createdAt).toLocaleDateString()}
+                      {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : "-"}
                     </td>
 
                     {/* Action */}
