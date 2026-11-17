@@ -6,7 +6,7 @@ export const contactApi = createApi({
     reducerPath : "contactApi",
 
     baseQuery : fetchBaseQuery({
-        baseUrl : "http://localhost:5000/api",
+        baseUrl : "https://blog-red-gamma-77.vercel.app/api",
     }),
 
     endpoints : (builder) => ({
