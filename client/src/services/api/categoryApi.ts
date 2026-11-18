@@ -5,7 +5,7 @@ export const categoryApi = createApi({
     reducerPath : "categoryApi",
 
     baseQuery : fetchBaseQuery({
-        baseUrl : "https://blog-red-gamma-77.vercel.app/api"
+        baseUrl : "https://blog-bxco.vercel.app/api"
     }),
 
     refetchOnFocus : false,

@@ -8,7 +8,7 @@ import {
 } from "@reduxjs/toolkit/query/react";
 
 const rawBaseQuery = fetchBaseQuery({
-  baseUrl: "https://blog-red-gamma-77.vercel.app/api",
+  baseUrl: "https://blog-bxco.vercel.app/api",
   credentials: "include",
 });
 
