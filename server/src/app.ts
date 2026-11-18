@@ -25,8 +25,7 @@ app.use(cookieParser());
 
 // Allowed frontend origins.
 const allowedOrigins = (
-    process.env.CORS_ORIGINS ||
-    "https://blog-p4b4-plum.vercel.app,https://blog-q8hn.vercel.app"
+    process.env.CORS_ORIGINS || ""
 )
     .split(",")
     .map((origin) => origin.trim().replace(/\/$/, ""))
@@ -40,7 +39,7 @@ app.use(
                 return callback(null, true);
             }
 
-            return callback(null, false);
+            return callback(new Error("Not allowed by CORS"));
         },
         credentials: true,
     })
