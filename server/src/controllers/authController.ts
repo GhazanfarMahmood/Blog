@@ -8,6 +8,7 @@ import sendResetEmail from "../utils/sendResetEmail";
 import { AuthRequest } from "../middlewares/verifyToken";
 import cloudinary from "../config/cloudinary";
 
+
 // LOGIN USER
 export const login = async (req: Request, res: Response) => {
   try {
@@ -45,10 +46,12 @@ export const login = async (req: Request, res: Response) => {
       role: user.role,
     });
 
+    const isProduction = process.env.NODE_ENV === "production";
+
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -371,10 +374,12 @@ export const logout = async (
   res: Response
 ) => {
   try {
+    const isProduction = process.env.NODE_ENV === "production";
+
     res.clearCookie("token", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
     });
 
     return res.status(200).json({
