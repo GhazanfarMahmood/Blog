@@ -7,35 +7,28 @@ export interface AuthRequest extends Request {
         role : string;
     };
 }
+const verifyToken = (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const authHeader = req.headers.authorization;
 
-const verifyToken = (req : AuthRequest, res: Response, next: NextFunction) => {
-    try {
-        const authHeader = req.headers.authorization;
+    const token =
+      req.cookies?.token ||
+      (authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : undefined);
 
-        if(!authHeader || !authHeader.startsWith("Bearer ")) {
-            return res.status(401).json({
-                message : "Access deined. No token provided.",
-            });
-        }
-
-        const token = authHeader.split(" ")[1];
-
-        const decoded = jwt.verify(
-            token,
-            process.env.JWT_SECRET as string
-        ) as {
-            id: string;
-            role: string;
-        };
-
-        req.user = decoded;
-
-        next();
-    } catch (error) {
-        return res.status(401).json({
-            message : "Invlid or expired token.",
-        });
+    if (!token) {
+      return res.status(401).json({ message: "Access denied. No token provided." });
     }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
+      id: string;
+      role: string;
+    };
+
+    req.user = decoded;
+    next();
+  } catch (error) {
+    return res.status(401).json({ message: "Invalid or expired token." });
+  }
 };
 
 export default verifyToken;
