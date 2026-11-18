@@ -6,7 +6,7 @@ export const writerApi = createApi({
     reducerPath : "writerApi",
 
     baseQuery : fetchBaseQuery({
-        baseUrl : "https://blog-red-gamma-77.vercel.app/api"
+        baseUrl : "https://blog-bxco.vercel.app/api"
     }),
 
     endpoints : (builder) => ({

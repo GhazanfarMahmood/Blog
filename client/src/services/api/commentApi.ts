@@ -26,7 +26,7 @@ export const commentApi = createApi({
   reducerPath: "commentApi",
 
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://blog-red-gamma-77.vercel.app/api",
+    baseUrl: "https://blog-bxco.vercel.app/api",
   }),
 
   tagTypes: ["Comments"],
