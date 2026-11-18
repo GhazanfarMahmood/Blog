@@ -27,7 +27,7 @@ const baseQuery: BaseQueryFn<
     if (
       !isLoginRequest &&
       typeof window !== "undefined" &&
-      window.location.pathname !== "/login"
+      window.location.pathname !== "/auth/login"
     ) {
       window.location.replace("/auth/login");
     }
