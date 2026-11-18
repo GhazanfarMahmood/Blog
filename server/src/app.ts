@@ -26,7 +26,7 @@ app.use(cookieParser());
 // Allowed frontend origins.
 const allowedOrigins = (
     process.env.CORS_ORIGINS ||
-    "https://blog-p4b4-plum.vercel.app,https://blog-mg7z.vercel.app"
+    "https://blog-p4b4-plum.vercel.app,https://blog-q8hn.vercel.app"
 )
     .split(",")
     .map((origin) => origin.trim().replace(/\/$/, ""))
